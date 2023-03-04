@@ -4,6 +4,8 @@ import { Inter } from "@next/font/google";
 import { Box, Heading, Button } from "@chakra-ui/react";
 import useSWR from "swr";
 
+import Navbar from "../components/Navbar";
+
 import { FaPlus } from "react-icons/fa";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -32,21 +34,25 @@ const Home = () => {
   console.log(data);
 
   return (
-    <Box h="100vh" className={inter.className}>
-      <Heading>Hi {data.firstName}!</Heading>
-      <Heading>{quotesArr[quoteIndex]}</Heading>
-      <Box display="flex" justifyContent="space-between">
-        <Heading>Goals</Heading>
-        <Button
-          bgColor="blue.50"
-          color="white"
-          rightIcon={<FaPlus />}
-          _hover={{ bg: "lightBlue.50" }}
-        >
-          New Goal
-        </Button>
+    <Box>
+      {/* 80px is the navbar */}
+      <Box h="calc(100vh - 80px)" className={inter.className}>
+        <Heading>Hi {data.firstName}!</Heading>
+        <Heading>{quotesArr[quoteIndex]}</Heading>
+        <Box display="flex" justifyContent="space-between">
+          <Heading>Goals</Heading>
+          <Button
+            bgColor="blue.50"
+            color="white"
+            rightIcon={<FaPlus />}
+            _hover={{ bg: "lightBlue.50" }}
+          >
+            New Goal
+          </Button>
+        </Box>
+        <Heading>Fun Stats</Heading>
       </Box>
-      <Heading>Fun Stats</Heading>
+      <Navbar currPage="home" />
     </Box>
   );
 };

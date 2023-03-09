@@ -9,7 +9,6 @@ import Link from "next/link";
 import { Box } from "@chakra-ui/react";
 
 const Navbar = ({ currPage }) => {
-  console.log(currPage);
 
   return (
     <Box

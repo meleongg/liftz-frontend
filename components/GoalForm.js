@@ -1,4 +1,7 @@
 import React from "react";
+
+import { useRouter } from "next/router";
+
 import { Formik, Field, Form } from "formik";
 import {
   FormControl,
@@ -6,6 +9,7 @@ import {
   FormErrorMessage,
   Button,
   Input,
+  Box
 } from "@chakra-ui/react";
 import * as Yup from "yup";
 
@@ -14,6 +18,8 @@ const GoalForm = ({ setShowGoalForm }) => {
     props.resetForm();
     setShowGoalForm(false);
   };
+
+  const router = useRouter(); 
 
   return (
     <Formik
@@ -44,9 +50,10 @@ const GoalForm = ({ setShowGoalForm }) => {
           });
           const content = await rawResponse.json();
 
-          console.log(content);
           setSubmitting(false);
           setShowGoalForm(false);
+
+          router.push("/");
         })();
       }}
     >
@@ -83,28 +90,30 @@ const GoalForm = ({ setShowGoalForm }) => {
             )}
           </Field> */}
 
-          <Button
-            mt={4}
-            bgColor="blue.50"
-            color="white"
-            _hover={{ bg: "lightBlue.50" }}
-            isLoading={props.isSubmitting}
-            type="submit"
-          >
-            Submit
-          </Button>
-
-          <Button
-            mt={4}
-            bgColor="blue.50"
-            color="white"
-            _hover={{ bg: "lightBlue.50" }}
-            // isLoading={props.isSubmitting}
-            type="reset"
-            onClick={() => handleCancel(props)}
-          >
-            Cancel
-          </Button>
+          <Box w="100%">
+            <Button
+              mt="14px"
+              bgColor="blue.50"
+              color="white"
+              _hover={{ bg: "lightBlue.50" }}
+              isLoading={props.isSubmitting}
+              type="submit"
+            >
+              Submit
+            </Button>
+            <Button
+              mt="14px"
+              bgColor="blue.50"
+              color="white"
+              _hover={{ bg: "lightBlue.50" }}
+              // isLoading={props.isSubmitting}
+              type="reset"
+              onClick={() => handleCancel(props)}
+              ml="10px"
+            >
+              Cancel
+            </Button>
+          </Box>
         </Form>
       )}
     </Formik>

@@ -14,7 +14,7 @@ import {
 import { FaEdit, FaCheck } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
 
-const EditableGoal = ({ id, content }) => {
+const EditableGoal = ({ id, content, goals, setGoals }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [goal, setGoal] = useState(content);
   const router = useRouter();
@@ -24,6 +24,8 @@ const EditableGoal = ({ id, content }) => {
   };
 
   const handleEditCheck = async () => {
+    console.log("edit check clicked");
+
     const data = {
       content: goal,
       goalId: id,
@@ -37,9 +39,15 @@ const EditableGoal = ({ id, content }) => {
       },
       body: JSON.stringify(data),
     });
-    const content = await rawResponse.json();
+    const goalId = await rawResponse.json();
 
-    console.log(content);
+    const updatedGoals = goals.map((goal) => {
+      if (goal._id === goalId) {
+        return { ...goal, content: goal };
+      }
+      return goal;
+    });
+    setGoals(updatedGoals);
 
     setIsEditing(false);
 
@@ -63,9 +71,10 @@ const EditableGoal = ({ id, content }) => {
       },
       body: JSON.stringify(data),
     });
-    const content = await rawResponse.json();
+    const goalId = await rawResponse.json();
 
-    console.log(content);
+    const filteredGoals = goals.filter((goal) => goal._id !== goalId);
+    setGoals(filteredGoals);
 
     setIsEditing(false);
   };
@@ -76,16 +85,17 @@ const EditableGoal = ({ id, content }) => {
       justifyContent="space-between"
       alignItems="center"
       w="100%"
+      h="50px"
     >
       {!isEditing && <Checkbox onChange={handleCheck}>{goal}</Checkbox>}
       {isEditing && (
-        <Editable textAlign="center" defaultValue={goal} pr="8px">
+        <Editable textAlign="center" defaultValue={goal} pr="8px" w="70%">
           <EditablePreview />
           <EditableInput onChange={(e) => setGoal(e.target.value)} />
         </Editable>
       )}
       {isEditing && (
-        <Box display="flex" justifyContent="space-between" w="140px">
+        <Box display="flex" justifyContent="space-between" w="100px">
           <Button
             bgColor="blue.50"
             color="white"

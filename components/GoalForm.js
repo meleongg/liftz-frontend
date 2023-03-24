@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import * as Yup from "yup";
 
-const GoalForm = ({ setShowGoalForm }) => {
+const GoalForm = ({ setShowGoalForm, goals, setGoals }) => {
   const handleCancel = (props) => {
     props.resetForm();
     setShowGoalForm(false);
@@ -48,11 +48,20 @@ const GoalForm = ({ setShowGoalForm }) => {
             },
             body: JSON.stringify(values, null, 2),
           });
-          const content = await rawResponse.json();
+
+          console.log(values);
+
+          // return the id of the goal
+          const goalId = await rawResponse.json();
+
+          // update goal array 
+          console.log(goals);
+          setGoals([...goals, { _id: goalId, content: values.goal }]); 
+          console.log(goals);
 
           setSubmitting(false);
+          
           setShowGoalForm(false);
-
           router.push("/");
         })();
       }}

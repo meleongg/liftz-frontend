@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 
 import { Inter } from "@next/font/google";
@@ -9,7 +9,6 @@ const inter = Inter({ subsets: ["latin"] });
 import Navbar from "../components/Navbar";
 import NewWorkoutForm from "../components/NewWorkoutForm";
 
-import { FaPlus } from "react-icons/fa";
 
 const NewWorkout = () => {
   const router = useRouter(); 

@@ -1,5 +1,5 @@
 import {
-  FaBook,
+  FaListAlt,
   FaCalendar,
   FaHome,
   FaDumbbell,
@@ -9,7 +9,6 @@ import Link from "next/link";
 import { Box } from "@chakra-ui/react";
 
 const Navbar = ({ currPage }) => {
-
   return (
     <Box
       w="100vw"
@@ -23,7 +22,7 @@ const Navbar = ({ currPage }) => {
     >
       <Link href="/workouts">
         <Box color={currPage == "workouts" ? "black.50" : "white"}>
-          <FaBook />
+          <FaListAlt />
         </Box>
       </Link>
       <Link href="/calendar">

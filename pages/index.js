@@ -1,124 +1,134 @@
 import Head from "next/head";
 import Image from "next/image";
-import { Inter } from "@next/font/google";
-import { Box, Heading, Button, VStack } from "@chakra-ui/react";
-import useSWR from "swr";
-import React, { useState, useEffect } from "react";
-import GoalForm from "../components/GoalForm";
-import EditableGoal from "../components/EditableGoal";
+import NextLink from "next/link";
+import { Box, Link, Text } from "@chakra-ui/react";
 
-import Navbar from "../components/Navbar";
+import { FaListAlt, FaCalendarAlt, FaDumbbell, FaSignal } from "react-icons/fa";
 
-import { FaPlus } from "react-icons/fa";
-
-const inter = Inter({ subsets: ["latin"] });
-
-// const fetcher = (...args) => fetch(...args).then((res) => res.json());
-
-const Home = () => {
-  const [showGoalForm, setShowGoalForm] = useState(false);
-  // const { data, error, isLoading } = useSWR("http://localhost:3001", fetcher);
-  const [user, setUser] = useState({});
-  const [goals, setGoals] = useState([]);
-
-  let quoteIndex; 
-
-  const getRandomNumber = (max) => {
-    return Math.floor(Math.random() * (max + 1));
-  };
-
-  const quotesArr = [
-    "Looking big jim bro",
-    "Leg day everyday",
-    "You don't need Alan...",
-    "Birdcoop > Arc",
-    "Platella, Dumbella, and Barbella will always be there for you",
-  ];
-
-  const fetchUserData = async () => {
-    fetch("http://localhost:3001")
-      .then((response) => response.json())
-      .then((data) => {
-        setGoals(data.goals); 
-        setUser({ id: data._id, 
-                  firstName: data.firstName,
-                  lastName: data.lastName });
-      })
-      .catch((err) => console.log(err));
-  };
-
-  useEffect(() => {
-    fetchUserData();
-    
-    quoteIndex = getRandomNumber(quotesArr.length - 1);
-  }, []);
-
-  // if (error) return <div>failed to load</div>;
-  // if (isLoading) return <div>loading...</div>;
-
-  if (!goals) return <div>loading...</div>;
-
-  const handleAddGoal = () => {
-    setShowGoalForm(true);
-  };
-
-  // console.log(data);
-
+const LandingPage = () => {
   return (
-    <Box minHeight="100vh">
-      {/* 80px is the navbar */}
+    <Box backgroundColor="blue.50" minHeight="100vh" pb="30px">
+      <Head>
+        <title>liftz - Landing Page</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
       <Box
-        minHeight="calc(100vh - 80px)"
-        h="calc(100% - 80px)"
-        className={inter.className}
-        pt="30px"
-        pl="10px"
-        pr="10px"
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        p="10px 20px 10px 20px"
+        backgroundColor="white"
+        h="80px"
       >
-        <Heading fontSize="50px">Hi {user.firstName}!</Heading>
-        <Heading fontSize="20px" pt="10px" pb="30px">
-          {quotesArr[quoteIndex]}
-        </Heading>
-        <Box pb="20px">
-          <Box display="flex" justifyContent="space-between" pb="10px">
-            <Heading fontSize="30px">Goals</Heading>
-            <Button
-              bgColor="blue.50"
-              color="white"
-              rightIcon={<FaPlus />}
-              _hover={{ bg: "lightBlue.50" }}
-              onClick={handleAddGoal}
-            >
-              New Goal
-            </Button>
-          </Box>
-          {showGoalForm && <GoalForm setShowGoalForm={setShowGoalForm} goals={goals} setGoals={setGoals} />}
-          <VStack spacing="10px" align="start" minHeight="150px">
-            {goals.map((goal) => {
-              return (
-                <Box
-                  w="100%"
-                  display="flex"
-                  justifyContent="space-between"
-                  pt="5px"
-                  pb="5px"
-                  key={goal._id}
-                >
-                  <EditableGoal id={goal._id} content={goal.content} goals={goals} setGoals={setGoals} />
-                </Box>
-              );
-            })}
-          </VStack>
+        <Box display="flex" justifyContent="center">
+          <Image src="/full-logo.png" width={100} height={50} alt="logo" />
         </Box>
-        <Box pb="20px">
-          <Heading fontSize="30px">Fun Stats</Heading>
-          Coming Soon! :)
-          <VStack minHeight="100px"></VStack>
+        <Link as={NextLink} href="/sign-up">
+          sign up
+        </Link>
+        <Link as={NextLink} href="/login">
+          login
+        </Link>
+      </Box>
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        textAlign="center"
+        flexDirection="column"
+        backgroundColor="white"
+        color="#333"
+        mt="30px"
+        borderRadius="20px"
+        p="20px"
+      >
+        <Text>Level up your gainz</Text>
+        <Box display="flex" justifyContent="center">
+          <Image src="/full-logo.png" width={300} height={200} alt="temp" />
+        </Box>
+        <Text>
+          Keep track of your workouts and your progress. Never lose gym
+          motivation again.
+        </Text>
+      </Box>
+      <Box display="flex" justifyContent="flex-end" mt="30px" mb="30px">
+        <Box
+          w="80%"
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          backgroundColor="white"
+          borderRadius="20px"
+          p="10px 10px 10px 20px"
+        >
+          <Box fontSize="50px">
+            <FaListAlt />
+          </Box>
+          <Text pl="20px">
+            Keep track of your workouts and your progress. Never lose gym
+            motivation again.
+          </Text>
         </Box>
       </Box>
-      <Navbar currPage="home" />
+      <Box display="flex" justifyContent="flex-start" mt="30px" mb="30px">
+        <Box
+          w="80%"
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          backgroundColor="white"
+          borderRadius="20px"
+          p="10px 10px 10px 20px"
+        >
+          <Box fontSize="50px">
+            <FaCalendarAlt />
+          </Box>
+          <Text pl="20px">
+            Keep track of your workouts and your progress. Never lose gym
+            motivation again.
+          </Text>
+        </Box>
+      </Box>
+      <Box display="flex" justifyContent="flex-end" mt="30px" mb="30px">
+        <Box
+          w="80%"
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          backgroundColor="white"
+          borderRadius="20px"
+          p="10px 10px 10px 20px"
+        >
+          <Box fontSize="50px">
+            <FaDumbbell />
+          </Box>
+          <Text pl="20px">
+            Keep track of your workouts and your progress. Never lose gym
+            motivation again.
+          </Text>
+        </Box>
+      </Box>
+      <Box display="flex" justifyContent="flex-start" mt="30px">
+        <Box
+          w="80%"
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          backgroundColor="white"
+          borderRadius="20px"
+          p="10px 10px 10px 20px"
+        >
+          <Box fontSize="50px">
+            <FaSignal />
+          </Box>
+          <Text pl="20px">
+            Keep track of your workouts and your progress. Never lose gym
+            motivation again.
+          </Text>
+        </Box>
+      </Box>
     </Box>
   );
 };
 
-export default Home;
+export default LandingPage;

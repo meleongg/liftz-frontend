@@ -8,6 +8,7 @@ import { Box, Heading, Button } from "@chakra-ui/react";
 const inter = Inter({ subsets: ["latin"] });
 
 import Navbar from "../components/Navbar";
+import Title from "../components/Title";
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
@@ -37,7 +38,7 @@ const WorkoutLibrary = () => {
         pl="10px"
         pr="10px"
       >
-        <Heading fontSize="50px">Workout Library</Heading>
+        <Title content={"Workout Library"} />
         <Button
           bgColor="blue.50"
           color="white"

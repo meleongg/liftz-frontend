@@ -5,6 +5,7 @@ const colors = {
     50: "#5ca1e6",
   },
   blue: {
+    0: "#00799F",
     50: "#0076CC",
   },
   black: {

@@ -4,10 +4,12 @@ import { Inter } from "@next/font/google";
 import { Box, Heading, Button, VStack } from "@chakra-ui/react";
 import useSWR from "swr";
 import React, { useState, useEffect } from "react";
-import GoalForm from "../components/GoalForm";
-import EditableGoal from "../components/EditableGoal";
+import { useRouter } from "next/router";
 
-import Navbar from "../components/Navbar";
+import GoalForm from "../../components/GoalForm";
+import EditableGoal from "../../components/EditableGoal";
+import Navbar from "../../components/Navbar";
+import Title from "../../components/Title";
 
 import { FaPlus } from "react-icons/fa";
 
@@ -20,8 +22,9 @@ const Home = () => {
   // const { data, error, isLoading } = useSWR("http://localhost:3001", fetcher);
   const [user, setUser] = useState({});
   const [goals, setGoals] = useState([]);
+  const [quoteIndex, setQuoteIndex] = useState(0);
 
-  let quoteIndex; 
+  const router = useRouter();
 
   const getRandomNumber = (max) => {
     return Math.floor(Math.random() * (max + 1));
@@ -35,22 +38,30 @@ const Home = () => {
     "Platella, Dumbella, and Barbella will always be there for you",
   ];
 
-  const fetchUserData = async () => {
-    fetch("http://localhost:3001")
-      .then((response) => response.json())
-      .then((data) => {
-        setGoals(data.goals); 
-        setUser({ id: data._id, 
-                  firstName: data.firstName,
-                  lastName: data.lastName });
-      })
-      .catch((err) => console.log(err));
+  const fetchUserData = async (userId) => {
+    try {
+      const response = await fetch(`http://localhost:3001/user/${userId}`);
+
+      const data = await response.json();
+
+      setGoals(data.goals);
+      setUser({
+        id: data._id,
+        firstName: data.firstName,
+        lastName: data.lastName,
+        email: data.email,
+      });
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   useEffect(() => {
-    fetchUserData();
-    
-    quoteIndex = getRandomNumber(quotesArr.length - 1);
+    const userId = router.query.user;
+    let index = getRandomNumber(quotesArr.length - 1);
+    setQuoteIndex(index);
+
+    fetchUserData(userId);
   }, []);
 
   // if (error) return <div>failed to load</div>;
@@ -75,7 +86,7 @@ const Home = () => {
         pl="10px"
         pr="10px"
       >
-        <Heading fontSize="50px">Hi {user.firstName}!</Heading>
+        <Title content={`Hi ${user.firstName}!`} />
         <Heading fontSize="20px" pt="10px" pb="30px">
           {quotesArr[quoteIndex]}
         </Heading>
@@ -92,7 +103,13 @@ const Home = () => {
               New Goal
             </Button>
           </Box>
-          {showGoalForm && <GoalForm setShowGoalForm={setShowGoalForm} goals={goals} setGoals={setGoals} />}
+          {showGoalForm && (
+            <GoalForm
+              setShowGoalForm={setShowGoalForm}
+              goals={goals}
+              setGoals={setGoals}
+            />
+          )}
           <VStack spacing="10px" align="start" minHeight="150px">
             {goals.map((goal) => {
               return (
@@ -104,7 +121,12 @@ const Home = () => {
                   pb="5px"
                   key={goal._id}
                 >
-                  <EditableGoal id={goal._id} content={goal.content} goals={goals} setGoals={setGoals} />
+                  <EditableGoal
+                    id={goal._id}
+                    content={goal.content}
+                    goals={goals}
+                    setGoals={setGoals}
+                  />
                 </Box>
               );
             })}

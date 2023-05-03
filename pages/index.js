@@ -1,7 +1,7 @@
 import Head from "next/head";
 import Image from "next/image";
-import NextLink from "next/link";
-import { Box, Link, Text } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
+import GuestNavbar from "../components/GuestNavbar";
 
 import { FaListAlt, FaCalendarAlt, FaDumbbell, FaSignal } from "react-icons/fa";
 
@@ -12,24 +12,7 @@ const LandingPage = () => {
         <title>liftz - Landing Page</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        p="10px 20px 10px 20px"
-        backgroundColor="white"
-        h="80px"
-      >
-        <Box display="flex" justifyContent="center">
-          <Image src="/full-logo.png" width={100} height={50} alt="logo" />
-        </Box>
-        <Link as={NextLink} href="/sign-up">
-          sign up
-        </Link>
-        <Link as={NextLink} href="/login">
-          login
-        </Link>
-      </Box>
+      <GuestNavbar />
       <Box
         display="flex"
         justifyContent="center"

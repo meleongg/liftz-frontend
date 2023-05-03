@@ -14,7 +14,7 @@ import {
 import { FaEdit, FaCheck } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
 
-const EditableGoal = ({ id, content, goals, setGoals }) => {
+const EditableGoal = ({ userId, id, content, goals, setGoals }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [goal, setGoal] = useState(content);
   const router = useRouter();
@@ -51,7 +51,7 @@ const EditableGoal = ({ id, content, goals, setGoals }) => {
 
     setIsEditing(false);
 
-    router.push("/");
+    router.push(`/authenticated/${userId}`);
   };
 
   const handleEditCancel = () => {

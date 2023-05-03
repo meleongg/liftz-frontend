@@ -26,6 +26,8 @@ const Home = () => {
 
   const router = useRouter();
 
+  const userId = router.query.user;
+
   const getRandomNumber = (max) => {
     return Math.floor(Math.random() * (max + 1));
   };
@@ -57,7 +59,6 @@ const Home = () => {
   };
 
   useEffect(() => {
-    const userId = router.query.user;
     let index = getRandomNumber(quotesArr.length - 1);
     setQuoteIndex(index);
 
@@ -105,6 +106,7 @@ const Home = () => {
           </Box>
           {showGoalForm && (
             <GoalForm
+              userId={userId}
               setShowGoalForm={setShowGoalForm}
               goals={goals}
               setGoals={setGoals}
@@ -122,6 +124,7 @@ const Home = () => {
                   key={goal._id}
                 >
                   <EditableGoal
+                    userId={userId}
                     id={goal._id}
                     content={goal.content}
                     goals={goals}

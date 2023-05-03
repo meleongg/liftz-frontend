@@ -9,17 +9,17 @@ import {
   FormErrorMessage,
   Button,
   Input,
-  Box
+  Box,
 } from "@chakra-ui/react";
 import * as Yup from "yup";
 
-const GoalForm = ({ setShowGoalForm, goals, setGoals }) => {
+const GoalForm = ({ userId, setShowGoalForm, goals, setGoals }) => {
   const handleCancel = (props) => {
     props.resetForm();
     setShowGoalForm(false);
   };
 
-  const router = useRouter(); 
+  const router = useRouter();
 
   return (
     <Formik
@@ -29,47 +29,45 @@ const GoalForm = ({ setShowGoalForm, goals, setGoals }) => {
         goal: Yup.string()
           .max(100, "Must be 100 characters or less")
           .required("Required"),
-        // lastName: Yup.string()
-        //   .max(20, "Must be 20 characters or less")
-        //   .required("Required"),
-        // email: Yup.string().email("Invalid email address").required("Required"),
       })}
       onSubmit={(values, { setSubmitting }) => {
-        // setTimeout(() => {
-        //   alert(JSON.stringify(values, null, 2));
-        //   setSubmitting(false);
-        // }, 400);
         (async () => {
-          const rawResponse = await fetch("http://localhost:3001/create-goal", {
-            method: "POST",
-            headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(values, null, 2),
-          });
+          const rawResponse = await fetch(
+            `http://localhost:3001/${userId}/create-goal`,
+            {
+              method: "POST",
+              headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(values, null, 2),
+            }
+          );
 
           console.log(values);
 
           // return the id of the goal
           const goalId = await rawResponse.json();
 
-          // update goal array 
+          // update goal array
           console.log(goals);
-          setGoals([...goals, { _id: goalId, content: values.goal }]); 
+          setGoals([...goals, { _id: goalId, content: values.goal }]);
           console.log(goals);
 
           setSubmitting(false);
-          
+
           setShowGoalForm(false);
-          router.push("/");
+          router.push(`/authenticated/${res._id}`);
         })();
       }}
     >
       {/* the Formik component takes the "render function" as a second arg */}
+      {/* props is an provided object that include errors, values, touched, etc. */}
       {(props) => (
         <Form>
           <Field name="goal" type="text">
+            {/* this is the render props pattern */}
+            {/* child render props contains fields (name, value, onChange, etc.) and form has errors, values, touched, etc. */}
             {({ field, form }) => (
               <FormControl isInvalid={form.errors.goal && form.touched.goal}>
                 <FormLabel>Goal</FormLabel>
@@ -78,26 +76,6 @@ const GoalForm = ({ setShowGoalForm, goals, setGoals }) => {
               </FormControl>
             )}
           </Field>
-
-          {/* <Field name="lastName" type="text">
-            {({ field, form }) => (
-              <FormControl isInvalid={form.errors.lastName && form.touched.lastName}>
-                <FormLabel>Last name</FormLabel>
-                <Input {...field} placeholder="name" />
-                <FormErrorMessage>{form.errors.lastName}</FormErrorMessage>
-              </FormControl>
-            )}
-          </Field> */}
-
-          {/* <Field name="email" type="email">
-            {({ field, form }) => (
-              <FormControl isInvalid={form.errors.email && form.touched.email}>
-                <FormLabel>Email</FormLabel>
-                <Input {...field} placeholder="email" />
-                <FormErrorMessage>{form.errors.email}</FormErrorMessage>
-              </FormControl>
-            )}
-          </Field> */}
 
           <Box w="100%">
             <Button

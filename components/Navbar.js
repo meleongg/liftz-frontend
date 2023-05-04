@@ -8,7 +8,7 @@ import {
 import Link from "next/link";
 import { Box } from "@chakra-ui/react";
 
-const Navbar = ({ currPage }) => {
+const Navbar = ({ userId, currPage }) => {
   return (
     <Box
       w="100vw"
@@ -20,27 +20,27 @@ const Navbar = ({ currPage }) => {
       justifyContent="space-evenly"
       alignItems="center"
     >
-      <Link href="/workouts">
+      <Link href={`/authenticated/${userId}/workouts`}>
         <Box color={currPage == "workouts" ? "black.50" : "white"}>
           <FaListAlt />
         </Box>
       </Link>
-      <Link href="/calendar">
+      <Link href={`/authenticated/${userId}/calendar`}>
         <Box color={currPage == "calendar" ? "black.50" : "white"}>
           <FaCalendar />
         </Box>
       </Link>
-      <Link href="/">
+      <Link href={`/authenticated/${userId}`}>
         <Box color={currPage == "home" ? "black.50" : "white"}>
           <FaHome />
         </Box>
       </Link>
-      <Link href="/weightCalculator">
+      <Link href={`/authenticated/${userId}/weight-calculator`}>
         <Box color={currPage == "calculator" ? "black.50" : "white"}>
           <FaDumbbell />
         </Box>
       </Link>
-      <Link href="/stats">
+      <Link href={`/authenticated/${userId}/stats`}>
         <Box color={currPage == "stats" ? "black.50" : "white"}>
           <FaSignal />
         </Box>

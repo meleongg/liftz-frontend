@@ -57,7 +57,7 @@ const GoalForm = ({ userId, setShowGoalForm, goals, setGoals }) => {
           setSubmitting(false);
 
           setShowGoalForm(false);
-          router.push(`/authenticated/${res._id}`);
+          router.push(`/authenticated/${userId}`);
         })();
       }}
     >

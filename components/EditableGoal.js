@@ -31,14 +31,17 @@ const EditableGoal = ({ userId, id, content, goals, setGoals }) => {
       goalId: id,
     };
 
-    const rawResponse = await fetch("http://localhost:3001/update-goal", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
+    const rawResponse = await fetch(
+      `http://localhost:3001/${userId}/update-goal`,
+      {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      }
+    );
     const goalId = await rawResponse.json();
 
     const updatedGoals = goals.map((goal) => {
@@ -63,15 +66,20 @@ const EditableGoal = ({ userId, id, content, goals, setGoals }) => {
       goalId: id,
     };
 
-    const rawResponse = await fetch("http://localhost:3001/delete-goal", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
+    const rawResponse = await fetch(
+      `http://localhost:3001/${userId}/delete-goal`,
+      {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      }
+    );
     const goalId = await rawResponse.json();
+
+    console.log(goalId);
 
     const filteredGoals = goals.filter((goal) => goal._id !== goalId);
     setGoals(filteredGoals);

@@ -1,53 +1,50 @@
-import { Inter } from "@next/font/google";
 import { Box, Heading, Button, VStack, Spinner, Text } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 
-import GoalForm from "../../components/GoalForm";
-import EditableGoal from "../../components/EditableGoal";
-import Navbar from "../../components/Navbar";
-import Title from "../../components/Title";
+import GoalForm from "../../../../components/GoalForm";
+import EditableGoal from "../../../../components/EditableGoal";
+import Navbar from "../../../../components/Navbar";
+import Title from "../../../../components/Title";
 
 import { FaPlus } from "react-icons/fa";
 
-const inter = Inter({ subsets: ["latin"] });
-
-const Home = () => {
+const Workout = () => {
   const [showGoalForm, setShowGoalForm] = useState(false);
   const [user, setUser] = useState({});
-  const [goals, setGoals] = useState([]);
-  const [quoteIndex, setQuoteIndex] = useState(0);
+  const [workout, setWorkout] = useState({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
   const router = useRouter();
   const userId = router.query.user;
+  const workoutId = router.query.workout;
 
-  const getRandomNumber = (max) => {
-    return Math.floor(Math.random() * (max + 1));
-  };
-
-  const quotesArr = [
-    "Looking big jim bro",
-    "Leg day everyday",
-    "You don't need Alan...",
-    "Birdcoop > Arc",
-    "Platella, Dumbella, and Barbella will always be there for you",
-  ];
-
-  const fetchUserData = async (userId) => {
+  const fetchData = async (userId, workoutId) => {
     try {
       setLoading(true);
-      const response = await fetch(`http://localhost:3001/user/${userId}`);
+      const userResponse = await fetch(`http://localhost:3001/user/${userId}`);
+      const userData = await userResponse.json();
 
-      const data = await response.json();
+      const workoutResponse = await fetch(
+        `http://localhost:3001/workouts/${workoutId}`
+      );
+      const workoutData = await workoutResponse.json();
 
-      setGoals(data.goals);
       setUser({
-        id: data._id,
-        firstName: data.firstName,
-        lastName: data.lastName,
-        email: data.email,
+        id: userData._id,
+        firstName: userData.firstName,
+        lastName: userData.lastName,
+        email: userData.email,
+      });
+
+      setWorkout({
+        id: workoutData._id,
+        name: workoutData.name,
+        sets: workoutData.sets,
+        reps: workoutData.reps,
+        weight: workoutData.weight,
+        exercises: workoutData.exercises,
       });
     } catch (err) {
       console.log(err);
@@ -58,10 +55,7 @@ const Home = () => {
   };
 
   useEffect(() => {
-    let index = getRandomNumber(quotesArr.length - 1);
-    setQuoteIndex(index);
-
-    fetchUserData(userId);
+    fetchData(userId, workoutId);
   }, []);
 
   if (loading) {
@@ -106,16 +100,12 @@ const Home = () => {
       <Box
         minHeight="calc(100vh - 80px)"
         h="calc(100% - 80px)"
-        className={inter.className}
         pt="30px"
         pl="10px"
         pr="10px"
       >
-        <Title content={`Hi ${user.firstName}!`} />
-        <Heading fontSize="20px" pt="10px" pb="30px">
-          {quotesArr[quoteIndex]}
-        </Heading>
-        <Box pb="20px">
+        <Title content={`${workout.name}`} />
+        {/* <Box pb="20px">
           <Box display="flex" justifyContent="space-between" pb="10px">
             <Heading fontSize="30px">Goals</Heading>
             <Button
@@ -163,11 +153,11 @@ const Home = () => {
           <Heading fontSize="30px">Fun Stats</Heading>
           Coming Soon! :)
           <VStack minHeight="100px"></VStack>
-        </Box>
+        </Box> */}
       </Box>
       <Navbar userId={userId} currPage="home" />
     </Box>
   );
 };
 
-export default Home;
+export default Workout;

@@ -6,16 +6,16 @@ import { Box, Heading, Button } from "@chakra-ui/react";
 
 const inter = Inter({ subsets: ["latin"] });
 
-import Navbar from "../components/Navbar";
-import NewWorkoutForm from "../components/NewWorkoutForm";
-
+import Navbar from "../../../components/Navbar";
+import NewWorkoutForm from "../../../components/NewWorkoutForm";
 
 const NewWorkout = () => {
-  const router = useRouter(); 
+  const router = useRouter();
+  const userId = router.query.user;
 
   const handleBackButton = () => {
-      router.push("workouts");
-  }
+    router.push(`/authenticated/${userId}/workouts`);
+  };
 
   return (
     <Box minHeight="100vh">
@@ -39,7 +39,7 @@ const NewWorkout = () => {
         >
           Back
         </Button>
-        <NewWorkoutForm />
+        <NewWorkoutForm userId={userId} />
       </Box>
       <Navbar currPage="workouts" />
     </Box>

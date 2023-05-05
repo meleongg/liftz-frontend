@@ -1,18 +1,39 @@
-import { Box, Heading, Button, VStack, Spinner, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Spinner,
+  Text,
+  Table,
+  Thead,
+  Tbody,
+  Tfoot,
+  Tr,
+  Th,
+  Td,
+  Editable,
+  EditablePreview,
+  EditableInput,
+} from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 
-import GoalForm from "../../../../components/GoalForm";
-import EditableGoal from "../../../../components/EditableGoal";
-import Navbar from "../../../../components/Navbar";
-import Title from "../../../../components/Title";
+import Navbar from "../../../../../components/Navbar";
+import Title from "../../../../../components/Title";
 
-import { FaPlus } from "react-icons/fa";
+const EditableCell = ({ value, onChange }) => {
+  return (
+    <Editable defaultValue={value}>
+      <EditablePreview>{value}</EditablePreview>
+      <EditableInput onChange={(e) => onChange(e.target.value)} />
+    </Editable>
+  );
+};
 
-const Workout = () => {
-  const [showGoalForm, setShowGoalForm] = useState(false);
-  const [user, setUser] = useState({});
-  const [workout, setWorkout] = useState({});
+const Session = () => {
+  const [time, setTime] = useState(0);
+  const [timerOn, setTimerOn] = useState(false);
+  const [sessionExercises, setSessionExercises] = useState(null);
+  const [workout, setWorkout] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
@@ -20,32 +41,56 @@ const Workout = () => {
   const userId = router.query.user;
   const workoutId = router.query.workout;
 
-  const fetchData = async (userId, workoutId) => {
+  useEffect(() => {
+    let interval;
+    if (timerOn) {
+      interval = setInterval(() => {
+        setTime((prevTime) => prevTime + 1);
+      }, 1000);
+    }
+    return () => clearInterval(interval);
+  }, [timerOn]);
+
+  const handleStart = () => {
+    setTimerOn(true);
+  };
+
+  const handleStop = () => {
+    setTimerOn(false);
+  };
+
+  const handleReset = () => {
+    setTime(0);
+    setTimerOn(false);
+  };
+
+  const formatTime = (totalSeconds) => {
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+    return `${hours.toString().padStart(2, "0")}:${minutes
+      .toString()
+      .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+  };
+
+  const fetchData = async (workoutId) => {
     try {
       setLoading(true);
-      const userResponse = await fetch(`http://localhost:3001/user/${userId}`);
-      const userData = await userResponse.json();
-
       const workoutResponse = await fetch(
         `http://localhost:3001/workouts/${workoutId}`
       );
       const workoutData = await workoutResponse.json();
 
-      setUser({
-        id: userData._id,
-        firstName: userData.firstName,
-        lastName: userData.lastName,
-        email: userData.email,
-      });
-
       setWorkout({
         id: workoutData._id,
         name: workoutData.name,
-        sets: workoutData.sets,
-        reps: workoutData.reps,
-        weight: workoutData.weight,
+        notes: workoutData.notes,
+        sessions: workoutData.sessions,
         exercises: workoutData.exercises,
       });
+
+      // initial values for session exercises
+      setSessionExercises(workoutData.exercises);
     } catch (err) {
       console.log(err);
       setError(err);
@@ -55,7 +100,7 @@ const Workout = () => {
   };
 
   useEffect(() => {
-    fetchData(userId, workoutId);
+    fetchData(workoutId);
   }, []);
 
   if (loading) {
@@ -90,8 +135,63 @@ const Workout = () => {
     );
   }
 
-  const handleAddGoal = () => {
-    setShowGoalForm(true);
+  const handleCancelButton = async () => {
+    router.push(`/authenticated/${userId}/workouts/${workoutId}`);
+  };
+
+  const handleEndButton = async () => {
+    handleStop();
+
+    const data = {
+      time: time,
+      sessionExercises: sessionExercises,
+    };
+
+    const rawResponse = await fetch(
+      `http://localhost:3001/workouts/${workoutId}/session-end`,
+      {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      }
+    );
+    const sessionId = await rawResponse.json();
+
+    console.log(sessionId);
+
+    router.push(`/authenticated/${userId}/workouts/${workoutId}/${sessionId}`);
+  };
+
+  const handleSessionExerciseChange = (index, field, newValue) => {
+    const updatedSessionExercises = [...sessionExercises];
+
+    if (field !== "name") {
+      newValue = parseInt(newValue);
+    }
+
+    updatedSessionExercises[index][field] = newValue;
+    setSessionExercises(updatedSessionExercises);
+
+    console.log(sessionExercises);
+  };
+
+  const handleAddSessionExercise = () => {
+    const newSessionExercise = {
+      name: "Exercise",
+      sets: 1,
+      reps: 1,
+      weight: 45,
+    };
+    setSessionExercises([...sessionExercises, newSessionExercise]);
+  };
+
+  const handleDeleteSessionExercise = (index) => {
+    const updatedSessionExercises = [...sessionExercises];
+    updatedSessionExercises.splice(index, 1);
+    setSessionExercises(updatedSessionExercises);
   };
 
   return (
@@ -104,60 +204,177 @@ const Workout = () => {
         pl="10px"
         pr="10px"
       >
-        <Title content={`${workout.name}`} />
-        {/* <Box pb="20px">
-          <Box display="flex" justifyContent="space-between" pb="10px">
-            <Heading fontSize="30px">Goals</Heading>
+        <Title content={`${workout?.name}`} />
+        <Box>
+          <Text mb="4">{formatTime(time)}</Text>
+          {!timerOn ? (
             <Button
               bgColor="blue.50"
               color="white"
-              rightIcon={<FaPlus />}
               _hover={{ bg: "lightBlue.50" }}
-              onClick={handleAddGoal}
+              onClick={handleCancelButton}
+              onClick={handleStart}
             >
-              New Goal
+              Start
             </Button>
-          </Box>
-          {showGoalForm && (
-            <GoalForm
-              userId={userId}
-              setShowGoalForm={setShowGoalForm}
-              goals={goals}
-              setGoals={setGoals}
-            />
+          ) : (
+            <Button
+              bgColor="blue.50"
+              color="white"
+              _hover={{ bg: "lightBlue.50" }}
+              onClick={handleCancelButton}
+              onClick={handleStop}
+            >
+              Stop
+            </Button>
           )}
-          <VStack spacing="10px" align="start" minHeight="150px">
-            {goals?.map((goal) => {
-              return (
-                <Box
-                  w="100%"
-                  display="flex"
-                  justifyContent="space-between"
-                  pt="5px"
-                  pb="5px"
-                  key={goal._id}
-                >
-                  <EditableGoal
-                    userId={userId}
-                    id={goal._id}
-                    content={goal.content}
-                    goals={goals}
-                    setGoals={setGoals}
-                  />
-                </Box>
-              );
-            })}
-          </VStack>
+          <Button
+            bgColor="blue.50"
+            color="white"
+            _hover={{ bg: "lightBlue.50" }}
+            onClick={handleCancelButton}
+            onClick={handleReset}
+            ml="4"
+          >
+            Reset
+          </Button>
         </Box>
-        <Box pb="20px">
-          <Heading fontSize="30px">Fun Stats</Heading>
-          Coming Soon! :)
-          <VStack minHeight="100px"></VStack>
-        </Box> */}
+        <Box display="flex" flexDirection="column" mt="20px" mb="20px">
+          <Text fontSize="30px" fontWeight="700">
+            Notes
+          </Text>
+          <Text>{workout?.notes}</Text>
+        </Box>
+
+        {/* make this an editable table with all text inputs for user to manually edit, fetched exercise data is only placeholder */}
+
+        <Box overflowX="auto">
+          <Table>
+            <Thead>
+              <Tr>
+                <Th>Exercise</Th>
+                <Th>Sets</Th>
+                <Th>Reps</Th>
+                <Th>Weight</Th>
+                <Th>Action</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {sessionExercises &&
+                sessionExercises.map((exercise, index) => {
+                  return (
+                    <Tr key={index}>
+                      <Td>
+                        <EditableCell
+                          value={exercise.name}
+                          onChange={(newValue) =>
+                            handleSessionExerciseChange(index, "name", newValue)
+                          }
+                        />
+                      </Td>
+                      <Td>
+                        <EditableCell
+                          value={exercise.sets}
+                          onChange={(newValue) =>
+                            handleSessionExerciseChange(index, "sets", newValue)
+                          }
+                        />
+                      </Td>
+                      <Td>
+                        <EditableCell
+                          value={exercise.reps}
+                          onChange={(newValue) =>
+                            handleSessionExerciseChange(index, "reps", newValue)
+                          }
+                        />
+                      </Td>
+                      <Td>
+                        <EditableCell
+                          value={exercise.weight}
+                          onChange={(newValue) =>
+                            handleSessionExerciseChange(
+                              index,
+                              "weight",
+                              newValue
+                            )
+                          }
+                        />
+                      </Td>
+                      <Td>
+                        <Button
+                          bgColor="blue.50"
+                          color="white"
+                          _hover={{ bg: "lightBlue.50" }}
+                          onClick={handleCancelButton}
+                          mt="10px"
+                          mb="10px"
+                          onClick={() => handleDeleteSessionExercise(index)}
+                        >
+                          Delete
+                        </Button>
+                      </Td>
+                    </Tr>
+                  );
+                })}
+            </Tbody>
+            <Tfoot>
+              <Tr>
+                <Td>
+                  <Button
+                    bgColor="blue.50"
+                    color="white"
+                    _hover={{ bg: "lightBlue.50" }}
+                    onClick={handleCancelButton}
+                    mt="10px"
+                    mb="10px"
+                    onClick={handleAddSessionExercise}
+                  >
+                    Add Exercise
+                  </Button>
+                </Td>
+                <Td></Td>
+                <Td></Td>
+                <Td></Td>
+                <Td></Td>
+              </Tr>
+            </Tfoot>
+          </Table>
+        </Box>
+
+        <Box
+          w="100%"
+          display="flex"
+          justifyContent="space-evenly"
+          alignItems="center"
+          mt="30px"
+          mb="30px"
+        >
+          <Button
+            bgColor="blue.50"
+            color="white"
+            _hover={{ bg: "lightBlue.50" }}
+            onClick={handleCancelButton}
+            mt="10px"
+            mb="10px"
+          >
+            Cancel
+          </Button>
+
+          <Button
+            bgColor="blue.50"
+            color="white"
+            _hover={{ bg: "lightBlue.50" }}
+            onClick={handleEndButton}
+            mt="10px"
+            mb="10px"
+          >
+            End
+          </Button>
+        </Box>
       </Box>
-      <Navbar userId={userId} currPage="home" />
+      <Navbar userId={userId} currPage="workouts" />
     </Box>
   );
 };
 
-export default Workout;
+export default Session;

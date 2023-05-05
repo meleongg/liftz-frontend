@@ -13,12 +13,8 @@ import {
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 
-import GoalForm from "../../../../components/GoalForm";
-import EditableGoal from "../../../../components/EditableGoal";
 import Navbar from "../../../../components/Navbar";
 import Title from "../../../../components/Title";
-
-import { FaPlus } from "react-icons/fa";
 
 const Workout = () => {
   const [workout, setWorkout] = useState(null);

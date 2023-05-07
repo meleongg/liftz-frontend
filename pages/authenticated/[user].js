@@ -112,8 +112,8 @@ const Home = ({ user: dbUser, goals: dbGoals, error }) => {
             <Button
               bgColor="blue.50"
               color="white"
-              rightIcon={<FaPlus />}
               _hover={{ bg: "lightBlue.50" }}
+              rightIcon={<FaPlus />}
               onClick={handleAddGoal}
             >
               New Goal

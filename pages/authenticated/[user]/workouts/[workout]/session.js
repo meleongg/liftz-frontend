@@ -218,7 +218,6 @@ const Session = () => {
               bgColor="blue.50"
               color="white"
               _hover={{ bg: "lightBlue.50" }}
-              onClick={handleCancelButton}
               onClick={handleStart}
             >
               Start
@@ -228,7 +227,6 @@ const Session = () => {
               bgColor="blue.50"
               color="white"
               _hover={{ bg: "lightBlue.50" }}
-              onClick={handleCancelButton}
               onClick={handleStop}
             >
               Stop
@@ -238,7 +236,6 @@ const Session = () => {
             bgColor="blue.50"
             color="white"
             _hover={{ bg: "lightBlue.50" }}
-            onClick={handleCancelButton}
             onClick={handleReset}
             ml="4"
           >

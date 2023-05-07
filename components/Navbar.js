@@ -36,7 +36,7 @@ const Navbar = ({ userId, currPage }) => {
         </Box>
       </Link>
       <Link href={`/authenticated/${userId}/weight-calculator`}>
-        <Box color={currPage == "calculator" ? "black.50" : "white"}>
+        <Box color={currPage == "weight-calculator" ? "black.50" : "white"}>
           <FaDumbbell />
         </Box>
       </Link>

@@ -28,6 +28,7 @@ const Title = ({ content }) => {
         justifyContent="center"
         alignItems="center"
         onClick={handleLogout}
+        ml="10px"
       >
         <FaSignOutAlt />
       </Box>

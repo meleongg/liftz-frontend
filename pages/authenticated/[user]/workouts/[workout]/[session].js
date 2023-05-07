@@ -34,7 +34,7 @@ const SessionEnd = () => {
       );
       const sessionData = await sessionResponse.json();
 
-      console.log(sessionData);
+      // console.log(sessionData);
 
       setSession({
         id: sessionData._id,
@@ -98,8 +98,8 @@ const SessionEnd = () => {
 
   const formatDate = (dateStr) => {
     const date = new Date(dateStr);
-    return date.toLocaleDateString(); 
-  }
+    return date.toLocaleDateString();
+  };
 
   const handleDoneButton = async () => {
     router.push(`/authenticated/${userId}/workouts`);
@@ -116,8 +116,15 @@ const SessionEnd = () => {
         pr="10px"
       >
         <Title content={`${session?.workout?.name} Session`} />
-        <Text>{`Total Time Elapsed: ${formatTime(session?.time)}`}</Text>
-        <Text>{`Date: ${formatDate(session?.date)}`}</Text>
+
+        <Text fontSize="30px" fontWeight="700" mt="20px">
+          Time Elapsed
+        </Text>
+        <Text>{formatTime(session?.time)}</Text>
+        <Text fontSize="30px" fontWeight="700" mt="20px">
+          Date
+        </Text>
+        <Text>{formatDate(session?.date)}</Text>
 
         <Box display="flex" flexDirection="column" mt="20px" mb="20px">
           <Text fontSize="30px" fontWeight="700">

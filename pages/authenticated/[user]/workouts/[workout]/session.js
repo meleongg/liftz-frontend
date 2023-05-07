@@ -205,8 +205,13 @@ const Session = () => {
         pr="10px"
       >
         <Title content={`${workout?.name}`} />
-        <Box>
-          <Text mb="4">{formatTime(time)}</Text>
+        <Box mt="20px">
+          <Text fontSize="30px" fontWeight="700">
+            Time Elapsed
+          </Text>
+          <Text mb="10px" fontSize="20px">
+            {formatTime(time)}
+          </Text>
           {!timerOn ? (
             <Button
               bgColor="blue.50"

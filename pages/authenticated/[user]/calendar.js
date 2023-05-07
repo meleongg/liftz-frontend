@@ -27,27 +27,24 @@ const CustomCalendar = ({ dbSessions, dbSessionDates, error }) => {
   }, []);
 
   const handleDateClick = async (value) => {
-    // handle date click event
     console.log("Date clicked:", value);
+
     const options = { month: "2-digit", day: "2-digit", year: "numeric" };
     const formattedDate = date.toLocaleDateString("en-US", options);
     setSelectedDate(formattedDate);
 
     const isoDate = format(value, "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-    // use the `isoDate` string in your MongoDB query
-    console.log("Date clicked:", isoDate);
 
     try {
       setLoading(true);
       const response = await fetch(
-        `http://localhost:3001/calendar/${userId}/${isoDate}`
+        `/api/handle-date-click?userId=${userId}&isoDate=${isoDate}`
       );
 
       const sessionsData = await response.json();
       setSessions(sessionsData);
     } catch (err) {
       console.log(err);
-      setError(err);
     } finally {
       setLoading(false);
     }

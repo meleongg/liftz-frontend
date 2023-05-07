@@ -143,6 +143,7 @@ const Session = () => {
     handleStop();
 
     const data = {
+      userId: userId,
       time: time,
       sessionExercises: sessionExercises,
     };

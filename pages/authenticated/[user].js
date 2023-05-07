@@ -1,4 +1,3 @@
-import { Inter } from "@next/font/google";
 import { Box, Heading, Button, VStack, Spinner, Text } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
@@ -10,15 +9,11 @@ import Title from "../../components/Title";
 
 import { FaPlus } from "react-icons/fa";
 
-const inter = Inter({ subsets: ["latin"] });
-
-const Home = () => {
+const Home = ({ user: dbUser, goals: dbGoals, error }) => {
   const [showGoalForm, setShowGoalForm] = useState(false);
-  const [user, setUser] = useState({});
-  const [goals, setGoals] = useState([]);
+  const [goals, setGoals] = useState(dbGoals);
   const [quoteIndex, setQuoteIndex] = useState(0);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const router = useRouter();
   const userId = router.query.user;
@@ -33,35 +28,32 @@ const Home = () => {
     "You don't need Alan...",
     "Birdcoop > Arc",
     "Platella, Dumbella, and Barbella will always be there for you",
+    "No pain, no gain, no brain cells left.",
+    "Sweat now, shine later.",
+    "You can't flex fat, so keep grinding.",
+    "The only bad workout is the one that didn't happen.",
+    "Gym hair, don't care.",
+    "Muscles are like a good joke - they're better when you don't have to explain them.",
+    "You don't have to be great to start, but you have to start to be great.",
+    "If it doesn't challenge you, it doesn't change you.",
+    "Squat like nobody's watching.",
+    "The only bad workout is the one you didn't log on Instagram.",
+    "I don't always lift weights, but when I do, I prefer to grunt loudly.",
+    "The gym is my therapy, and sweat is my sanity.",
+    "Life is too short to skip leg day.",
+    "Stronger every day, except for leg day - that's just pain.",
+    "You can't spell legendary without leg day.",
+    "The only time success comes before work is in the dictionary - so keep working!",
+    "You don't need a six-pack to impress anyone, but it doesn't hurt to have one.",
+    "Sweat is just your fat crying.",
+    "The only limit is the one you set for yourself - so set the bar high and lift it higher.",
   ];
-
-  const fetchUserData = async (userId) => {
-    try {
-      setLoading(true);
-      const response = await fetch(`http://localhost:3001/user/${userId}`);
-
-      const data = await response.json();
-
-      setGoals(data.goals);
-      setUser({
-        id: data._id,
-        firstName: data.firstName,
-        lastName: data.lastName,
-        email: data.email,
-      });
-    } catch (err) {
-      console.log(err);
-      setError(err);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   useEffect(() => {
     let index = getRandomNumber(quotesArr.length - 1);
     setQuoteIndex(index);
 
-    fetchUserData(userId);
+    setLoading(false);
   }, []);
 
   if (loading) {
@@ -106,12 +98,11 @@ const Home = () => {
       <Box
         minHeight="calc(100vh - 80px)"
         h="calc(100% - 80px)"
-        className={inter.className}
         pt="30px"
         pl="10px"
         pr="10px"
       >
-        <Title content={`Hi ${user.firstName}!`} />
+        <Title content={`Hi ${dbUser.firstName}!`} />
         <Heading fontSize="20px" pt="10px" pb="30px">
           {quotesArr[quoteIndex]}
         </Heading>
@@ -169,5 +160,34 @@ const Home = () => {
     </Box>
   );
 };
+
+export async function getServerSideProps(context) {
+  const { user } = context.params;
+
+  try {
+    const response = await fetch(`http://localhost:3001/user/${user}`);
+    const data = await response.json();
+
+    return {
+      props: {
+        user: {
+          id: data._id,
+          firstName: data.firstName,
+          lastName: data.lastName,
+          email: data.email,
+        },
+        goals: data.goals,
+      },
+    };
+  } catch (err) {
+    console.log(err);
+
+    return {
+      props: {
+        error: true,
+      },
+    };
+  }
+}
 
 export default Home;

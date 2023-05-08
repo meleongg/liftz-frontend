@@ -8,39 +8,16 @@ import WorkoutListItem from "../../../components/WorkoutListItem";
 
 import { FaPlus } from "react-icons/fa";
 
-const WorkoutLibrary = () => {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
-  const [user, setUser] = useState({});
-  const [workouts, setWorkouts] = useState([]);
+const WorkoutLibrary = ({ dbUser, dbWorkouts, error }) => {
+  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState(dbUser);
+  const [workouts, setWorkouts] = useState(dbWorkouts);
 
   const router = useRouter();
   const userId = router.query.user;
 
-  const fetchUserData = async (userId) => {
-    try {
-      setLoading(true);
-      const response = await fetch(`http://localhost:3001/user/${userId}`);
-
-      const data = await response.json();
-
-      setWorkouts(data.workouts);
-      setUser({
-        id: data._id,
-        firstName: data.firstName,
-        lastName: data.lastName,
-        email: data.email,
-      });
-    } catch (err) {
-      console.log(err);
-      setError(err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
-    fetchUserData(userId);
+    setLoading(false);
   }, []);
 
   if (loading) {
@@ -112,10 +89,7 @@ const WorkoutLibrary = () => {
                 pb="5px"
                 key={workout._id}
               >
-                <WorkoutListItem
-                  user={user}
-                  workout={workout}
-                />
+                <WorkoutListItem user={user} workout={workout} />
               </Box>
             );
           })}
@@ -125,5 +99,37 @@ const WorkoutLibrary = () => {
     </Box>
   );
 };
+
+export async function getServerSideProps(context) {
+  const { user } = context.params;
+
+  try {
+    const response = await fetch(`http://localhost:3001/user/${user}`);
+    const data = await response.json();
+
+    const dbUser = {
+      id: data._id,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      email: data.email,
+    };
+    const dbWorkouts = data.workouts;
+
+    return {
+      props: {
+        dbUser: dbUser,
+        dbWorkouts: dbWorkouts,
+      },
+    };
+  } catch (err) {
+    console.log(err);
+
+    return {
+      props: {
+        error: true,
+      },
+    };
+  }
+}
 
 export default WorkoutLibrary;

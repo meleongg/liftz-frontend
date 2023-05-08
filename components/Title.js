@@ -9,7 +9,7 @@ const Title = ({ content }) => {
     e.preventDefault();
 
     try {
-      await fetch("http://localhost:3001/log-out");
+      await fetch("/api/logout");
 
       router.push("/");
     } catch (err) {

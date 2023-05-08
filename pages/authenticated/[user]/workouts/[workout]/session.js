@@ -29,13 +29,12 @@ const EditableCell = ({ value, onChange }) => {
   );
 };
 
-const Session = () => {
+const Session = ({ dbWorkout, dbExercises, error }) => {
   const [time, setTime] = useState(0);
   const [timerOn, setTimerOn] = useState(false);
-  const [sessionExercises, setSessionExercises] = useState(null);
-  const [workout, setWorkout] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
+  const [sessionExercises, setSessionExercises] = useState(dbExercises);
+  const [workout, setWorkout] = useState(dbWorkout);
+  const [loading, setLoading] = useState(true);
 
   const router = useRouter();
   const userId = router.query.user;
@@ -73,34 +72,8 @@ const Session = () => {
       .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
   };
 
-  const fetchData = async (workoutId) => {
-    try {
-      setLoading(true);
-      const workoutResponse = await fetch(
-        `http://localhost:3001/workouts/${workoutId}`
-      );
-      const workoutData = await workoutResponse.json();
-
-      setWorkout({
-        id: workoutData._id,
-        name: workoutData.name,
-        notes: workoutData.notes,
-        sessions: workoutData.sessions,
-        exercises: workoutData.exercises,
-      });
-
-      // initial values for session exercises
-      setSessionExercises(workoutData.exercises);
-    } catch (err) {
-      console.log(err);
-      setError(err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
-    fetchData(workoutId);
+    setLoading(false);
   }, []);
 
   if (loading) {
@@ -144,26 +117,28 @@ const Session = () => {
 
     const data = {
       userId: userId,
+      workoutId: workoutId,
       time: time,
       sessionExercises: sessionExercises,
     };
 
-    const rawResponse = await fetch(
-      `http://localhost:3001/workouts/${workoutId}/session-end`,
-      {
+    try {
+      const rawResponse = await fetch("/api/session-end", {
         method: "POST",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
-      }
-    );
-    const sessionId = await rawResponse.json();
+      });
+      const { sessionId } = await rawResponse.json();
 
-    console.log(sessionId);
-
-    router.push(`/authenticated/${userId}/workouts/${workoutId}/${sessionId}`);
+      router.push(
+        `/authenticated/${userId}/workouts/${workoutId}/${sessionId}`
+      );
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const handleSessionExerciseChange = (index, field, newValue) => {
@@ -379,5 +354,37 @@ const Session = () => {
     </Box>
   );
 };
+
+export async function getServerSideProps(context) {
+  const { workout } = context.params;
+
+  try {
+    const response = await fetch(`http://localhost:3001/workouts/${workout}`);
+    const data = await response.json();
+
+    const dbWorkout = {
+      id: data._id,
+      name: data.name,
+      notes: data.notes,
+      sessions: data.sessions,
+      exercises: data.exercises,
+    };
+
+    return {
+      props: {
+        dbWorkout: dbWorkout,
+        dbExercises: data.exercises,
+      },
+    };
+  } catch (err) {
+    console.log(err);
+
+    return {
+      props: {
+        error: true,
+      },
+    };
+  }
+}
 
 export default Session;

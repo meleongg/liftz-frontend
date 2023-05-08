@@ -16,43 +16,17 @@ import { useRouter } from "next/router";
 import Navbar from "../../../../../components/Navbar";
 import Title from "../../../../../components/Title";
 
-const SessionEnd = () => {
-  const [session, setSession] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
+const SessionEnd = ({ dbSession, error }) => {
+  const [session, setSession] = useState(dbSession);
+  const [loading, setLoading] = useState(true);
 
   const router = useRouter();
   const userId = router.query.user;
   const workoutId = router.query.workout;
   const sessionId = router.query.session;
 
-  const fetchData = async (sessionId) => {
-    try {
-      setLoading(true);
-      const sessionResponse = await fetch(
-        `http://localhost:3001/workouts/sessions/${sessionId}`
-      );
-      const sessionData = await sessionResponse.json();
-
-      // console.log(sessionData);
-
-      setSession({
-        id: sessionData._id,
-        date: sessionData.date,
-        time: sessionData.time,
-        exercises: sessionData.exercises,
-        workout: sessionData.workout,
-      });
-    } catch (err) {
-      console.log(err);
-      setError(err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
-    fetchData(sessionId);
+    setLoading(false);
   }, []);
 
   if (loading) {
@@ -186,5 +160,38 @@ const SessionEnd = () => {
     </Box>
   );
 };
+
+export async function getServerSideProps(context) {
+  const { session } = context.params;
+
+  try {
+    const response = await fetch(
+      `http://localhost:3001/workouts/sessions/${session}`
+    );
+    const data = await response.json();
+
+    const dbSession = {
+      id: data._id,
+      date: data.date,
+      time: data.time,
+      exercises: data.exercises,
+      workout: data.workout,
+    };
+
+    return {
+      props: {
+        dbSession: dbSession,
+      },
+    };
+  } catch (err) {
+    console.log(err);
+
+    return {
+      props: {
+        error: true,
+      },
+    };
+  }
+}
 
 export default SessionEnd;

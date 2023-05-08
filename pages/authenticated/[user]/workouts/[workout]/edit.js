@@ -29,40 +29,16 @@ const EditableCell = ({ value, onChange }) => {
   );
 };
 
-const EditWorkout = () => {
-  const [workout, setWorkout] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
+const EditWorkout = ({ dbWorkout, error }) => {
+  const [workout, setWorkout] = useState(dbWorkout);
+  const [loading, setLoading] = useState(true);
 
   const router = useRouter();
   const userId = router.query.user;
   const workoutId = router.query.workout;
 
-  const fetchData = async (workoutId) => {
-    try {
-      setLoading(true);
-      const workoutResponse = await fetch(
-        `http://localhost:3001/workouts/${workoutId}`
-      );
-      const workoutData = await workoutResponse.json();
-
-      setWorkout({
-        id: workoutData._id,
-        name: workoutData.name,
-        notes: workoutData.notes,
-        sessions: workoutData.sessions,
-        exercises: workoutData.exercises,
-      });
-    } catch (err) {
-      console.log(err);
-      setError(err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
-    fetchData(workoutId);
+    setLoading(false);
   }, []);
 
   if (loading) {
@@ -104,32 +80,30 @@ const EditWorkout = () => {
   const handleDeleteButton = async () => {
     const data = {
       userId: userId,
+      workoutId: workoutId,
     };
 
-    const rawResponse = await fetch(
-      `http://localhost:3001/workouts/${workoutId}/delete`,
-      {
+    try {
+      const rawResponse = await fetch("/api/delete-workout", {
         method: "POST",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
-      }
-    );
-    const res = await rawResponse.json();
+      });
+      await rawResponse.json();
 
-    console.log(res);
-
-    router.push(`/authenticated/${userId}/workouts`);
+      router.push(`/authenticated/${userId}/workouts`);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const handleSubmitButton = async () => {
     const data = {
       workout: workout,
     };
-
-    console.log(data);
 
     const rawResponse = await fetch(
       `http://localhost:3001/workouts/${workoutId}/update`,
@@ -143,8 +117,6 @@ const EditWorkout = () => {
       }
     );
     const resWorkoutId = await rawResponse.json();
-
-    console.log(resWorkoutId);
 
     router.push(`/authenticated/${userId}/workouts/${resWorkoutId}`);
   };
@@ -351,5 +323,36 @@ const EditWorkout = () => {
     </Box>
   );
 };
+
+export async function getServerSideProps(context) {
+  const { workout } = context.params;
+
+  try {
+    const response = await fetch(`http://localhost:3001/workouts/${workout}`);
+    const data = await response.json();
+
+    const dbWorkout = {
+      id: data._id,
+      name: data.name,
+      notes: data.notes,
+      sessions: data.sessions,
+      exercises: data.exercises,
+    };
+
+    return {
+      props: {
+        dbWorkout: dbWorkout,
+      },
+    };
+  } catch (err) {
+    console.log(err);
+
+    return {
+      props: {
+        error: true,
+      },
+    };
+  }
+}
 
 export default EditWorkout;

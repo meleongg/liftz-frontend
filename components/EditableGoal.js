@@ -11,8 +11,7 @@ import {
   Checkbox,
 } from "@chakra-ui/react";
 
-import { FaEdit, FaCheck } from "react-icons/fa";
-import { IoClose } from "react-icons/io5";
+import { FaEdit, FaCheck, FaBan } from "react-icons/fa";
 
 const EditableGoal = ({ userId, id, content, goals, setGoals }) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -24,37 +23,36 @@ const EditableGoal = ({ userId, id, content, goals, setGoals }) => {
   };
 
   const handleEditCheck = async () => {
-    console.log("edit check clicked");
-
     const data = {
       content: goal,
       goalId: id,
     };
 
-    const rawResponse = await fetch(
-      `http://localhost:3001/${userId}/update-goal`,
-      {
+    try {
+      const rawResponse = await fetch(`/api/update-goal?userId=${userId}`, {
         method: "POST",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
-      }
-    );
-    const goalId = await rawResponse.json();
+      });
+      const { updatedGoal } = await rawResponse.json();
 
-    const updatedGoals = goals.map((goal) => {
-      if (goal._id === goalId) {
-        return { ...goal, content: goal };
-      }
-      return goal;
-    });
-    setGoals(updatedGoals);
+      const updatedGoals = goals.map((goal) => {
+        if (goal._id === updatedGoal._id) {
+          return { ...goal, content: updatedGoal.content };
+        }
+        return goal;
+      });
+      setGoals(updatedGoals);
 
-    setIsEditing(false);
+      setIsEditing(false);
 
-    router.push(`/authenticated/${userId}`);
+      router.push(`/authenticated/${userId}`);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const handleEditCancel = () => {
@@ -66,25 +64,26 @@ const EditableGoal = ({ userId, id, content, goals, setGoals }) => {
       goalId: id,
     };
 
-    const rawResponse = await fetch(
-      `http://localhost:3001/${userId}/delete-goal`,
-      {
+    try {
+      const rawResponse = await fetch(`/api/delete-goal?userId=${userId}`, {
         method: "POST",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
-      }
-    );
-    const goalId = await rawResponse.json();
+      });
+      const { deletedGoalId } = await rawResponse.json();
 
-    console.log(goalId);
+      console.log(deletedGoalId);
 
-    const filteredGoals = goals.filter((goal) => goal._id !== goalId);
-    setGoals(filteredGoals);
+      const filteredGoals = goals.filter((goal) => goal._id !== deletedGoalId);
+      setGoals(filteredGoals);
 
-    setIsEditing(false);
+      setIsEditing(false);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -109,6 +108,7 @@ const EditableGoal = ({ userId, id, content, goals, setGoals }) => {
             color="white"
             _hover={{ bg: "lightblue.50" }}
             onClick={handleEditCheck}
+            w="50%"
           >
             <FaCheck />
           </Button>
@@ -117,8 +117,10 @@ const EditableGoal = ({ userId, id, content, goals, setGoals }) => {
             color="white"
             _hover={{ bg: "lightblue.50" }}
             onClick={handleEditCancel}
+            w="50%"
+            ml="5px"
           >
-            <IoClose />
+            <FaBan />
           </Button>
         </Box>
       )}

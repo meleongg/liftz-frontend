@@ -59,7 +59,13 @@ const Stats = ({ dbPrs, error }) => {
         pr="10px"
       >
         <Title content={"PR Progress"} />
-        <Box mt="20px" display="flex" flexDirection="column">
+        <Box mt="20px" display="flex" flexDirection="column" mb="20px">
+          <Box borderRadius="20px" border="2px solid #333" p="10px">
+            <Text>
+              PRs are automatically created for each of your exercises. Each PR will update every time
+              you complete a session where you hit a new PR!
+            </Text>
+          </Box>
           {dbPrs &&
             dbPrs.map((pr, index) => {
               return (

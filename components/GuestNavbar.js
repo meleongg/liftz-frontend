@@ -1,8 +1,13 @@
 import NextLink from "next/link";
 import Image from "next/image";
 import { Box, Link } from "@chakra-ui/react";
+import Router from "next/router";
 
 const GuestNavbar = () => {
+  const handleLandingClick = () => {
+    Router.push("/");
+  };
+
   return (
     <Box
       display="flex"
@@ -14,7 +19,7 @@ const GuestNavbar = () => {
       fontSize="18px"
       fontWeight="700"
     >
-      <Box display="flex" justifyContent="center">
+      <Box display="flex" justifyContent="center" onClick={handleLandingClick}>
         <Image src="/full-logo.png" width={100} height={50} alt="logo" />
       </Box>
       <Link as={NextLink} href="/sign-up">

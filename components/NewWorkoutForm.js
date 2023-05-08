@@ -25,36 +25,9 @@ import * as Yup from "yup";
 const NewWorkoutForm = ({ userId }) => {
   const router = useRouter();
 
-  console.log(userId);
-
-  const [exercises, setExercises] = useState([
-    {
-      order: 1,
-      name: "Bench",
-      sets: 5,
-      reps: 5,
-      weight: 225,
-    },
-  ]);
-
   const handleCancel = (formik) => {
     formik.resetForm();
     router.push(`/authenticated/${userId}/workouts`);
-  };
-
-  const handleAddExercise = () => {
-    // async POST req
-  };
-
-  // const handleEditExercise = () => {};
-
-  const handleDeleteExercise = (e) => {
-    const order = e.target.id;
-
-    const filteredExercises = exercises.filter(
-      (exercise) => exercise.order != order
-    );
-    setExercises(filteredExercises);
   };
 
   return (
@@ -71,29 +44,31 @@ const NewWorkoutForm = ({ userId }) => {
         notes: Yup.string().max(200, "Must be 200 characters or less"),
       })}
       onSubmit={(values, { setSubmitting }) => {
-        console.log(values);
+        const handleSubmit = async () => {
+          try {
+            const rawResponse = await fetch(
+              `/api/create-workout?userId=${userId}`,
+              {
+                method: "POST",
+                headers: {
+                  Accept: "application/json",
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ values }),
+              }
+            );
+            const { workoutId } = await rawResponse.json();
 
-        (async () => {
-          const rawResponse = await fetch(
-            `http://localhost:3001/workouts/${userId}/create-workout`,
-            {
-              method: "POST",
-              headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify(values, null, 2),
-            }
-          );
+            setSubmitting(false);
 
-          const workoutId = await rawResponse.json();
-          console.log(workoutId);
+            // change to view this new workout's page
+            router.push(`/authenticated/${userId}/workouts/${workoutId}`);
+          } catch (err) {
+            console.log(err);
+          }
+        };
 
-          setSubmitting(false);
-
-          // change to view this new workout's page
-          router.push(`/authenticated/${userId}/workouts/${workoutId}`);
-        })();
+        handleSubmit();
       }}
     >
       {(formik) => (
@@ -322,56 +297,3 @@ const NewWorkoutForm = ({ userId }) => {
 };
 
 export default NewWorkoutForm;
-
-// TABLE
-// {/* <TableContainer mt="20px" mb="20px">
-//   <Table variant="simple">
-//     <Thead>
-//       <Tr>
-//         {/* fill in for ordered number */}
-//         <Th></Th>
-//         <Th>Exercise</Th>
-//         <Th isNumeric>Sets</Th>
-//         <Th isNumeric>Reps</Th>
-//         <Th isNumeric>Weight</Th>
-//         {/* fill in for edit and delete buttons */}
-//         <Th></Th>
-//       </Tr>
-//     </Thead>
-//     <Tbody>
-//       {exercises.map((exercise) => {
-//         return (
-//           <Tr>
-//             <Td>{exercise.order + "."}</Td>
-//             <Td>{exercise.name}</Td>
-//             <Td isNumeric>{exercise.sets}</Td>
-//             <Td isNumeric>{exercise.reps}</Td>
-//             <Td isNumeric>{exercise.weight}</Td>
-//             <Td>
-//               <Box display="flex" justifyContent="space-between" w="100px">
-//                 {/* EDIT BUTTON -> if have time */}
-//                 {/* <Button
-//                           bgColor="blue.50"
-//                           color="white"
-//                           _hover={{ bg: "lightblue.50" }}
-//                           onClick={handleEditExercise}
-//                         >
-//                           <FaEdit />
-//                         </Button> */}
-//                 <Button
-//                   bgColor="blue.50"
-//                   color="white"
-//                   _hover={{ bg: "lightblue.50" }}
-//                   onClick={handleDeleteExercise}
-//                   id={exercise.order}
-//                 >
-//                   <FaTrash />
-//                 </Button>
-//               </Box>
-//             </Td>
-//           </Tr>
-//         );
-//       })}
-//     </Tbody>
-//   </Table>
-// </TableContainer>; */}

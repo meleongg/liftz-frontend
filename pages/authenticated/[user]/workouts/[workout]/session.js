@@ -22,18 +22,19 @@ import Title from "../../../../../components/Title";
 
 const EditableCell = ({ value, onChange }) => {
   return (
-    <Editable defaultValue={value}>
+    <Editable value={value}>
       <EditablePreview>{value}</EditablePreview>
       <EditableInput onChange={(e) => onChange(e.target.value)} />
     </Editable>
   );
 };
 
-const Session = ({ dbWorkout, dbExercises, error }) => {
+const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
   const [time, setTime] = useState(0);
   const [timerOn, setTimerOn] = useState(false);
   const [sessionExercises, setSessionExercises] = useState(dbExercises);
-  const [workout, setWorkout] = useState(dbWorkout);
+  const [targetSets] = useState(dbTargetSets);
+  const [workout] = useState(dbWorkout);
   const [loading, setLoading] = useState(true);
 
   const router = useRouter();
@@ -145,13 +146,11 @@ const Session = ({ dbWorkout, dbExercises, error }) => {
     const updatedSessionExercises = [...sessionExercises];
 
     if (field !== "name") {
-      newValue = parseInt(newValue);
+      newValue = newValue.trim() === "" ? 0 : parseInt(newValue);
     }
 
     updatedSessionExercises[index][field] = newValue;
     setSessionExercises(updatedSessionExercises);
-
-    console.log(sessionExercises);
   };
 
   const handleAddSessionExercise = () => {
@@ -232,6 +231,7 @@ const Session = ({ dbWorkout, dbExercises, error }) => {
               <Tr>
                 <Th>Exercise</Th>
                 <Th>Sets</Th>
+                <Th>Sets Done</Th>
                 <Th>Reps</Th>
                 <Th>Weight</Th>
                 <Th>Action</Th>
@@ -250,6 +250,7 @@ const Session = ({ dbWorkout, dbExercises, error }) => {
                           }
                         />
                       </Td>
+                      <Td>{targetSets[index]}</Td>
                       <Td>
                         <EditableCell
                           value={exercise.sets}
@@ -314,6 +315,7 @@ const Session = ({ dbWorkout, dbExercises, error }) => {
                 <Td></Td>
                 <Td></Td>
                 <Td></Td>
+                <Td></Td>
               </Tr>
             </Tfoot>
           </Table>
@@ -370,10 +372,16 @@ export async function getServerSideProps(context) {
       exercises: data.exercises,
     };
 
+    const dbTargetSets = data.exercises.map((exercise) => exercise.sets);
+
+    // set all sessionExercise sets completed to 0
+    data.exercises.map((exercise) => (exercise.sets = 0));
+
     return {
       props: {
         dbWorkout: dbWorkout,
         dbExercises: data.exercises,
+        dbTargetSets: dbTargetSets,
       },
     };
   } catch (err) {

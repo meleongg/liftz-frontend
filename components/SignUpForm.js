@@ -1,169 +1,188 @@
 import {
   Box,
   Button,
-  Text,
   FormControl,
   FormLabel,
-  FormHelperText,
+  FormErrorMessage,
   Input,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
-
+import * as Yup from "yup";
+import { Formik, Field, Form } from "formik";
 import { useRouter } from "next/router";
 
 const SignUpForm = () => {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [retypePassword, setRetypePassword] = useState("");
-
   const router = useRouter();
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    const userData = {
-      firstName: firstName,
-      lastName: lastName,
-      email: email,
-      password: password,
-    };
-
-    try {
-      const response = await fetch("http://localhost:3001/create-user", {
-        method: "POST",
-        body: JSON.stringify(userData),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-
-      const res = await response.json();
-
-      router.push(`/authenticated/${res._id}`);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  useEffect(() => {
-    const emailRegex = /^[\w.%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
-
-    const isValidEmail = (email) => {
-      return emailRegex.test(email);
-    };
-
-    if (!isValidEmail(email)) {
-      setError("Email is invalid. Please try again.");
-    } else {
-      setError("");
-    }
-  }, [email]);
-
-  useEffect(() => {
-    const passwordRegex =
-      /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+-=,./<>?;':"[\]{}|~`]).{8,}$/;
-
-    const isStrongPassword = (password) => {
-      return true;
-      //   return passwordRegex.test(password);
-    };
-
-    if (!isStrongPassword(password)) {
-      setError("Password does not meet requirements.");
-    } else {
-      setError("");
-    }
-  }, [password]);
-
   return (
-    <form onSubmit={handleSubmit}>
-      <Box
-        backgroundColor="white"
-        color="#333"
-        p="20px"
-        display="flex"
-        flexDirection="column"
-        justifyContent="center"
-        alignItems="center"
-        borderRadius="20px"
-      >
-        <FormControl isRequired>
-          <FormLabel>First name</FormLabel>
-          <Input
-            type="text"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-          />
-        </FormControl>
-        <FormControl pt="10px" pb="10px" isRequired>
-          <FormLabel>Last name</FormLabel>
-          <Input
-            type="text"
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-          />
-        </FormControl>
-        <FormControl pt="10px" pb="10px" isRequired>
-          <FormLabel>Email</FormLabel>
-          <Input
-            type="email"
-            value={email}
-            onChange={(e) => {
-              setEmail(e.target.value);
-            }}
-          />
-        </FormControl>
-        <FormControl pt="10px" pb="10px" isRequired>
-          <FormLabel>Password</FormLabel>
-          <Input
-            type="password"
-            value={password}
-            onChange={(e) => {
-              setPassword(e.target.value);
-            }}
-          />
-          <FormHelperText>
-            Password must contain at least 8 characters, at least 1 digit, at
-            least 1 uppercase letter, at least 1 lowercase letter, and at least
-            1 special character
-          </FormHelperText>
-        </FormControl>
-        <FormControl pt="10px" pb="10px" isRequired>
-          <FormLabel>Retype Password</FormLabel>
-          <Input
-            type="password"
-            value={retypePassword}
-            onChange={(e) => {
-              setRetypePassword(e.target.value);
-            }}
-          />
-        </FormControl>
+    <Formik
+      initialValues={{
+        firstName: "",
+        lastName: "",
+        email: "",
+        password: "",
+        retypePassword: "",
+      }}
+      validationSchema={Yup.object({
+        firstName: Yup.string()
+          .max(100, "Must be 100 characters or less")
+          .required("First Name Required"),
+        lastName: Yup.string()
+          .max(100, "Must be 100 characters or less")
+          .required("Last Name Required"),
+        email: Yup.string()
+          .email("Invalid email address")
+          .required("Email Required"),
+        password: Yup.string()
+          .required("Password Required")
+          .min(8, "Password must be at least 8 characters"),
+        // .matches(
+        //   /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+-=,./<>?;':"[\]{}|~`]).{8,}$/,
+        //   "Password must contain at least 1 digit, 1 uppercase letter, 1 lowercase letter, and 1 special character"
+        // ),
+        retypePassword: Yup.string()
+          .oneOf([Yup.ref("password"), null], "Passwords must match")
+          .required("Retype Password Required"),
+      })}
+      onSubmit={async (values, { setSubmitting, setFieldError }) => {
+        try {
+          const checkEmailResponse = await fetch(`/api/check-email`, {
+            method: "POST",
+            body: JSON.stringify({ email: values.email }),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
 
-        {error && (
-          <Box mt="10px" color="red.500" w="100%" textAlign="center">
-            <Text>{error}</Text>
+          const { message } = await checkEmailResponse.json();
+
+          if (message === "duplicate") {
+            setFieldError(
+              "email",
+              "Email already exists. Please enter a different email."
+            );
+            return;
+          } else {
+            setFieldError("email", undefined);
+          }
+
+          const rawResponse = await fetch(`/api/create-user`, {
+            method: "POST",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(values),
+          });
+
+          const { userId } = await rawResponse.json();
+          setSubmitting(false);
+
+          router.push(`/authenticated/${userId}`);
+        } catch (err) {
+          console.log(err);
+        }
+      }}
+    >
+      {(formik) => (
+        <Form>
+          <Box
+            backgroundColor="white"
+            color="#333"
+            p="20px"
+            display="flex"
+            flexDirection="column"
+            justifyContent="center"
+            alignItems="center"
+            borderRadius="20px"
+            minWidth="350px"
+          >
+            <Field name="firstName" type="text">
+              {({ field, form }) => (
+                <FormControl
+                  isInvalid={form.errors.firstName && form.touched.firstName}
+                  w="300px"
+                >
+                  <FormLabel>First Name</FormLabel>
+                  <Input {...field} placeholder="First Name" type="text" />
+                  <FormErrorMessage>{form.errors.firstName}</FormErrorMessage>
+                </FormControl>
+              )}
+            </Field>
+            <Field name="lastName" type="text">
+              {({ field, form }) => (
+                <FormControl
+                  mt="20px"
+                  isInvalid={form.errors.lastName && form.touched.lastName}
+                  w="300px"
+                >
+                  <FormLabel>Last Name</FormLabel>
+                  <Input {...field} placeholder="Last Name" type="text" />
+                  <FormErrorMessage>{form.errors.lastName}</FormErrorMessage>
+                </FormControl>
+              )}
+            </Field>
+            <Field name="email" type="email">
+              {({ field, form }) => (
+                <FormControl
+                  mt="20px"
+                  isInvalid={form.errors.email && form.touched.email}
+                  w="300px"
+                >
+                  <FormLabel>Email</FormLabel>
+                  <Input {...field} placeholder="Email" type="email" />
+                  <FormErrorMessage>{form.errors.email}</FormErrorMessage>
+                </FormControl>
+              )}
+            </Field>
+            <Field name="password" type="password">
+              {({ field, form }) => (
+                <FormControl
+                  mt="20px"
+                  isInvalid={form.errors.password && form.touched.password}
+                  w="300px"
+                >
+                  <FormLabel>Password</FormLabel>
+                  <Input {...field} placeholder="Password" type="password" />
+                  <FormErrorMessage>{form.errors.password}</FormErrorMessage>
+                </FormControl>
+              )}
+            </Field>
+            <Field name="retypePassword" type="password">
+              {({ field, form }) => (
+                <FormControl
+                  mt="20px"
+                  isInvalid={
+                    form.errors.retypePassword && form.touched.retypePassword
+                  }
+                  w="300px"
+                >
+                  <FormLabel>Retype Password</FormLabel>
+                  <Input
+                    {...field}
+                    placeholder="Retype Password"
+                    type="password"
+                  />
+                  <FormErrorMessage>
+                    {form.errors.retypePassword}
+                  </FormErrorMessage>
+                </FormControl>
+              )}
+            </Field>
+
+            <Button
+              mt="20px"
+              bgColor="blue.50"
+              color="white"
+              _hover={{ bg: "lightBlue.50" }}
+              isLoading={formik.isSubmitting}
+              type="submit"
+            >
+              Sign Up
+            </Button>
           </Box>
-        )}
-
-        <Button
-          mt="10px"
-          type="submit"
-          _hover={{ backgroundColor: "blue.0" }}
-          color="white"
-          backgroundColor="blue.50"
-          w="30%"
-        >
-          Sign up
-        </Button>
-      </Box>
-    </form>
+        </Form>
+      )}
+    </Formik>
   );
 };
 

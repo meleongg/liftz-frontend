@@ -68,8 +68,8 @@ const WeightCalculator = () => {
               value={weight}
             />
             <NumberInputStepper>
-              <NumberIncrementStepper onClick={(e) => setWeight(weight + 1)} />
-              <NumberDecrementStepper onClick={(e) => setWeight(weight - 1)} />
+              <NumberIncrementStepper onClick={() => setWeight(weight + 1)} />
+              <NumberDecrementStepper onClick={() => setWeight(weight - 1)} />
             </NumberInputStepper>
           </NumberInput>
           <Box display="flex" mt="20px">
@@ -80,7 +80,6 @@ const WeightCalculator = () => {
               onClick={() => {
                 const newWeight = weight + 5;
                 setWeight(newWeight);
-                console.log(newWeight);
               }}
               w="30%"
             >

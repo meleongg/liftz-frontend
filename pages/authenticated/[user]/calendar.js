@@ -30,12 +30,12 @@ const CustomCalendar = ({ dbSessions, dbSessionDates, error }) => {
     console.log("Date clicked:", value);
 
     const month = date.getMonth() + 1; // getMonth() returns a zero-based index, so we add 1 to get the actual month
-    const day = date.getDate() - 1;
+    const day = date.getDate();
     const year = date.getFullYear();
 
     const formattedDate = `${month}/${day}/${year}`;
 
-    console.log(formattedDate); // Output: 5/6/2023
+    // console.log(formattedDate); // Output: 5/6/2023
     setSelectedDate(formattedDate);
 
     const isoDate = format(value, "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");

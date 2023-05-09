@@ -101,6 +101,7 @@ const SignUpForm = () => {
                 <FormControl
                   isInvalid={form.errors.firstName && form.touched.firstName}
                   w="300px"
+                  isRequired
                 >
                   <FormLabel>First Name</FormLabel>
                   <Input {...field} placeholder="First Name" type="text" />
@@ -114,6 +115,7 @@ const SignUpForm = () => {
                   mt="20px"
                   isInvalid={form.errors.lastName && form.touched.lastName}
                   w="300px"
+                  isRequired
                 >
                   <FormLabel>Last Name</FormLabel>
                   <Input {...field} placeholder="Last Name" type="text" />
@@ -127,6 +129,7 @@ const SignUpForm = () => {
                   mt="20px"
                   isInvalid={form.errors.email && form.touched.email}
                   w="300px"
+                  isRequired
                 >
                   <FormLabel>Email</FormLabel>
                   <Input {...field} placeholder="Email" type="email" />
@@ -140,6 +143,7 @@ const SignUpForm = () => {
                   mt="20px"
                   isInvalid={form.errors.password && form.touched.password}
                   w="300px"
+                  isRequired
                 >
                   <FormLabel>Password</FormLabel>
                   <Input {...field} placeholder="Password" type="password" />
@@ -155,6 +159,7 @@ const SignUpForm = () => {
                     form.errors.retypePassword && form.touched.retypePassword
                   }
                   w="300px"
+                  isRequired
                 >
                   <FormLabel>Retype Password</FormLabel>
                   <Input

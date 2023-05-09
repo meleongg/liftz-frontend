@@ -1,132 +1,127 @@
 import {
   Box,
   Button,
-  Text,
   FormControl,
   FormLabel,
+  FormErrorMessage,
   Input,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import * as Yup from "yup";
+import { Formik, Field, Form } from "formik";
 
 import { useRouter } from "next/router";
 
 const LoginForm = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-
   const router = useRouter();
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    const userData = {
-      email: email,
-      password: password,
-    };
-
-    try {
-      const response = await fetch("http://localhost:3001/login", {
-        method: "POST",
-        body: JSON.stringify(userData),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-
-      const res = await response.json();
-
-      router.push(`/authenticated/${res._id}`);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  useEffect(() => {
-    const emailRegex = /^[\w.%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
-
-    const isValidEmail = (email) => {
-      return emailRegex.test(email);
-    };
-
-    if (!isValidEmail(email)) {
-      setError("Email is invalid. Please try again.");
-    } else {
-      setError("");
-    }
-  }, [email]);
-
-  useEffect(() => {
-    const passwordRegex =
-      /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+-=,./<>?;':"[\]{}|~`]).{8,}$/;
-
-    const isStrongPassword = (password) => {
-      return true;
-      //   return passwordRegex.test(password);
-    };
-
-    if (!isStrongPassword(password)) {
-      setError("Password does not meet requirements.");
-    } else {
-      setError("");
-    }
-  }, [password]);
-
   return (
-    <form onSubmit={handleSubmit}>
-      <Box
-        backgroundColor="white"
-        color="#333"
-        p="20px"
-        display="flex"
-        flexDirection="column"
-        justifyContent="center"
-        alignItems="center"
-        borderRadius="20px"
-      >
-        <FormControl pt="10px" pb="10px" isRequired>
-          <FormLabel>Email</FormLabel>
-          <Input
-            type="email"
-            value={email}
-            onChange={(e) => {
-              setEmail(e.target.value);
-            }}
-          />
-        </FormControl>
-        <FormControl pt="10px" pb="10px" isRequired>
-          <FormLabel>Password</FormLabel>
-          <Input
-            type="password"
-            value={password}
-            onChange={(e) => {
-              setPassword(e.target.value);
-            }}
-          />
-        </FormControl>
+    <Formik
+      initialValues={{
+        email: "",
+        password: "",
+      }}
+      validationSchema={Yup.object({
+        email: Yup.string()
+          .email("Invalid email address")
+          .required("Email Required"),
+        password: Yup.string()
+          .required("Password Required")
+          .min(8, "Password must be at least 8 characters"),
+      })}
+      onSubmit={async (values, { setSubmitting, setErrors }) => {
+        const userData = {
+          email: values.email,
+          password: values.password,
+        };
 
-        {error && (
-          <Box mt="10px" color="red.500" w="100%" textAlign="center">
-            <Text>{error}</Text>
+        try {
+          const response = await fetch("/api/login-user", {
+            method: "POST",
+            body: JSON.stringify(userData),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+
+          if (!response.ok) {
+            if (response.status == 401) {
+              setErrors({
+                form: "Invalid email or password",
+              });
+              return;
+            }
+          }
+
+          const loginResponse = await response.json();
+          setSubmitting(false);
+
+          router.push(`/authenticated/${loginResponse.userId}`);
+        } catch (err) {
+          console.error(err);
+        }
+      }}
+    >
+      {(formik) => (
+        <Form>
+          <Box
+            backgroundColor="white"
+            color="#333"
+            p="20px"
+            display="flex"
+            flexDirection="column"
+            justifyContent="center"
+            alignItems="center"
+            borderRadius="20px"
+            minWidth="350px"
+          >
+            {formik.errors.form && (
+              <Box color="red" textAlign="center">
+                {formik.errors.form}
+              </Box>
+            )}
+            <Field name="email" type="email">
+              {({ field, form }) => (
+                <FormControl
+                  mt="20px"
+                  isInvalid={form.errors.email && form.touched.email}
+                  w="300px"
+                  isRequired
+                >
+                  <FormLabel>Email</FormLabel>
+                  <Input {...field} placeholder="Email" type="email" />
+                  <FormErrorMessage>{form.errors.email}</FormErrorMessage>
+                </FormControl>
+              )}
+            </Field>
+            <Field name="password" type="password">
+              {({ field, form }) => (
+                <FormControl
+                  mt="20px"
+                  isInvalid={form.errors.password && form.touched.password}
+                  w="300px"
+                  isRequired
+                >
+                  <FormLabel>Password</FormLabel>
+                  <Input {...field} placeholder="Password" type="password" />
+                  <FormErrorMessage>{form.errors.password}</FormErrorMessage>
+                </FormControl>
+              )}
+            </Field>
+
+            <Button
+              mt="20px"
+              bgColor="blue.50"
+              color="white"
+              _hover={{ bg: "lightBlue.50" }}
+              isLoading={formik.isSubmitting}
+              type="submit"
+            >
+              Log in
+            </Button>
           </Box>
-        )}
-
-        <Button
-          mt="10px"
-          type="submit"
-          _hover={{ backgroundColor: "blue.0" }}
-          color="white"
-          backgroundColor="blue.50"
-          w="30%"
-        >
-          Login
-        </Button>
-      </Box>
-    </form>
+        </Form>
+      )}
+    </Formik>
   );
 };
 

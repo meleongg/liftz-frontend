@@ -19,7 +19,12 @@ const GuestNavbar = () => {
       fontSize="18px"
       fontWeight="700"
     >
-      <Box display="flex" justifyContent="center" onClick={handleLandingClick}>
+      <Box
+        display="flex"
+        justifyContent="center"
+        onClick={handleLandingClick}
+        _hover={{ cursor: "pointer" }}
+      >
         <Image src="/full-logo.png" width={100} height={50} alt="logo" />
       </Box>
       <Link as={NextLink} href="/sign-up">

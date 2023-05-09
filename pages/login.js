@@ -6,7 +6,14 @@ const LoginPage = () => {
   return (
     <Box backgroundColor="blue.50" minHeight="100vh">
       <GuestNavbar />
-      <Box color="white" p="30px 20px 30px 20px">
+      <Box
+        color="white"
+        p="30px 20px 30px 20px"
+        display="flex"
+        flexDir="column"
+        justifyContent="center"
+        alignItems="center"
+      >
         <Text fontSize="48px" fontWeight="700" mb="10px">
           Login
         </Text>

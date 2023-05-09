@@ -13,6 +13,11 @@ import {
   Editable,
   EditablePreview,
   EditableInput,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  NumberIncrementStepper,
+  NumberDecrementStepper,
 } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
@@ -145,9 +150,18 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
   const handleSessionExerciseChange = (index, field, newValue) => {
     const updatedSessionExercises = [...sessionExercises];
 
-    if (field !== "name") {
+    if (field !== "name" && typeof newValue === "string") {
       newValue = newValue.trim() === "" ? 0 : parseInt(newValue);
+    } else {
+      newValue = e.target.value;
     }
+
+    updatedSessionExercises[index][field] = newValue;
+    setSessionExercises(updatedSessionExercises);
+  };
+
+  const handleSessionExerciseClick = (index, field, newValue) => {
+    const updatedSessionExercises = [...sessionExercises];
 
     updatedSessionExercises[index][field] = newValue;
     setSessionExercises(updatedSessionExercises);
@@ -252,12 +266,38 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
                       </Td>
                       <Td>{targetSets[index]}</Td>
                       <Td>
-                        <EditableCell
-                          value={exercise.sets}
-                          onChange={(newValue) =>
-                            handleSessionExerciseChange(index, "sets", newValue)
-                          }
-                        />
+                        <NumberInput defaultValue={exercise.sets}>
+                          <NumberInputField
+                            onChange={(newValue) =>
+                              handleSessionExerciseChange(
+                                index,
+                                "sets",
+                                newValue
+                              )
+                            }
+                            w="100px"
+                          />
+                          <NumberInputStepper>
+                            <NumberIncrementStepper
+                              onClick={() =>
+                                handleSessionExerciseClick(
+                                  index,
+                                  "sets",
+                                  exercise.sets + 1
+                                )
+                              }
+                            />
+                            <NumberDecrementStepper
+                              onClick={() =>
+                                handleSessionExerciseClick(
+                                  index,
+                                  "sets",
+                                  exercise.sets - 1
+                                )
+                              }
+                            />
+                          </NumberInputStepper>
+                        </NumberInput>
                       </Td>
                       <Td>
                         <EditableCell

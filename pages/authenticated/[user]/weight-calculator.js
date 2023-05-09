@@ -125,6 +125,7 @@ const WeightCalculator = () => {
                         display="flex"
                         alignItems="center"
                         justifyContent="center"
+                        key={`${index}-left`}
                       >
                         <Text>{plate}</Text>
                       </Box>
@@ -139,6 +140,7 @@ const WeightCalculator = () => {
                         display="flex"
                         alignItems="center"
                         justifyContent="center"
+                        key={`${index}-left`}
                       >
                         <Text>{plate}</Text>
                       </Box>
@@ -153,6 +155,7 @@ const WeightCalculator = () => {
                         display="flex"
                         alignItems="center"
                         justifyContent="center"
+                        key={`${index}-left`}
                       >
                         <Text>{plate}</Text>
                       </Box>
@@ -167,6 +170,7 @@ const WeightCalculator = () => {
                         display="flex"
                         alignItems="center"
                         justifyContent="center"
+                        key={`${index}-left`}
                       >
                         <Text>{plate}</Text>
                       </Box>
@@ -181,6 +185,7 @@ const WeightCalculator = () => {
                         display="flex"
                         alignItems="center"
                         justifyContent="center"
+                        key={`${index}-left`}
                       >
                         <Text>{plate}</Text>
                       </Box>
@@ -195,6 +200,7 @@ const WeightCalculator = () => {
                         display="flex"
                         alignItems="center"
                         justifyContent="center"
+                        key={`${index}-left`}
                       >
                         <Text>{plate}</Text>
                       </Box>
@@ -218,6 +224,7 @@ const WeightCalculator = () => {
                         display="flex"
                         alignItems="center"
                         justifyContent="center"
+                        key={`${index}-right`}
                       >
                         <Text>{plate}</Text>
                       </Box>
@@ -232,6 +239,7 @@ const WeightCalculator = () => {
                         display="flex"
                         alignItems="center"
                         justifyContent="center"
+                        key={`${index}-right`}
                       >
                         <Text>{plate}</Text>
                       </Box>
@@ -246,6 +254,7 @@ const WeightCalculator = () => {
                         display="flex"
                         alignItems="center"
                         justifyContent="center"
+                        key={`${index}-right`}
                       >
                         <Text>{plate}</Text>
                       </Box>
@@ -260,6 +269,7 @@ const WeightCalculator = () => {
                         display="flex"
                         alignItems="center"
                         justifyContent="center"
+                        key={`${index}-right`}
                       >
                         <Text>{plate}</Text>
                       </Box>
@@ -274,6 +284,7 @@ const WeightCalculator = () => {
                         display="flex"
                         alignItems="center"
                         justifyContent="center"
+                        key={`${index}-right`}
                       >
                         <Text>{plate}</Text>
                       </Box>
@@ -288,6 +299,7 @@ const WeightCalculator = () => {
                         display="flex"
                         alignItems="center"
                         justifyContent="center"
+                        key={`${index}-right`}
                       >
                         <Text>{plate}</Text>
                       </Box>

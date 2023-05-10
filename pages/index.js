@@ -2,12 +2,13 @@ import Head from "next/head";
 import Image from "next/image";
 import { Box, Text } from "@chakra-ui/react";
 import GuestNavbar from "../components/GuestNavbar";
+import Footer from "../components/Footer";
 
 import { FaListAlt, FaCalendarAlt, FaDumbbell, FaSignal } from "react-icons/fa";
 
 const LandingPage = () => {
   return (
-    <Box backgroundColor="blue.50" minHeight="100vh" pb="30px">
+    <Box backgroundColor="blue.50" minHeight="100vh">
       <Head>
         <title>liftz - Landing Page</title>
         <link rel="icon" href="/favicon.ico" />
@@ -20,18 +21,35 @@ const LandingPage = () => {
         textAlign="center"
         flexDirection="column"
         backgroundColor="white"
+        minHeight={`calc(100vh - 80px - 50px)`}
         color="#333"
         mt="30px"
         borderRadius="20px"
-        p="20px"
+        pl="20px"
+        pr="20px"
       >
-        <Text>Level up your gainz</Text>
-        <Box display="flex" justifyContent="center">
-          <Image src="/full-logo.png" width={300} height={200} alt="temp" />
+        <Text fontSize="30px" fontWeight="700" pt="50px" pb="30px">
+          Level up your gainz.
+        </Text>
+        <Box
+          display="flex"
+          justifyContent="center"
+          mt="10px"
+          mb="10px"
+          p="20px"
+          border="2px solid #333"
+          borderRadius="20px"
+        >
+          <Image
+            src="/landing/liftz-workouts.png"
+            width={300}
+            height={200}
+            alt="temp"
+          />
         </Box>
-        <Text>
-          Keep track of your workouts and your progress. Never lose gym
-          motivation again.
+        <Text fontSize="18px" fontWeight="700" pt="20px" pb="50px">
+          Transform your body and crush your fitness goals with liftz. Say
+          goodbye to workout amnesia and hello to unstoppable progress!
         </Text>
       </Box>
       <Box display="flex" justifyContent="flex-end" mt="30px" mb="30px">
@@ -42,14 +60,15 @@ const LandingPage = () => {
           alignItems="center"
           backgroundColor="white"
           borderRadius="20px"
+          mt="30px"
           p="10px 10px 10px 20px"
         >
           <Box fontSize="50px">
             <FaListAlt />
           </Box>
           <Text pl="20px">
-            Keep track of your workouts and your progress. Never lose gym
-            motivation again.
+            Revolutionize your fitness journey with our workout app’s
+            comprehensive library and session tracker.
           </Text>
         </Box>
       </Box>
@@ -67,8 +86,8 @@ const LandingPage = () => {
             <FaCalendarAlt />
           </Box>
           <Text pl="20px">
-            Keep track of your workouts and your progress. Never lose gym
-            motivation again.
+            Maximize your gains with our built-in calendar feature. Easily track
+            your past workout sessions.
           </Text>
         </Box>
       </Box>
@@ -86,12 +105,13 @@ const LandingPage = () => {
             <FaDumbbell />
           </Box>
           <Text pl="20px">
-            Keep track of your workouts and your progress. Never lose gym
-            motivation again.
+            Say goodbye to mental math at the gym! Our barbell plate calculator
+            takes the guesswork out of weightlifting, giving you a clear visual
+            of your plates.
           </Text>
         </Box>
       </Box>
-      <Box display="flex" justifyContent="flex-start" mt="30px">
+      <Box display="flex" justifyContent="flex-start" mt="30px" mb="50px">
         <Box
           w="80%"
           display="flex"
@@ -105,11 +125,12 @@ const LandingPage = () => {
             <FaSignal />
           </Box>
           <Text pl="20px">
-            Keep track of your workouts and your progress. Never lose gym
-            motivation again.
+            Easily track and visualize your personal records for each exercise
+            with our metric collection system.
           </Text>
         </Box>
       </Box>
+      <Footer />
     </Box>
   );
 };

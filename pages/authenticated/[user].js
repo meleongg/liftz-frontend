@@ -23,10 +23,8 @@ const Home = ({ user: dbUser, goals: dbGoals, error }) => {
   };
 
   const quotesArr = [
-    "Looking big jim bro",
+    "Looking big jim fren",
     "Leg day everyday",
-    "You don't need Alan...",
-    "Birdcoop > Arc",
     "Platella, Dumbella, and Barbella will always be there for you",
     "No pain, no gain, no brain cells left.",
     "Sweat now, shine later.",

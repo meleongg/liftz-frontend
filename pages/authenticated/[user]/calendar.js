@@ -127,7 +127,7 @@ const CustomCalendar = ({ dbSessions, dbSessionDates, error }) => {
           justifyContent="space-between"
           alignItems="center"
           mt="20px"
-          mb="10px"
+          mb="30px"
         >
           <Button
             bgColor="blue.50"
@@ -137,7 +137,14 @@ const CustomCalendar = ({ dbSessions, dbSessionDates, error }) => {
           >
             Prev Month
           </Button>
-          <Box>{format(date, "MMMM yyyy")}</Box>
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            w="40%"
+          >
+            <Text textAlign="center">{format(date, "MMMM yyyy")}</Text>
+          </Box>
           <Button
             bgColor="blue.50"
             color="white"
@@ -161,7 +168,7 @@ const CustomCalendar = ({ dbSessions, dbSessionDates, error }) => {
               : null;
           }}
         />
-        <Box mt="20px" mb="20px">
+        <Box mt="30px" mb="20px">
           <Text fontWeight="700" fontSize="20px">
             {selectedDate ||
               "Click on blue dates to check your sessions that day for your existing workouts!"}

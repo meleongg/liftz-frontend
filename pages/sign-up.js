@@ -1,6 +1,7 @@
 import { Box, Text } from "@chakra-ui/react";
 import GuestNavbar from "../components/GuestNavbar";
 import SignUpForm from "../components/SignUpForm";
+import Footer from "../components/Footer";
 
 const SignUpPage = () => {
   return (
@@ -13,12 +14,14 @@ const SignUpPage = () => {
         flexDir="column"
         justifyContent="center"
         alignItems="center"
+        minHeight={`calc(100vh - 80px - 50px)`}
       >
         <Text fontSize="48px" fontWeight="700" mb="10px">
           Sign Up
         </Text>
         <SignUpForm />
       </Box>
+      <Footer />
     </Box>
   );
 };

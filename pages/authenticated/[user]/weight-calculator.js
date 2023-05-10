@@ -60,7 +60,7 @@ const WeightCalculator = () => {
           <Text fontSize="30px" fontWeight="700">
             Enter Weight
           </Text>
-          <NumberInput min={0} mt="10px" value={weight}>
+          <NumberInput min={0} max={495} mt="10px" value={weight}>
             <NumberInputField
               onChange={(e) => {
                 setWeight(Number(e.target.value));
@@ -102,211 +102,245 @@ const WeightCalculator = () => {
           <Text fontSize="30px" fontWeight="700" mt="20px">
             Diagram
           </Text>
-          <Box
-            display="flex"
-            alignItems="center"
-            mt="20px"
-            justifyContent="center"
-            fontSize="16px"
-            fontWeight="700"
-            minHeight="150px"
-          >
-            <Box display="flex" alignItems="center" flexDirection="row-reverse">
-              {plates.map((plate, index) => {
-                switch (plate) {
-                  case 45:
-                    return (
-                      <Box
-                        h="130px"
-                        w="25px"
-                        bgColor={index % 2 == 0 ? "red" : "blue.50"}
-                        textAlign="center"
-                        display="flex"
-                        alignItems="center"
-                        justifyContent="center"
-                        key={`${index}-left`}
-                      >
-                        <Text>{plate}</Text>
-                      </Box>
-                    );
-                  case 35:
-                    return (
-                      <Box
-                        h="110px"
-                        w="25px"
-                        bgColor={index % 2 == 0 ? "red" : "blue.50"}
-                        textAlign="center"
-                        display="flex"
-                        alignItems="center"
-                        justifyContent="center"
-                        key={`${index}-left`}
-                      >
-                        <Text>{plate}</Text>
-                      </Box>
-                    );
-                  case 25:
-                    return (
-                      <Box
-                        h="80px"
-                        w="25px"
-                        bgColor={index % 2 == 0 ? "red" : "blue.50"}
-                        textAlign="center"
-                        display="flex"
-                        alignItems="center"
-                        justifyContent="center"
-                        key={`${index}-left`}
-                      >
-                        <Text>{plate}</Text>
-                      </Box>
-                    );
-                  case 10:
-                    return (
-                      <Box
-                        h="60px"
-                        w="25px"
-                        bgColor={index % 2 == 0 ? "red" : "blue.50"}
-                        textAlign="center"
-                        display="flex"
-                        alignItems="center"
-                        justifyContent="center"
-                        key={`${index}-left`}
-                      >
-                        <Text>{plate}</Text>
-                      </Box>
-                    );
-                  case 5:
-                    return (
-                      <Box
-                        h="50px"
-                        w="25px"
-                        bgColor={index % 2 == 0 ? "red" : "blue.50"}
-                        textAlign="center"
-                        display="flex"
-                        alignItems="center"
-                        justifyContent="center"
-                        key={`${index}-left`}
-                      >
-                        <Text>{plate}</Text>
-                      </Box>
-                    );
-                  case 2.5:
-                    return (
-                      <Box
-                        h="30px"
-                        w="25px"
-                        bgColor={index % 2 == 0 ? "red" : "blue.50"}
-                        textAlign="center"
-                        display="flex"
-                        alignItems="center"
-                        justifyContent="center"
-                        key={`${index}-left`}
-                      >
-                        <Text>{plate}</Text>
-                      </Box>
-                    );
-                }
-              })}
+          {weight <= 495 ? (
+            <Box
+              display="flex"
+              alignItems="center"
+              mt="20px"
+              justifyContent="center"
+              fontSize="16px"
+              fontWeight="700"
+              minHeight="150px"
+            >
+              <Box
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                flexDirection="row-reverse"
+              >
+                {plates.map((plate, index) => {
+                  switch (plate) {
+                    case 45:
+                      return (
+                        <Box
+                          h="130px"
+                          w="25px"
+                          bgColor={index % 2 == 0 ? "red" : "blue.50"}
+                          textAlign="center"
+                          display="flex"
+                          alignItems="center"
+                          justifyContent="center"
+                          key={`${index}-left`}
+                        >
+                          <Text>{plate}</Text>
+                        </Box>
+                      );
+                    case 35:
+                      return (
+                        <Box
+                          h="110px"
+                          w="25px"
+                          bgColor={index % 2 == 0 ? "red" : "blue.50"}
+                          textAlign="center"
+                          display="flex"
+                          alignItems="center"
+                          justifyContent="center"
+                          key={`${index}-left`}
+                        >
+                          <Text>{plate}</Text>
+                        </Box>
+                      );
+                    case 25:
+                      return (
+                        <Box
+                          h="80px"
+                          w="25px"
+                          bgColor={index % 2 == 0 ? "red" : "blue.50"}
+                          textAlign="center"
+                          display="flex"
+                          alignItems="center"
+                          justifyContent="center"
+                          key={`${index}-left`}
+                        >
+                          <Text>{plate}</Text>
+                        </Box>
+                      );
+                    case 10:
+                      return (
+                        <Box
+                          h="60px"
+                          w="25px"
+                          bgColor={index % 2 == 0 ? "red" : "blue.50"}
+                          textAlign="center"
+                          display="flex"
+                          alignItems="center"
+                          justifyContent="center"
+                          key={`${index}-left`}
+                        >
+                          <Text>{plate}</Text>
+                        </Box>
+                      );
+                    case 5:
+                      return (
+                        <Box
+                          h="50px"
+                          w="25px"
+                          bgColor={index % 2 == 0 ? "red" : "blue.50"}
+                          textAlign="center"
+                          display="flex"
+                          alignItems="center"
+                          justifyContent="center"
+                          key={`${index}-left`}
+                        >
+                          <Text>{plate}</Text>
+                        </Box>
+                      );
+                    case 2.5:
+                      return (
+                        <Box
+                          h="30px"
+                          w="25px"
+                          bgColor={index % 2 == 0 ? "red" : "blue.50"}
+                          textAlign="center"
+                          display="flex"
+                          alignItems="center"
+                          justifyContent="center"
+                          key={`${index}-left`}
+                        >
+                          <Text>{plate}</Text>
+                        </Box>
+                      );
+                  }
+                })}
+              </Box>
+              <Box
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                w="30%"
+              >
+                <Box
+                  bgColor="black"
+                  w="100%"
+                  h="20px"
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                >
+                  <Text color="white">45</Text>
+                </Box>
+              </Box>
+              <Box display="flex" justifyContent="center" alignItems="center">
+                {plates.map((plate, index) => {
+                  switch (plate) {
+                    case 45:
+                      return (
+                        <Box
+                          h="130px"
+                          w="25px"
+                          bgColor={index % 2 == 0 ? "red" : "blue.50"}
+                          textAlign="center"
+                          display="flex"
+                          alignItems="center"
+                          justifyContent="center"
+                          key={`${index}-right`}
+                        >
+                          <Text>{plate}</Text>
+                        </Box>
+                      );
+                    case 35:
+                      return (
+                        <Box
+                          h="110px"
+                          w="25px"
+                          bgColor={index % 2 == 0 ? "red" : "blue.50"}
+                          textAlign="center"
+                          display="flex"
+                          alignItems="center"
+                          justifyContent="center"
+                          key={`${index}-right`}
+                        >
+                          <Text>{plate}</Text>
+                        </Box>
+                      );
+                    case 25:
+                      return (
+                        <Box
+                          h="80px"
+                          w="25px"
+                          bgColor={index % 2 == 0 ? "red" : "blue.50"}
+                          textAlign="center"
+                          display="flex"
+                          alignItems="center"
+                          justifyContent="center"
+                          key={`${index}-right`}
+                        >
+                          <Text>{plate}</Text>
+                        </Box>
+                      );
+                    case 10:
+                      return (
+                        <Box
+                          h="60px"
+                          w="25px"
+                          bgColor={index % 2 == 0 ? "red" : "blue.50"}
+                          textAlign="center"
+                          display="flex"
+                          alignItems="center"
+                          justifyContent="center"
+                          key={`${index}-right`}
+                        >
+                          <Text>{plate}</Text>
+                        </Box>
+                      );
+                    case 5:
+                      return (
+                        <Box
+                          h="50px"
+                          w="25px"
+                          bgColor={index % 2 == 0 ? "red" : "blue.50"}
+                          textAlign="center"
+                          display="flex"
+                          alignItems="center"
+                          justifyContent="center"
+                          key={`${index}-right`}
+                        >
+                          <Text>{plate}</Text>
+                        </Box>
+                      );
+                    case 2.5:
+                      return (
+                        <Box
+                          h="30px"
+                          w="25px"
+                          bgColor={index % 2 == 0 ? "red" : "blue.50"}
+                          textAlign="center"
+                          display="flex"
+                          alignItems="center"
+                          justifyContent="center"
+                          key={`${index}-right`}
+                        >
+                          <Text>{plate}</Text>
+                        </Box>
+                      );
+                  }
+                })}
+              </Box>
             </Box>
-            <Box>
-              <Box bgColor="black" w="150px" h="20px"></Box>
+          ) : (
+            <Box
+              display="flex"
+              alignItems="center"
+              mt="20px"
+              justifyContent="center"
+              fontSize="16px"
+              minHeight="150px"
+            >
+              <Text color="red" textAlign="center" w="75%">
+                Please enter a weight value less than or equal to 495 lbs.
+              </Text>
             </Box>
-            <Box display="flex" alignItems="center">
-              {plates.map((plate, index) => {
-                switch (plate) {
-                  case 45:
-                    return (
-                      <Box
-                        h="130px"
-                        w="25px"
-                        bgColor={index % 2 == 0 ? "red" : "blue.50"}
-                        textAlign="center"
-                        display="flex"
-                        alignItems="center"
-                        justifyContent="center"
-                        key={`${index}-right`}
-                      >
-                        <Text>{plate}</Text>
-                      </Box>
-                    );
-                  case 35:
-                    return (
-                      <Box
-                        h="110px"
-                        w="25px"
-                        bgColor={index % 2 == 0 ? "red" : "blue.50"}
-                        textAlign="center"
-                        display="flex"
-                        alignItems="center"
-                        justifyContent="center"
-                        key={`${index}-right`}
-                      >
-                        <Text>{plate}</Text>
-                      </Box>
-                    );
-                  case 25:
-                    return (
-                      <Box
-                        h="80px"
-                        w="25px"
-                        bgColor={index % 2 == 0 ? "red" : "blue.50"}
-                        textAlign="center"
-                        display="flex"
-                        alignItems="center"
-                        justifyContent="center"
-                        key={`${index}-right`}
-                      >
-                        <Text>{plate}</Text>
-                      </Box>
-                    );
-                  case 10:
-                    return (
-                      <Box
-                        h="60px"
-                        w="25px"
-                        bgColor={index % 2 == 0 ? "red" : "blue.50"}
-                        textAlign="center"
-                        display="flex"
-                        alignItems="center"
-                        justifyContent="center"
-                        key={`${index}-right`}
-                      >
-                        <Text>{plate}</Text>
-                      </Box>
-                    );
-                  case 5:
-                    return (
-                      <Box
-                        h="50px"
-                        w="25px"
-                        bgColor={index % 2 == 0 ? "red" : "blue.50"}
-                        textAlign="center"
-                        display="flex"
-                        alignItems="center"
-                        justifyContent="center"
-                        key={`${index}-right`}
-                      >
-                        <Text>{plate}</Text>
-                      </Box>
-                    );
-                  case 2.5:
-                    return (
-                      <Box
-                        h="30px"
-                        w="25px"
-                        bgColor={index % 2 == 0 ? "red" : "blue.50"}
-                        textAlign="center"
-                        display="flex"
-                        alignItems="center"
-                        justifyContent="center"
-                        key={`${index}-right`}
-                      >
-                        <Text>{plate}</Text>
-                      </Box>
-                    );
-                }
-              })}
-            </Box>
-          </Box>
+          )}
         </Box>
       </Box>
       <Navbar userId={userId} currPage="weight-calculator" />

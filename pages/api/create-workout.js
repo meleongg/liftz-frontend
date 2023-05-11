@@ -15,6 +15,12 @@ export default async function (req, res) {
       }
     );
 
+    if (!rawResponse.ok) {
+      if (rawResponse.status === 400) {
+        res.status(400).json(rawResponse.errors);
+      }
+    }
+
     const workoutId = await rawResponse.json();
 
     res.status(200).json({ workoutId });

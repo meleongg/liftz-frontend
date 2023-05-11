@@ -42,7 +42,7 @@ const NewWorkoutForm = ({ userId }) => {
           .required("Required"),
         notes: Yup.string().max(200, "Must be 200 characters or less"),
       })}
-      onSubmit={(values, { setSubmitting }) => {
+      onSubmit={(values, { setSubmitting, setErrors }) => {
         const handleSubmit = async () => {
           try {
             const rawResponse = await fetch(
@@ -56,6 +56,16 @@ const NewWorkoutForm = ({ userId }) => {
                 body: JSON.stringify({ values }),
               }
             );
+
+            if (!rawResponse.ok) {
+              if (rawResponse.status === 400) {
+                setErrors({
+                  form: "Unable to create workout. Please try again",
+                });
+                return;
+              }
+            }
+
             const { workoutId } = await rawResponse.json();
 
             setSubmitting(false);
@@ -72,6 +82,11 @@ const NewWorkoutForm = ({ userId }) => {
     >
       {(formik) => (
         <Form>
+          {formik.errors.form && (
+            <Box color="red.50" fontWeight="700" textAlign="center" mb="10px">
+              {formik.errors.form}
+            </Box>
+          )}
           <Field name="name" type="text">
             {({ field, form }) => (
               <FormControl

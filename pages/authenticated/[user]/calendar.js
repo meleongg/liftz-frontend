@@ -188,7 +188,10 @@ const CustomCalendar = ({ dbSessions, dbSessionDates, error }) => {
                     id={`${session.workout._id}_${session._id}`}
                     bgColor="blue.50"
                     color="white"
-                    _hover={{ bg: "lightBlue.50" }}
+                    _hover={{
+                      cursor: "pointer",
+                      backgroundColor: "lightBlue.50",
+                    }}
                     onClick={handleViewSession}
                   >
                     View

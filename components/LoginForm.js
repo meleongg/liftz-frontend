@@ -75,7 +75,7 @@ const LoginForm = () => {
             minWidth="350px"
           >
             {formik.errors.form && (
-              <Box color="red" textAlign="center">
+              <Box color="red.50" fontWeight="700" textAlign="center">
                 {formik.errors.form}
               </Box>
             )}
@@ -89,7 +89,9 @@ const LoginForm = () => {
                 >
                   <FormLabel>Email</FormLabel>
                   <Input {...field} placeholder="Email" type="email" />
-                  <FormErrorMessage>{form.errors.email}</FormErrorMessage>
+                  <FormErrorMessage color="red.50" fontWeight="700">
+                    {form.errors.email}
+                  </FormErrorMessage>
                 </FormControl>
               )}
             </Field>
@@ -103,7 +105,9 @@ const LoginForm = () => {
                 >
                   <FormLabel>Password</FormLabel>
                   <Input {...field} placeholder="Password" type="password" />
-                  <FormErrorMessage>{form.errors.password}</FormErrorMessage>
+                  <FormErrorMessage color="red.50" fontWeight="700">
+                    {form.errors.password}
+                  </FormErrorMessage>
                 </FormControl>
               )}
             </Field>

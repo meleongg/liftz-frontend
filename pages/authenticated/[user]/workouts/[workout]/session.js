@@ -153,7 +153,7 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
     if (field !== "name" && typeof newValue === "string") {
       newValue = newValue.trim() === "" ? 0 : parseInt(newValue);
     } else {
-      newValue = e.target.value;
+      newValue = newValue.target.value;
     }
 
     updatedSessionExercises[index][field] = newValue;

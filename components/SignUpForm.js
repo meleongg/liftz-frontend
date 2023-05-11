@@ -105,7 +105,9 @@ const SignUpForm = () => {
                 >
                   <FormLabel>First Name</FormLabel>
                   <Input {...field} placeholder="First Name" type="text" />
-                  <FormErrorMessage>{form.errors.firstName}</FormErrorMessage>
+                  <FormErrorMessage color="red.50" fontWeight="700">
+                    {form.errors.firstName}
+                  </FormErrorMessage>
                 </FormControl>
               )}
             </Field>
@@ -119,7 +121,9 @@ const SignUpForm = () => {
                 >
                   <FormLabel>Last Name</FormLabel>
                   <Input {...field} placeholder="Last Name" type="text" />
-                  <FormErrorMessage>{form.errors.lastName}</FormErrorMessage>
+                  <FormErrorMessage color="red.50" fontWeight="700">
+                    {form.errors.lastName}
+                  </FormErrorMessage>
                 </FormControl>
               )}
             </Field>
@@ -133,7 +137,9 @@ const SignUpForm = () => {
                 >
                   <FormLabel>Email</FormLabel>
                   <Input {...field} placeholder="Email" type="email" />
-                  <FormErrorMessage>{form.errors.email}</FormErrorMessage>
+                  <FormErrorMessage color="red.50" fontWeight="700">
+                    {form.errors.email}
+                  </FormErrorMessage>
                 </FormControl>
               )}
             </Field>
@@ -147,7 +153,9 @@ const SignUpForm = () => {
                 >
                   <FormLabel>Password</FormLabel>
                   <Input {...field} placeholder="Password" type="password" />
-                  <FormErrorMessage>{form.errors.password}</FormErrorMessage>
+                  <FormErrorMessage color="red.50" fontWeight="700">
+                    {form.errors.password}
+                  </FormErrorMessage>
                 </FormControl>
               )}
             </Field>
@@ -167,7 +175,7 @@ const SignUpForm = () => {
                     placeholder="Retype Password"
                     type="password"
                   />
-                  <FormErrorMessage>
+                  <FormErrorMessage color="red.50" fontWeight="700">
                     {form.errors.retypePassword}
                   </FormErrorMessage>
                 </FormControl>

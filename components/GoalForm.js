@@ -23,7 +23,6 @@ const GoalForm = ({ userId, setShowGoalForm, goals, setGoals }) => {
 
   return (
     <Formik
-      //   initialValues={{ firstName: "", lastName: "", email: "" }}
       initialValues={{ goal: "" }}
       validationSchema={Yup.object({
         goal: Yup.string()
@@ -44,15 +43,11 @@ const GoalForm = ({ userId, setShowGoalForm, goals, setGoals }) => {
             }
           );
 
-          console.log(values);
-
           // return the id of the goal
           const goalId = await rawResponse.json();
 
           // update goal array
-          console.log(goals);
           setGoals([...goals, { _id: goalId, content: values.goal }]);
-          console.log(goals);
 
           setSubmitting(false);
 
@@ -72,7 +67,9 @@ const GoalForm = ({ userId, setShowGoalForm, goals, setGoals }) => {
               <FormControl isInvalid={form.errors.goal && form.touched.goal}>
                 <FormLabel>Goal</FormLabel>
                 <Input {...field} placeholder="goal" />
-                <FormErrorMessage>{form.errors.goal}</FormErrorMessage>
+                <FormErrorMessage color="red.50" fontWeight="700">
+                  {form.errors.goal}
+                </FormErrorMessage>
               </FormControl>
             )}
           </Field>

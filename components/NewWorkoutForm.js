@@ -1,8 +1,7 @@
 import { useRouter } from "next/router";
-import React, { useState, useEffect } from "react";
 
 import { Formik, Field, Form, FieldArray } from "formik";
-import { FaEdit, FaCheck, FaPlus, FaTrash } from "react-icons/fa";
+import { FaPlus, FaTrash } from "react-icons/fa";
 
 import {
   FormControl,
@@ -35,7 +34,7 @@ const NewWorkoutForm = ({ userId }) => {
       initialValues={{
         name: "",
         notes: "",
-        exercises: [{ name: "", sets: 1, reps: 1, weight: 1 }],
+        exercises: [{ name: "Exercise", sets: 1, reps: 1, weight: 45 }],
       }}
       validationSchema={Yup.object({
         name: Yup.string()
@@ -81,7 +80,9 @@ const NewWorkoutForm = ({ userId }) => {
               >
                 <FormLabel>Workout Name</FormLabel>
                 <Input {...field} placeholder="Workout Name" />
-                <FormErrorMessage>{form.errors.name}</FormErrorMessage>
+                <FormErrorMessage color="red.50" fontWeight="700">
+                  {form.errors.name}
+                </FormErrorMessage>
               </FormControl>
             )}
           </Field>
@@ -93,7 +94,9 @@ const NewWorkoutForm = ({ userId }) => {
               >
                 <FormLabel>Workout Notes</FormLabel>
                 <Textarea {...field} placeholder="Workout Notes" />
-                <FormErrorMessage>{form.errors.notes}</FormErrorMessage>
+                <FormErrorMessage color="red.50" fontWeight="700">
+                  {form.errors.notes}
+                </FormErrorMessage>
               </FormControl>
             )}
           </Field>
@@ -200,7 +203,7 @@ const NewWorkoutForm = ({ userId }) => {
                           Exercise Weight
                         </Text>
                         <NumberInput
-                          defaultValue={1}
+                          defaultValue={45}
                           min={1}
                           id={`exercises.${index}.weight`}
                           name={`exercises.${index}.weight`}
@@ -251,7 +254,7 @@ const NewWorkoutForm = ({ userId }) => {
                   rightIcon={<FaPlus />}
                   _hover={{ bg: "lightBlue.50" }}
                   onClick={() =>
-                    push({ name: "", sets: "", reps: "", weight: "" })
+                    push({ name: "Exercise", sets: 1, reps: 1, weight: 45 })
                   }
                   mt="30px"
                 >

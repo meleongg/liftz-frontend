@@ -85,7 +85,7 @@ const ChangeEmailForm = ({ userId, setMessage }) => {
             minWidth="350px"
           >
             {formik.errors.form && (
-              <Box color="red" textAlign="center" mb="10px">
+              <Box color="red.50" fontWeight="700" textAlign="center" mb="10px">
                 {formik.errors.form}
               </Box>
             )}
@@ -96,14 +96,16 @@ const ChangeEmailForm = ({ userId, setMessage }) => {
                   w="300px"
                   isRequired
                 >
-                  <FormLabel>New Email</FormLabel>
+                  <FormLabel color="white">New Email</FormLabel>
                   <Input
                     {...field}
                     bgColor="white"
                     placeholder="New Email"
                     type="email"
                   />
-                  <FormErrorMessage>{form.errors.email}</FormErrorMessage>
+                  <FormErrorMessage color="red.50" fontWeight="700">
+                    {form.errors.email}
+                  </FormErrorMessage>
                 </FormControl>
               )}
             </Field>
@@ -115,14 +117,16 @@ const ChangeEmailForm = ({ userId, setMessage }) => {
                   w="300px"
                   isRequired
                 >
-                  <FormLabel>Password</FormLabel>
+                  <FormLabel color="white">Password</FormLabel>
                   <Input
                     {...field}
                     bgColor="white"
                     placeholder="Password"
                     type="password"
                   />
-                  <FormErrorMessage>{form.errors.password}</FormErrorMessage>
+                  <FormErrorMessage color="red.50" fontWeight="700">
+                    {form.errors.password}
+                  </FormErrorMessage>
                 </FormControl>
               )}
             </Field>

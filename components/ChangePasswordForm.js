@@ -95,7 +95,7 @@ const ChangePasswordForm = ({ userId, setMessage }) => {
             minWidth="350px"
           >
             {formik.errors.form && (
-              <Box color="red" textAlign="center" mb="10px">
+              <Box color="red.50" fontWeight="700" textAlign="center" mb="10px">
                 {formik.errors.form}
               </Box>
             )}
@@ -108,14 +108,16 @@ const ChangePasswordForm = ({ userId, setMessage }) => {
                   w="300px"
                   isRequired
                 >
-                  <FormLabel>Old Password</FormLabel>
+                  <FormLabel color="white">Old Password</FormLabel>
                   <Input
                     {...field}
                     bgColor="white"
                     placeholder="Old Password"
                     type="password"
                   />
-                  <FormErrorMessage>{form.errors.oldPassword}</FormErrorMessage>
+                  <FormErrorMessage color="red.50" fontWeight="700">
+                    {form.errors.oldPassword}
+                  </FormErrorMessage>
                 </FormControl>
               )}
             </Field>
@@ -129,14 +131,16 @@ const ChangePasswordForm = ({ userId, setMessage }) => {
                   w="300px"
                   isRequired
                 >
-                  <FormLabel>New Password</FormLabel>
+                  <FormLabel color="white">New Password</FormLabel>
                   <Input
                     {...field}
                     bgColor="white"
                     placeholder="New Password"
                     type="password"
                   />
-                  <FormErrorMessage>{form.errors.newPassword}</FormErrorMessage>
+                  <FormErrorMessage color="red.50" fontWeight="700">
+                    {form.errors.newPassword}
+                  </FormErrorMessage>
                 </FormControl>
               )}
             </Field>
@@ -150,14 +154,14 @@ const ChangePasswordForm = ({ userId, setMessage }) => {
                   w="300px"
                   isRequired
                 >
-                  <FormLabel>Retype Password</FormLabel>
+                  <FormLabel color="white">Retype Password</FormLabel>
                   <Input
                     {...field}
                     bgColor="white"
                     placeholder="Retype Password"
                     type="password"
                   />
-                  <FormErrorMessage>
+                  <FormErrorMessage color="red.50" fontWeight="700">
                     {form.errors.retypePassword}
                   </FormErrorMessage>
                 </FormControl>

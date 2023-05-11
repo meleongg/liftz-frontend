@@ -8,8 +8,11 @@ import {
 } from "@chakra-ui/react";
 import * as Yup from "yup";
 import { Formik, Field, Form } from "formik";
+import { useRouter } from "next/router";
 
 const DeleteAccount = ({ userId, setMessage }) => {
+  const router = useRouter();
+
   return (
     <Formik
       initialValues={{
@@ -71,18 +74,22 @@ const DeleteAccount = ({ userId, setMessage }) => {
             return;
           }
 
-          const updateUserResponse = await fetch("/api/update-user", {
+          const deleteUserData = {
+            userId: userId,
+          };
+
+          const deleteUserResponse = await fetch("/api/delete-user", {
             method: "POST",
-            body: JSON.stringify(userData),
+            body: JSON.stringify(deleteUserData),
             headers: {
               "Content-Type": "application/json",
             },
           });
 
-          await updateUserResponse.json();
+          await deleteUserResponse.json();
 
           setSubmitting(false);
-          setMessage("Account email updated!");
+          router.push("/");
         } catch (err) {
           console.error(err);
         }
@@ -102,7 +109,7 @@ const DeleteAccount = ({ userId, setMessage }) => {
             minWidth="350px"
           >
             {formik.errors.form && (
-              <Box color="red" textAlign="center" mb="10px">
+              <Box color="red.50" fontWeight="700" textAlign="center" mb="10px">
                 {formik.errors.form}
               </Box>
             )}
@@ -113,14 +120,16 @@ const DeleteAccount = ({ userId, setMessage }) => {
                   w="300px"
                   isRequired
                 >
-                  <FormLabel>New Email</FormLabel>
+                  <FormLabel color="white">Email</FormLabel>
                   <Input
                     {...field}
                     bgColor="white"
-                    placeholder="New Email"
+                    placeholder="Email"
                     type="email"
                   />
-                  <FormErrorMessage>{form.errors.email}</FormErrorMessage>
+                  <FormErrorMessage color="red.50" fontWeight="700">
+                    {form.errors.email}
+                  </FormErrorMessage>
                 </FormControl>
               )}
             </Field>
@@ -132,14 +141,16 @@ const DeleteAccount = ({ userId, setMessage }) => {
                   w="300px"
                   isRequired
                 >
-                  <FormLabel>Password</FormLabel>
+                  <FormLabel color="white">Password</FormLabel>
                   <Input
                     {...field}
                     bgColor="white"
                     placeholder="Password"
                     type="password"
                   />
-                  <FormErrorMessage>{form.errors.password}</FormErrorMessage>
+                  <FormErrorMessage color="red.50" fontWeight="700">
+                    {form.errors.password}
+                  </FormErrorMessage>
                 </FormControl>
               )}
             </Field>
@@ -152,7 +163,7 @@ const DeleteAccount = ({ userId, setMessage }) => {
               isLoading={formik.isSubmitting}
               type="submit"
             >
-              Change Email
+              Delete Account
             </Button>
           </Box>
         </Form>

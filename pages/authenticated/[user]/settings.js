@@ -6,10 +6,10 @@ import Navbar from "../../../components/Navbar";
 import Title from "../../../components/Title";
 import ChangeEmailForm from "../../../components/ChangeEmailForm";
 import ChangePasswordForm from "../../../components/ChangePasswordForm";
+import DeleteAccount from "../../../components/DeleteAccount";
 import { FaCheckCircle } from "react-icons/fa";
 
 const Settings = ({ user: dbUser, error }) => {
-  const [user] = useState(dbUser);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState(null);
 
@@ -100,7 +100,17 @@ const Settings = ({ user: dbUser, error }) => {
             <Text fontSize="24px" fontWeight="700" mb="10px" textAlign="center">
               Delete Account
             </Text>
-            <ChangeEmailForm userId={userId} setMessage={setMessage} />
+            <Text
+              color="red"
+              fontSize="14px"
+              fontWeight="700"
+              mb="10px"
+              textAlign="center"
+            >
+              WARNING: All information associated with this account will be
+              deleted.
+            </Text>
+            <DeleteAccount userId={userId} setMessage={setMessage} />
           </Box>
         </Box>
       </Box>

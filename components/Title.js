@@ -1,8 +1,8 @@
 import { Box, Heading } from "@chakra-ui/react";
-import { FaSignOutAlt } from "react-icons/fa";
+import { FaSignOutAlt, FaCog } from "react-icons/fa";
 import { useRouter } from "next/router";
 
-const Title = ({ content }) => {
+const Title = ({ userId, content }) => {
   const router = useRouter();
 
   const handleLogout = async (e) => {
@@ -17,8 +17,12 @@ const Title = ({ content }) => {
     }
   };
 
+  const handleSettingsClick = () => {
+    router.push(`/authenticated/${userId}/settings`);
+  };
+
   return (
-    <Box display="flex">
+    <Box display="flex" alignItems="center">
       <Heading fontSize="50px" w="80%">
         {content}
       </Heading>
@@ -27,10 +31,15 @@ const Title = ({ content }) => {
         display="flex"
         justifyContent="center"
         alignItems="center"
-        onClick={handleLogout}
+        flexDir="column"
         ml="10px"
       >
-        <FaSignOutAlt />
+        <Box onClick={handleLogout} _hover={{ cursor: "pointer" }} mb="10px">
+          <FaSignOutAlt />
+        </Box>
+        <Box onClick={handleSettingsClick} _hover={{ cursor: "pointer" }}>
+          <FaCog />
+        </Box>
       </Box>
     </Box>
   );

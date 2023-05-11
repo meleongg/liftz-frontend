@@ -10,8 +10,8 @@ import { FaPlus } from "react-icons/fa";
 
 const WorkoutLibrary = ({ dbUser, dbWorkouts, error }) => {
   const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState(dbUser);
-  const [workouts, setWorkouts] = useState(dbWorkouts);
+  const [user] = useState(dbUser);
+  const [workouts] = useState(dbWorkouts);
 
   const router = useRouter();
   const userId = router.query.user;
@@ -66,7 +66,7 @@ const WorkoutLibrary = ({ dbUser, dbWorkouts, error }) => {
         pl="10px"
         pr="10px"
       >
-        <Title content={"Workout Library"} />
+        <Title userId={userId} content={"Workout Library"} />
         <Button
           bgColor="blue.50"
           color="white"

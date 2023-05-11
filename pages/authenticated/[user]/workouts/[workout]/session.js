@@ -193,7 +193,7 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
         pl="10px"
         pr="10px"
       >
-        <Title content={`${workout?.name}`} />
+        <Title userId={userId} content={`${workout?.name}`} />
         <Box mt="20px">
           <Text fontSize="30px" fontWeight="700">
             Time Elapsed

@@ -121,7 +121,7 @@ const CustomCalendar = ({ dbSessions, dbSessionDates, error }) => {
         pl="10px"
         pr="10px"
       >
-        <Title content={"Session Calendar"} />
+        <Title userId={userId} content={"Session Calendar"} />
         <Box
           display="flex"
           justifyContent="space-between"

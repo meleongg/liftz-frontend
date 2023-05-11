@@ -17,13 +17,11 @@ import Navbar from "../../../../../components/Navbar";
 import Title from "../../../../../components/Title";
 
 const SessionEnd = ({ dbSession, error }) => {
-  const [session, setSession] = useState(dbSession);
+  const [session] = useState(dbSession);
   const [loading, setLoading] = useState(true);
 
   const router = useRouter();
   const userId = router.query.user;
-  const workoutId = router.query.workout;
-  const sessionId = router.query.session;
 
   useEffect(() => {
     setLoading(false);
@@ -89,7 +87,7 @@ const SessionEnd = ({ dbSession, error }) => {
         pl="10px"
         pr="10px"
       >
-        <Title content={`${session?.workout?.name} Session`} />
+        <Title userId={userId} content={`${session?.workout?.name} Session`} />
 
         <Text fontSize="30px" fontWeight="700" mt="20px">
           Time Elapsed

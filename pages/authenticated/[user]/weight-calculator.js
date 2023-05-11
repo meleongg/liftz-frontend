@@ -55,7 +55,7 @@ const WeightCalculator = () => {
         pl="10px"
         pr="10px"
       >
-        <Title content={"Plate Calculator"} />
+        <Title userId={userId} content={"Plate Calculator"} />
         <Box mt="20px" mb="20px">
           <Text fontSize="30px" fontWeight="700">
             Enter Weight

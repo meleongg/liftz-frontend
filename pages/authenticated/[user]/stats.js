@@ -58,7 +58,7 @@ const Stats = ({ dbPrs, error }) => {
         pl="10px"
         pr="10px"
       >
-        <Title content={"PR Progress"} />
+        <Title userId={userId} content={"PR Progress"} />
         <Box mt="20px" display="flex" flexDirection="column" mb="20px">
           <Box borderRadius="20px" p="14px" bgColor="blue.50" color="white">
             <Text>

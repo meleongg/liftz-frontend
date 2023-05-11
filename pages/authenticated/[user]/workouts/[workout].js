@@ -17,7 +17,7 @@ import Navbar from "../../../../components/Navbar";
 import Title from "../../../../components/Title";
 
 const Workout = ({ dbWorkout, error }) => {
-  const [workout, setWorkout] = useState(dbWorkout);
+  const [workout] = useState(dbWorkout);
   const [loading, setLoading] = useState(true);
 
   const router = useRouter();
@@ -105,7 +105,7 @@ const Workout = ({ dbWorkout, error }) => {
         pl="10px"
         pr="10px"
       >
-        <Title content={`${workout?.name}`} />
+        <Title user={userId} content={`${workout?.name}`} />
         <Box>
           <Button
             bgColor="blue.50"

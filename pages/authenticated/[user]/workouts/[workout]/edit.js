@@ -171,7 +171,7 @@ const EditWorkout = ({ dbWorkout, error }) => {
         pl="10px"
         pr="10px"
       >
-        <Title content={`${workout?.name}`} />
+        <Title userId={userId} content={`${workout?.name}`} />
         <Box>
           <Button
             bgColor="blue.50"

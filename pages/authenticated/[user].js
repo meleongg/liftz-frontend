@@ -100,7 +100,7 @@ const Home = ({ user: dbUser, goals: dbGoals, error }) => {
         pl="10px"
         pr="10px"
       >
-        <Title content={`Hi ${dbUser.firstName}!`} />
+        <Title userId={userId} content={`Hi ${dbUser.firstName}!`} />
         <Heading fontSize="20px" pt="10px" pb="30px">
           {quotesArr[quoteIndex]}
         </Heading>

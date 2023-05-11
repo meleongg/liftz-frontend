@@ -16,6 +16,7 @@ import { FaEdit, FaCheck, FaBan } from "react-icons/fa";
 const EditableGoal = ({ userId, id, content, goals, setGoals }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [goal, setGoal] = useState(content);
+  const [error, setError] = useState(null);
   const router = useRouter();
 
   const handleEditClick = () => {
@@ -37,6 +38,16 @@ const EditableGoal = ({ userId, id, content, goals, setGoals }) => {
         },
         body: JSON.stringify(data),
       });
+
+      if (!rawResponse.ok) {
+        if (rawResponse.status === 400) {
+          setError({
+            message: "Goal can't be empty!",
+          });
+          return;
+        }
+      }
+
       const { updatedGoal } = await rawResponse.json();
 
       const updatedGoals = goals.map((goal) => {
@@ -73,9 +84,17 @@ const EditableGoal = ({ userId, id, content, goals, setGoals }) => {
         },
         body: JSON.stringify(data),
       });
-      const { deletedGoalId } = await rawResponse.json();
 
-      console.log(deletedGoalId);
+      if (!rawResponse.ok) {
+        if (rawResponse.status === 400) {
+          setError({
+            message: "Couldn't delete goal. Please try again",
+          });
+          return;
+        }
+      }
+
+      const { deletedGoalId } = await rawResponse.json();
 
       const filteredGoals = goals.filter((goal) => goal._id !== deletedGoalId);
       setGoals(filteredGoals);
@@ -94,6 +113,11 @@ const EditableGoal = ({ userId, id, content, goals, setGoals }) => {
       w="100%"
       h="50px"
     >
+      {error && (
+        <Box color="red.50" fontWeight="700" textAlign="center" mb="10px">
+          {error}
+        </Box>
+      )}
       {!isEditing && <Checkbox onChange={handleCheck}>{goal}</Checkbox>}
       {isEditing && (
         <Editable textAlign="center" defaultValue={goal} pr="8px" w="70%">

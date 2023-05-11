@@ -21,6 +21,8 @@ export default async function handler(req, res) {
     if (!response.ok) {
       if (response.status === 401) {
         return res.status(401).json({ message: "Invalid email or password" });
+      } else if (response.status === 400) {
+        res.status(400).json(response.errors);
       } else {
         throw new Error("Network response was not ok");
       }

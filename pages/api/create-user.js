@@ -4,8 +4,6 @@ export default async function handler(req, res) {
     return;
   }
 
-  console.log(req.body);
-
   const { firstName, lastName, email, password } = req.body;
 
   const userData = {
@@ -25,7 +23,9 @@ export default async function handler(req, res) {
     });
 
     if (!response.ok) {
-      throw new Error("Network response was not ok");
+      if (response.status === 400) {
+        res.status(400).json(response.errors);
+      }
     }
 
     const data = await response.json();

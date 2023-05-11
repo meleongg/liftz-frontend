@@ -45,6 +45,15 @@ const DeleteAccount = ({ userId, setMessage }) => {
             },
           });
 
+          if (!validateEmailResponse.ok) {
+            if (validateEmailResponse.status === 400) {
+              setErrors({
+                form: "Invalid email",
+              });
+              return;
+            }
+          }
+
           const validateEmailData = await validateEmailResponse.json();
 
           if (validateEmailData.message === "no match") {

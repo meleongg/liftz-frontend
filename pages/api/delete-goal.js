@@ -14,6 +14,13 @@ export default async function (req, res) {
         body: JSON.stringify({ goalId }),
       }
     );
+
+    if (!rawResponse.ok) {
+      if (rawResponse.status === 400) {
+        res.status(400).json(rawResponse.errors);
+      }
+    }
+
     const deletedGoalId = await rawResponse.json();
 
     res.status(200).json({ deletedGoalId });

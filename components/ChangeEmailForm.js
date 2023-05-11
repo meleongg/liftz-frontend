@@ -45,6 +45,15 @@ const ChangeEmailForm = ({ userId, setMessage }) => {
             }
           );
 
+          if (!validatePasswordResponse.ok) {
+            if (validatePasswordResponse.status === 400) {
+              setErrors({
+                form: "Invalid password",
+              });
+              return;
+            }
+          }
+
           const validatePasswordData = await validatePasswordResponse.json();
 
           if (validatePasswordData.message === "no match") {
@@ -61,6 +70,15 @@ const ChangeEmailForm = ({ userId, setMessage }) => {
               "Content-Type": "application/json",
             },
           });
+
+          if (!updateUserResponse.ok) {
+            if (updateUserResponse.status === 400) {
+              setErrors({
+                form: "Unable to update account. Please try again",
+              });
+              return;
+            }
+          }
 
           await updateUserResponse.json();
 

@@ -34,16 +34,16 @@ const SignUpForm = () => {
           .required("Email Required"),
         password: Yup.string()
           .required("Password Required")
-          .min(8, "Password must be at least 8 characters"),
-        // .matches(
-        //   /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+-=,./<>?;':"[\]{}|~`]).{8,}$/,
-        //   "Password must contain at least 1 digit, 1 uppercase letter, 1 lowercase letter, and 1 special character"
-        // ),
+          .min(8, "Password must be at least 8 characters")
+          .matches(
+            /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+-=,./<>?;':"[\]{}|~`]).{8,}$/,
+            "Password must contain at least 1 digit, 1 uppercase letter, 1 lowercase letter, and 1 special character"
+          ),
         retypePassword: Yup.string()
           .oneOf([Yup.ref("password"), null], "Passwords must match")
           .required("Retype Password Required"),
       })}
-      onSubmit={async (values, { setSubmitting, setFieldError }) => {
+      onSubmit={async (values, { setSubmitting, setFieldError, setErrors }) => {
         try {
           const checkEmailResponse = await fetch(`/api/check-email`, {
             method: "POST",
@@ -52,6 +52,15 @@ const SignUpForm = () => {
               "Content-Type": "application/json",
             },
           });
+
+          if (!checkEmailResponse.ok) {
+            if (checkEmailResponse.status === 400) {
+              setErrors({
+                form: "Invalid email",
+              });
+              return;
+            }
+          }
 
           const { message } = await checkEmailResponse.json();
 
@@ -65,7 +74,7 @@ const SignUpForm = () => {
             setFieldError("email", undefined);
           }
 
-          const rawResponse = await fetch(`/api/create-user`, {
+          const createUserResponse = await fetch(`/api/create-user`, {
             method: "POST",
             headers: {
               Accept: "application/json",
@@ -74,7 +83,16 @@ const SignUpForm = () => {
             body: JSON.stringify(values),
           });
 
-          const { userId } = await rawResponse.json();
+          if (!createUserResponse.ok) {
+            if (createUserResponse.status === 400) {
+              setErrors({
+                form: "Error creating user. Please try again.",
+              });
+              return;
+            }
+          }
+
+          const { userId } = await createUserResponse.json();
           setSubmitting(false);
 
           router.push(`/authenticated/${userId}`);
@@ -96,6 +114,11 @@ const SignUpForm = () => {
             borderRadius="20px"
             minWidth="350px"
           >
+            {formik.errors.form && (
+              <Box color="red.50" fontWeight="700" textAlign="center" mb="10px">
+                {formik.errors.form}
+              </Box>
+            )}
             <Field name="firstName" type="text">
               {({ field, form }) => (
                 <FormControl

@@ -23,11 +23,11 @@ const ChangePasswordForm = ({ userId, setMessage }) => {
           .min(8, "Password must be at least 8 characters"),
         newPassword: Yup.string()
           .required("Password Required")
-          .min(8, "Password must be at least 8 characters"),
-        // .matches(
-        //   /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+-=,./<>?;':"[\]{}|~`]).{8,}$/,
-        //   "Password must contain at least 1 digit, 1 uppercase letter, 1 lowercase letter, and 1 special character"
-        // ),
+          .min(8, "Password must be at least 8 characters")
+          .matches(
+            /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+-=,./<>?;':"[\]{}|~`]).{8,}$/,
+            "Password must contain at least 1 digit, 1 uppercase letter, 1 lowercase letter, and 1 special character"
+          ),
         retypePassword: Yup.string()
           .oneOf([Yup.ref("newPassword"), null], "Passwords must match")
           .required("Retype Password Required"),
@@ -50,6 +50,15 @@ const ChangePasswordForm = ({ userId, setMessage }) => {
             }
           );
 
+          if (!validatePasswordResponse.ok) {
+            if (validatePasswordResponse.status === 400) {
+              setErrors({
+                form: "Invalid password",
+              });
+              return;
+            }
+          }
+
           const validatePasswordData = await validatePasswordResponse.json();
 
           if (validatePasswordData.message === "no match") {
@@ -71,6 +80,15 @@ const ChangePasswordForm = ({ userId, setMessage }) => {
               "Content-Type": "application/json",
             },
           });
+
+          if (!updateUserResponse.ok) {
+            if (updateUserResponse.status === 400) {
+              setErrors({
+                form: "Unable to update account. Please try again",
+              });
+              return;
+            }
+          }
 
           await updateUserResponse.json();
 

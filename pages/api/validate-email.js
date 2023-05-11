@@ -18,7 +18,9 @@ export default async function handler(req, res) {
     );
 
     if (!validatePasswordResponse.ok) {
-      throw new Error("Network response was not ok");
+      if (validatePasswordResponse.status === 400) {
+        res.status(400).json(validatePasswordResponse.errors);
+      }
     }
 
     const response = await validatePasswordResponse.json();

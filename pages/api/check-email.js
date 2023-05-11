@@ -18,7 +18,9 @@ export default async function handler(req, res) {
     );
 
     if (!checkEmailResponse.ok) {
-      throw new Error("Network response was not ok");
+      if (checkEmailResponse.status === 400) {
+        res.status(400).json(checkEmailResponse.errors);
+      }
     }
 
     const response = await checkEmailResponse.json();

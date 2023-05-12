@@ -15,7 +15,7 @@ const Footer = () => {
       justifyContent="center"
       alignItems="center"
     >
-      <Text fontSize="sm">© {currentYear} lifz. All rights reserved.</Text>
+      <Text fontSize="sm">© {currentYear} liftz. All rights reserved.</Text>
     </Box>
   );
 };

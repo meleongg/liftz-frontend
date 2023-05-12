@@ -8,8 +8,15 @@ import ChangeEmailForm from "../../../components/ChangeEmailForm";
 import ChangePasswordForm from "../../../components/ChangePasswordForm";
 import DeleteAccount from "../../../components/DeleteAccount";
 import { FaCheckCircle } from "react-icons/fa";
+import Head from "next/head";
 
-const Settings = ({ user: dbUser, error }) => {
+const metadata = {
+  title: "Settings | liftz",
+  description: "Settings page",
+  image: "https://liftz-workout-tracker.vercel.app/meta-image.png",
+};
+
+const Settings = () => {
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState(null);
 
@@ -38,24 +45,28 @@ const Settings = ({ user: dbUser, error }) => {
     );
   }
 
-  if (error) {
-    return (
-      <Box
-        textAlign="center"
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        w="100%"
-        h="100vh"
-        color="#333"
-      >
-        <Text>Failed to load data</Text>
-      </Box>
-    );
-  }
-
   return (
     <Box minHeight="100vh">
+      <Head>
+        <title>{metadata.title}</title>
+        <meta name="description" content={metadata.description} />
+        <meta name="image" content={metadata.image} />
+
+        <meta
+          property="og:url"
+          content="https://liftz-workout-tracker.vercel.app/"
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content={metadata.title} />
+        <meta property="og:description" content={metadata.description} />
+        <meta property="og:image" content={metadata.image} />
+
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={metadata.title} />
+        <meta name="twitter:description" content={metadata.description} />
+        <meta name="twitter:image" content={metadata.image} />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
       {/* 80px is the navbar */}
       {message && (
         <Box
@@ -138,34 +149,5 @@ const Settings = ({ user: dbUser, error }) => {
     </Box>
   );
 };
-
-export async function getServerSideProps(context) {
-  const BE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
-  const { user } = context.params;
-
-  try {
-    const response = await fetch(`${BE_URL}/user/${user}`);
-    const data = await response.json();
-
-    return {
-      props: {
-        user: {
-          id: data._id,
-          firstName: data.firstName,
-          lastName: data.lastName,
-          email: data.email,
-        },
-      },
-    };
-  } catch (err) {
-    console.log(err);
-
-    return {
-      props: {
-        error: true,
-      },
-    };
-  }
-}
 
 export default Settings;

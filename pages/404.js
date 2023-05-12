@@ -1,18 +1,25 @@
 import { Box, Text } from "@chakra-ui/react";
-import GuestNavbar from "../components/GuestNavbar";
-import SignUpForm from "../components/SignUpForm";
-import Footer from "../components/Footer";
 import Head from "next/head";
 
 const metadata = {
-  title: "Sign Up | liftz",
-  description: "Sign Up page",
+  title: "404 | liftz",
+  description: "404 Page not Found Error page",
   image: "https://liftz-workout-tracker.vercel.app/meta-image.png",
 };
 
-const SignUpPage = () => {
+const Custom404 = () => {
   return (
-    <Box backgroundColor="blue.50" minHeight="100vh">
+    <Box
+      display="flex"
+      flexDirection="column"
+      justifyContent="center"
+      alignItems="center"
+      h="100vh"
+      fontSize="30px"
+      pl="30px"
+      pr="30px"
+      textAlign="center"
+    >
       <Head>
         <title>{metadata.title}</title>
         <meta name="description" content={metadata.description} />
@@ -33,24 +40,12 @@ const SignUpPage = () => {
         <meta name="twitter:image" content={metadata.image} />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <GuestNavbar />
-      <Box
-        color="white"
-        p="30px 20px 30px 20px"
-        display="flex"
-        flexDir="column"
-        justifyContent="center"
-        alignItems="center"
-        minHeight={`calc(100vh - 80px - 50px)`}
-      >
-        <Text fontSize="48px" fontWeight="700" mb="10px">
-          Sign Up
-        </Text>
-        <SignUpForm />
-      </Box>
-      <Footer />
+      <Text fontWeight="700" mb="20px">
+        404: Page Not Found
+      </Text>
+      <Text>Sorry! This page doesn't exist!</Text>
     </Box>
   );
 };
 
-export default SignUpPage;
+export default Custom404;

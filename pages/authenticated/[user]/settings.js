@@ -1,4 +1,4 @@
-import { Box, Spinner, Text } from "@chakra-ui/react";
+import { Box, Spinner, Text, useMediaQuery } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 
@@ -12,6 +12,8 @@ import { FaCheckCircle } from "react-icons/fa";
 const Settings = ({ user: dbUser, error }) => {
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState(null);
+
+  const [isLargerThan768] = useMediaQuery("(min-width: 768px)");
 
   const router = useRouter();
   const userId = router.query.user;
@@ -81,10 +83,22 @@ const Settings = ({ user: dbUser, error }) => {
           </Box>
         </Box>
       )}
-      <Box minHeight="calc(100vh - 80px)" pt="30px" pl="10px" pr="10px">
+      <Box
+        minHeight="calc(100vh - 80px)"
+        pt="30px"
+        pl={isLargerThan768 ? "100px" : "10px"}
+        pr={isLargerThan768 ? "100px" : "10px"}
+      >
         <Title userId={userId} content={"Settings"} />
-        <Box mt="20px" mb="30px">
-          <Box>
+        <Box
+          mt="20px"
+          mb="30px"
+          display="flex"
+          flexDirection="column"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <Box mt="20px">
             <Text fontSize="24px" fontWeight="700" mb="10px" textAlign="center">
               Change Email
             </Text>
@@ -96,7 +110,13 @@ const Settings = ({ user: dbUser, error }) => {
             </Text>
             <ChangePasswordForm userId={userId} setMessage={setMessage} />
           </Box>
-          <Box>
+          <Box
+            mb="20px"
+            display="flex"
+            flexDirection="column"
+            justifyContent="center"
+            alignItems="center"
+          >
             <Text fontSize="24px" fontWeight="700" mb="10px" textAlign="center">
               Delete Account
             </Text>

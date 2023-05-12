@@ -1,4 +1,4 @@
-import { Box, Button, Spinner, Text } from "@chakra-ui/react";
+import { Box, Button, Spinner, Text, useMediaQuery } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Calendar from "react-calendar";
@@ -14,6 +14,8 @@ const CustomCalendar = ({ dbSessions, dbSessionDates, error }) => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  const [isLargerThan768] = useMediaQuery("(min-width: 768px)");
+
   const router = useRouter();
   const userId = router.query.user;
 
@@ -27,15 +29,12 @@ const CustomCalendar = ({ dbSessions, dbSessionDates, error }) => {
   }, []);
 
   const handleDateClick = async (value) => {
-    console.log("Date clicked:", value);
-
     const month = date.getMonth() + 1; // getMonth() returns a zero-based index, so we add 1 to get the actual month
     const day = date.getDate();
     const year = date.getFullYear();
 
     const formattedDate = `${month}/${day}/${year}`;
 
-    // console.log(formattedDate); // Output: 5/6/2023
     setSelectedDate(formattedDate);
 
     const isoDate = format(value, "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
@@ -118,8 +117,8 @@ const CustomCalendar = ({ dbSessions, dbSessionDates, error }) => {
         minHeight="calc(100vh - 80px)"
         h="calc(100% - 80px)"
         pt="30px"
-        pl="10px"
-        pr="10px"
+        pl={isLargerThan768 ? "100px" : "10px"}
+        pr={isLargerThan768 ? "100px" : "10px"}
       >
         <Title userId={userId} content={"Session Calendar"} />
         <Box

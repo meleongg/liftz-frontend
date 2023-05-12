@@ -66,7 +66,7 @@ const GoalForm = ({ userId, setShowGoalForm, goals, setGoals }) => {
             {({ field, form }) => (
               <FormControl isInvalid={form.errors.goal && form.touched.goal}>
                 <FormLabel>Goal</FormLabel>
-                <Input {...field} placeholder="goal" />
+                <Input {...field} placeholder="Goal" />
                 <FormErrorMessage color="red.50" fontWeight="700">
                   {form.errors.goal}
                 </FormErrorMessage>

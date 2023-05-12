@@ -1,4 +1,11 @@
-import { Box, Heading, Button, VStack, Spinner, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  VStack,
+  Spinner,
+  Text,
+  useMediaQuery,
+} from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 
@@ -16,6 +23,8 @@ const Home = ({ dbUser, dbGoals, dbStats, error }) => {
   const [goals, setGoals] = useState(dbGoals);
   const [quoteIndex, setQuoteIndex] = useState(0);
   const [loading, setLoading] = useState(true);
+
+  const [isLargerThan768] = useMediaQuery("(min-width: 768px)");
 
   const router = useRouter();
   const userId = router.query.user;
@@ -108,8 +117,8 @@ const Home = ({ dbUser, dbGoals, dbStats, error }) => {
         minHeight="calc(100vh - 80px)"
         h="calc(100% - 80px)"
         pt="30px"
-        pl="10px"
-        pr="10px"
+        pl={isLargerThan768 ? "100px" : "10px"}
+        pr={isLargerThan768 ? "100px" : "10px"}
       >
         <Title userId={userId} content={`Hi ${user.firstName}!`} />
         <Text fontSize="18px" mt="20px" pb="30px">
@@ -171,7 +180,8 @@ const Home = ({ dbUser, dbGoals, dbStats, error }) => {
               Total Workout Time: {formatTime(stats.totalWorkoutTime)}
             </Text>
             <Text>
-              Average Workout Time: {formatTime(stats.averageWorkoutTime)}
+              Average Workout Time:{" "}
+              {formatTime(stats.averageWorkoutTime.toFixed(0))}
             </Text>
           </Box>
         </Box>

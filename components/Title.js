@@ -1,9 +1,10 @@
-import { Box, Heading } from "@chakra-ui/react";
+import { Box, Heading, useMediaQuery } from "@chakra-ui/react";
 import { FaSignOutAlt, FaCog } from "react-icons/fa";
 import { useRouter } from "next/router";
 
 const Title = ({ userId, content }) => {
   const router = useRouter();
+  const [isLargerThan768] = useMediaQuery("(min-width: 768px)");
 
   const handleLogout = async (e) => {
     e.preventDefault();
@@ -22,8 +23,8 @@ const Title = ({ userId, content }) => {
   };
 
   return (
-    <Box display="flex" alignItems="center">
-      <Heading fontSize="50px" w="80%">
+    <Box display="flex" justifyContent="space-between" alignItems="center">
+      <Heading fontSize="50px" w="80%" textAlign="left">
         {content}
       </Heading>
       <Box
@@ -32,7 +33,7 @@ const Title = ({ userId, content }) => {
         justifyContent="center"
         alignItems="center"
         flexDir="column"
-        ml="10px"
+        mr={isLargerThan768 ? "30px" : "10px"}
       >
         <Box onClick={handleLogout} _hover={{ cursor: "pointer" }} mb="10px">
           <FaSignOutAlt />

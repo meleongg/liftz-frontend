@@ -1,12 +1,14 @@
 import Head from "next/head";
 import Image from "next/image";
-import { Box, Text } from "@chakra-ui/react";
+import { Box, Text, useMediaQuery } from "@chakra-ui/react";
 import GuestNavbar from "../components/GuestNavbar";
 import Footer from "../components/Footer";
 
 import { FaListAlt, FaCalendarAlt, FaDumbbell, FaSignal } from "react-icons/fa";
 
 const LandingPage = () => {
+  const [isLargerThan768] = useMediaQuery("(min-width: 768px)");
+
   return (
     <Box backgroundColor="blue.50" minHeight="100vh">
       <Head>
@@ -25,10 +27,15 @@ const LandingPage = () => {
         color="#333"
         mt="30px"
         borderRadius="20px"
-        pl="20px"
-        pr="20px"
+        pl={isLargerThan768 ? "80px" : "20px"}
+        pr={isLargerThan768 ? "80px" : "20px"}
       >
-        <Text fontSize="30px" fontWeight="700" pt="50px" pb="30px">
+        <Text
+          fontSize={isLargerThan768 ? "50px" : "30px"}
+          fontWeight="700"
+          pt="50px"
+          pb="30px"
+        >
           Level up your gainz.
         </Text>
         <Box
@@ -47,26 +54,32 @@ const LandingPage = () => {
             alt="temp"
           />
         </Box>
-        <Text fontSize="18px" fontWeight="700" pt="20px" pb="50px">
+        <Text
+          fontSize={isLargerThan768 ? "26px" : "18px"}
+          fontWeight="700"
+          pt="20px"
+          pb="50px"
+          w="75%"
+        >
           Transform your body and crush your fitness goals with liftz. Say
           goodbye to workout amnesia and hello to unstoppable progress!
         </Text>
       </Box>
       <Box display="flex" justifyContent="flex-end" mt="30px" mb="30px">
         <Box
-          w="80%"
+          w={isLargerThan768 ? "70%" : "80%"}
           display="flex"
-          justifyContent="center"
+          justifyContent="space-between"
           alignItems="center"
           backgroundColor="white"
           borderRadius="20px"
           mt="30px"
-          p="10px 10px 10px 20px"
+          p={isLargerThan768 ? "30px 30px 30px 40px" : "10px 10px 10px 20px"}
         >
-          <Box fontSize="50px">
+          <Box fontSize={isLargerThan768 ? "80px" : "50px"}>
             <FaListAlt />
           </Box>
-          <Text pl="20px">
+          <Text pl="30px" fontSize={isLargerThan768 ? "26px" : "16px"}>
             Revolutionize your fitness journey with our workout app’s
             comprehensive library and session tracker.
           </Text>
@@ -74,18 +87,18 @@ const LandingPage = () => {
       </Box>
       <Box display="flex" justifyContent="flex-start" mt="30px" mb="30px">
         <Box
-          w="80%"
+          w={isLargerThan768 ? "70%" : "80%"}
           display="flex"
           justifyContent="center"
           alignItems="center"
           backgroundColor="white"
           borderRadius="20px"
-          p="10px 10px 10px 20px"
+          p={isLargerThan768 ? "30px 30px 30px 40px" : "10px 10px 10px 20px"}
         >
-          <Box fontSize="50px">
+          <Box fontSize={isLargerThan768 ? "80px" : "50px"}>
             <FaCalendarAlt />
           </Box>
-          <Text pl="20px">
+          <Text pl="30px" fontSize={isLargerThan768 ? "26px" : "16px"}>
             Maximize your gains with our built-in calendar feature. Easily track
             your past workout sessions.
           </Text>
@@ -93,18 +106,18 @@ const LandingPage = () => {
       </Box>
       <Box display="flex" justifyContent="flex-end" mt="30px" mb="30px">
         <Box
-          w="80%"
+          w={isLargerThan768 ? "70%" : "80%"}
           display="flex"
           justifyContent="center"
           alignItems="center"
           backgroundColor="white"
           borderRadius="20px"
-          p="10px 10px 10px 20px"
+          p={isLargerThan768 ? "30px 30px 30px 40px" : "10px 10px 10px 20px"}
         >
-          <Box fontSize="50px">
+          <Box fontSize={isLargerThan768 ? "80px" : "50px"}>
             <FaDumbbell />
           </Box>
-          <Text pl="20px">
+          <Text pl="30px" fontSize={isLargerThan768 ? "26px" : "16px"}>
             Say goodbye to mental math at the gym! Our barbell plate calculator
             takes the guesswork out of weightlifting, giving you a clear visual
             of your plates.
@@ -113,18 +126,18 @@ const LandingPage = () => {
       </Box>
       <Box display="flex" justifyContent="flex-start" mt="30px" mb="50px">
         <Box
-          w="80%"
+          w={isLargerThan768 ? "70%" : "80%"}
           display="flex"
           justifyContent="center"
           alignItems="center"
           backgroundColor="white"
           borderRadius="20px"
-          p="10px 10px 10px 20px"
+          p={isLargerThan768 ? "30px 30px 30px 40px" : "10px 10px 10px 20px"}
         >
-          <Box fontSize="50px">
+          <Box fontSize={isLargerThan768 ? "80px" : "50px"}>
             <FaSignal />
           </Box>
-          <Text pl="20px">
+          <Text pl="30px" fontSize={isLargerThan768 ? "26px" : "16px"}>
             Easily track and visualize your personal records for each exercise
             with our metric collection system.
           </Text>

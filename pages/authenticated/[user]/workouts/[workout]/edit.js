@@ -13,6 +13,7 @@ import {
   Editable,
   EditablePreview,
   EditableInput,
+  useMediaQuery,
 } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
@@ -32,6 +33,8 @@ const EditableCell = ({ value, onChange }) => {
 const EditWorkout = ({ dbWorkout, error }) => {
   const [workout, setWorkout] = useState(dbWorkout);
   const [loading, setLoading] = useState(true);
+
+  const [isLargerThan768] = useMediaQuery("(min-width: 768px)");
 
   const router = useRouter();
   const userId = router.query.user;
@@ -168,8 +171,8 @@ const EditWorkout = ({ dbWorkout, error }) => {
         minHeight="calc(100vh - 80px)"
         h="calc(100% - 80px)"
         pt="30px"
-        pl="10px"
-        pr="10px"
+        pl={isLargerThan768 ? "100px" : "10px"}
+        pr={isLargerThan768 ? "100px" : "10px"}
       >
         <Title userId={userId} content={`${workout?.name}`} />
         <Box>
@@ -184,6 +187,17 @@ const EditWorkout = ({ dbWorkout, error }) => {
             Back
           </Button>
         </Box>
+        <Box
+          mt="20px"
+          borderRadius="20px"
+          p="14px"
+          bgColor="blue.50"
+          color="white"
+        >
+          <Text fontSize="18px" fontWeight="700" textAlign="center">
+            Click/tap on each field to edit its value!
+          </Text>
+        </Box>
         <Box display="flex" flexDirection="column" mt="20px" mb="20px">
           <Text fontSize="30px" fontWeight="700">
             Name
@@ -192,7 +206,7 @@ const EditWorkout = ({ dbWorkout, error }) => {
             value={workout?.name}
             onChange={(newValue) => handleWorkoutChange("name", newValue)}
           />
-          <Text fontSize="30px" fontWeight="700">
+          <Text fontSize="30px" fontWeight="700" mt="20px">
             Notes
           </Text>
           <EditableCell

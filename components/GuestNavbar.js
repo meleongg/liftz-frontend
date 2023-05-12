@@ -27,12 +27,16 @@ const GuestNavbar = () => {
       >
         <Image src="/full-logo.png" width={100} height={50} alt="logo" />
       </Box>
-      <Link as={NextLink} href="/sign-up">
-        sign up
-      </Link>
-      <Link as={NextLink} href="/login">
-        login
-      </Link>
+      <Box display="flex" justifyContent="center" alignItems="center">
+        <Link as={NextLink} href="/sign-up">
+          sign up
+        </Link>
+        <Box ml="20px">
+          <Link as={NextLink} href="/login">
+            login
+          </Link>
+        </Box>
+      </Box>
     </Box>
   );
 };

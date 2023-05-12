@@ -1,10 +1,6 @@
-import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 
-import { Inter } from "@next/font/google";
-import { Box, Heading, Button } from "@chakra-ui/react";
-
-const inter = Inter({ subsets: ["latin"] });
+import { Box, Heading, Button, useMediaQuery } from "@chakra-ui/react";
 
 import Navbar from "../../../components/Navbar";
 import NewWorkoutForm from "../../../components/NewWorkoutForm";
@@ -12,6 +8,8 @@ import NewWorkoutForm from "../../../components/NewWorkoutForm";
 const NewWorkout = () => {
   const router = useRouter();
   const userId = router.query.user;
+
+  const [isLargerThan768] = useMediaQuery("(min-width: 768px)");
 
   const handleBackButton = () => {
     router.push(`/authenticated/${userId}/workouts`);
@@ -23,10 +21,10 @@ const NewWorkout = () => {
       <Box
         minHeight="calc(100vh - 80px)"
         h="calc(100% - 80px)"
-        className={inter.className}
         pt="30px"
-        pl="10px"
-        pr="10px"
+        pl={isLargerThan768 ? "100px" : "10px"}
+        pr={isLargerThan768 ? "100px" : "10px"}
+        mb="30px"
       >
         <Heading fontSize="50px">New Workout</Heading>
         <Button

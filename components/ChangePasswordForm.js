@@ -111,6 +111,7 @@ const ChangePasswordForm = ({ userId, setMessage }) => {
             alignItems="center"
             borderRadius="20px"
             minWidth="350px"
+            maxWidth="400px"
           >
             {formik.errors.form && (
               <Box color="red.50" fontWeight="700" textAlign="center" mb="10px">

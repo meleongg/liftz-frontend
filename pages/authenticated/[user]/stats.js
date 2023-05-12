@@ -1,4 +1,4 @@
-import { Box, Spinner, Text } from "@chakra-ui/react";
+import { Box, Spinner, Text, useMediaQuery } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 
@@ -8,6 +8,8 @@ import PRChart from "../../../components/PRChart";
 
 const Stats = ({ dbPrs, error }) => {
   const [loading, setLoading] = useState(true);
+
+  const [isLargerThan768] = useMediaQuery("(min-width: 768px)");
 
   const router = useRouter();
   const userId = router.query.user;
@@ -55,8 +57,8 @@ const Stats = ({ dbPrs, error }) => {
         minHeight="calc(100vh - 80px)"
         h="calc(100% - 80px)"
         pt="30px"
-        pl="10px"
-        pr="10px"
+        pl={isLargerThan768 ? "100px" : "10px"}
+        pr={isLargerThan768 ? "100px" : "10px"}
       >
         <Title userId={userId} content={"PR Progress"} />
         <Box mt="20px" display="flex" flexDirection="column" mb="20px">

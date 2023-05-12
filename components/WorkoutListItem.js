@@ -22,23 +22,26 @@ const WorkoutListItem = ({ user, workout }) => {
       justifyContent="space-between"
       alignItems="center"
     >
-      <Text w="30%">{workout.name}</Text>
-      <Button
-        bgColor="blue.50"
-        color="white"
-        _hover={{ bg: "lightBlue.50" }}
-        onClick={handleViewClick}
-      >
-        View
-      </Button>
-      <Button
-        bgColor="blue.50"
-        color="white"
-        _hover={{ bg: "lightBlue.50" }}
-        onClick={handleStartClick}
-      >
-        Start
-      </Button>
+      <Text fontWeight="700">{workout.name}</Text>
+      <Box>
+        <Button
+          bgColor="blue.50"
+          color="white"
+          _hover={{ bg: "lightBlue.50" }}
+          onClick={handleViewClick}
+        >
+          View
+        </Button>
+        <Button
+          bgColor="blue.50"
+          color="white"
+          _hover={{ bg: "lightBlue.50" }}
+          onClick={handleStartClick}
+          ml="30px"
+        >
+          Start
+        </Button>
+      </Box>
     </Box>
   );
 };

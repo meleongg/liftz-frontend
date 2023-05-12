@@ -7,6 +7,7 @@ import {
   NumberInputStepper,
   NumberIncrementStepper,
   NumberDecrementStepper,
+  useMediaQuery,
 } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
@@ -19,6 +20,8 @@ const WEIGHTS = [45, 35, 25, 10, 5, 2.5]; // Available plate weights in pounds
 const WeightCalculator = () => {
   const [weight, setWeight] = useState(0);
   const [plates, setPlates] = useState([]);
+
+  const [isLargerThan768] = useMediaQuery("(min-width: 768px)");
 
   const calculatePlates = (weight) => {
     const plates = [];
@@ -52,8 +55,8 @@ const WeightCalculator = () => {
         minHeight="calc(100vh - 80px)"
         h="calc(100% - 80px)"
         pt="30px"
-        pl="10px"
-        pr="10px"
+        pl={isLargerThan768 ? "100px" : "10px"}
+        pr={isLargerThan768 ? "100px" : "10px"}
       >
         <Title userId={userId} content={"Plate Calculator"} />
         <Box mt="20px" mb="20px">
@@ -81,7 +84,7 @@ const WeightCalculator = () => {
                 const newWeight = weight + 5;
                 setWeight(newWeight);
               }}
-              w="30%"
+              w="120px"
             >
               Add 5 lbs
             </Button>
@@ -94,7 +97,7 @@ const WeightCalculator = () => {
                 setWeight(newWeight);
               }}
               ml="10px"
-              w="30%"
+              w="120px"
             >
               Deload 10%
             </Button>

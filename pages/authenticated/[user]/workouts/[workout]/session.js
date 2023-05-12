@@ -266,17 +266,8 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
                       </Td>
                       <Td>{targetSets[index]}</Td>
                       <Td>
-                        <NumberInput defaultValue={exercise.sets}>
-                          <NumberInputField
-                            onChange={(newValue) =>
-                              handleSessionExerciseChange(
-                                index,
-                                "sets",
-                                newValue
-                              )
-                            }
-                            w="100px"
-                          />
+                        <NumberInput defaultValue={exercise.sets} min={0}>
+                          <NumberInputField w="100px" />
                           <NumberInputStepper>
                             <NumberIncrementStepper
                               onClick={() =>

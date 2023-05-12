@@ -9,7 +9,9 @@ import Title from "../../components/Title";
 
 import { FaPlus } from "react-icons/fa";
 
-const Home = ({ user: dbUser, goals: dbGoals, error }) => {
+const Home = ({ dbUser, dbGoals, dbStats, error }) => {
+  const [stats] = useState(dbStats);
+  const [user] = useState(dbUser);
   const [showGoalForm, setShowGoalForm] = useState(false);
   const [goals, setGoals] = useState(dbGoals);
   const [quoteIndex, setQuoteIndex] = useState(0);
@@ -23,9 +25,9 @@ const Home = ({ user: dbUser, goals: dbGoals, error }) => {
   };
 
   const quotesArr = [
-    "Looking big jim fren",
-    "Leg day everyday",
-    "Platella, Dumbella, and Barbella will always be there for you",
+    "Looking big jim fren.",
+    "Leg day everyday.",
+    "Platella, Dumbella, and Barbella will always be there for you.",
     "No pain, no gain, no brain cells left.",
     "Sweat now, shine later.",
     "You can't flex fat, so keep grinding.",
@@ -46,6 +48,15 @@ const Home = ({ user: dbUser, goals: dbGoals, error }) => {
     "Sweat is just your fat crying.",
     "The only limit is the one you set for yourself - so set the bar high and lift it higher.",
   ];
+
+  const formatTime = (timeInSeconds) => {
+    const minutes = Math.floor(timeInSeconds / 60);
+    const seconds = timeInSeconds % 60;
+    const formattedTime = `${minutes.toString().padStart(2, "0")}:${seconds
+      .toString()
+      .padStart(2, "0")}`;
+    return formattedTime;
+  };
 
   useEffect(() => {
     let index = getRandomNumber(quotesArr.length - 1);
@@ -100,13 +111,15 @@ const Home = ({ user: dbUser, goals: dbGoals, error }) => {
         pl="10px"
         pr="10px"
       >
-        <Title userId={userId} content={`Hi ${dbUser.firstName}!`} />
-        <Heading fontSize="20px" pt="10px" pb="30px">
+        <Title userId={userId} content={`Hi ${user.firstName}!`} />
+        <Text fontSize="18px" mt="20px" pb="30px">
           {quotesArr[quoteIndex]}
-        </Heading>
+        </Text>
         <Box pb="20px">
           <Box display="flex" justifyContent="space-between" pb="10px">
-            <Heading fontSize="30px">Goals</Heading>
+            <Text fontSize="30px" fontWeight="700">
+              Goals
+            </Text>
             <Button
               bgColor="blue.50"
               color="white"
@@ -149,9 +162,18 @@ const Home = ({ user: dbUser, goals: dbGoals, error }) => {
           </VStack>
         </Box>
         <Box pb="20px">
-          <Heading fontSize="30px">Fun Stats</Heading>
-          Coming Soon! :)
-          <VStack minHeight="100px"></VStack>
+          <Text fontSize="30px" fontWeight="700">
+            Fun Stats
+          </Text>
+          <Box>
+            <Text>Total Number of Workouts: {stats.numberOfWorkouts}</Text>
+            <Text>
+              Total Workout Time: {formatTime(stats.totalWorkoutTime)}
+            </Text>
+            <Text>
+              Average Workout Time: {formatTime(stats.averageWorkoutTime)}
+            </Text>
+          </Box>
         </Box>
       </Box>
       <Navbar userId={userId} currPage="home" />
@@ -168,13 +190,14 @@ export async function getServerSideProps(context) {
 
     return {
       props: {
-        user: {
+        dbUser: {
           id: data._id,
           firstName: data.firstName,
           lastName: data.lastName,
           email: data.email,
         },
-        goals: data.goals,
+        dbGoals: data.goals,
+        dbStats: data.stats,
       },
     };
   } catch (err) {

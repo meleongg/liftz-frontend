@@ -122,7 +122,12 @@ const NewWorkoutForm = ({ userId }) => {
                 {formik.values.exercises.length > 0 &&
                   formik.values.exercises.map((exercise, index) => (
                     <Box key={index} mt="30px">
-                      <Text as="legend" htmlFor={null} fontSize="30px">
+                      <Text
+                        as="legend"
+                        htmlFor={null}
+                        fontSize="30px"
+                        fontWeight="700"
+                      >
                         New Exercise
                       </Text>
 

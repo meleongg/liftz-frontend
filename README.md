@@ -1,6 +1,6 @@
 # liftz Workout Tracker App
 
-liftz is a web application is designed to help users efficiently track and manage their workouts.
+[liftz](https://liftz-workout-tracker.vercel.app/) is a web application is designed to help users efficiently track and manage their workouts.
 
 With a comprehensive workout library, users can easily log and monitor individual workout sessions, view their progress over time, and set personal records for specific exercises.
 
@@ -12,6 +12,7 @@ Additionally, the weight calculator feature makes it simple for users to determi
 - Express (Passport.js, Express Validator)
 - Node.js
 - MongoDB (Mongoose)
+- Figma ([Design File](https://www.figma.com/file/muHoDdve5LBDWUNHo9OVaN/liftz?type=design&node-id=457%3A8&t=9cIH58PUL3zzY9un-1))
 
 ## Features
 

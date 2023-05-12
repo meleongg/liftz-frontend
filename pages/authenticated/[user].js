@@ -72,7 +72,7 @@ const Home = ({ dbUser, dbGoals, dbStats, error }) => {
     setQuoteIndex(index);
 
     setLoading(false);
-  }, []);
+  }, [quotesArr.length]);
 
   if (loading) {
     return (

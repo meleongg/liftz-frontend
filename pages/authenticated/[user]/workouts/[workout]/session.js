@@ -318,7 +318,6 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
                           bgColor="blue.50"
                           color="white"
                           _hover={{ bg: "lightBlue.50" }}
-                          onClick={handleCancelButton}
                           mt="10px"
                           mb="10px"
                           onClick={() => handleDeleteSessionExercise(index)}
@@ -337,7 +336,6 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
                     bgColor="blue.50"
                     color="white"
                     _hover={{ bg: "lightBlue.50" }}
-                    onClick={handleCancelButton}
                     mt="10px"
                     mb="10px"
                     onClick={handleAddSessionExercise}

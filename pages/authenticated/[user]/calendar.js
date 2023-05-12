@@ -26,7 +26,7 @@ const CustomCalendar = ({ dbSessions, dbSessionDates, error }) => {
     setDates(dbSessionDateObjs);
 
     setLoading(false);
-  }, []);
+  }, [dbSessionDates]);
 
   const handleDateClick = async (value) => {
     const month = date.getMonth() + 1; // getMonth() returns a zero-based index, so we add 1 to get the actual month

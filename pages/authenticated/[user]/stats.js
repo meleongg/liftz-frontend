@@ -62,7 +62,14 @@ const Stats = ({ dbPrs, error }) => {
       >
         <Title userId={userId} content={"PR Progress"} />
         <Box mt="20px" display="flex" flexDirection="column" mb="20px">
-          <Box borderRadius="20px" p="14px" bgColor="blue.50" color="white">
+          <Box
+            borderRadius="20px"
+            p="14px"
+            bgColor="blue.50"
+            color="white"
+            mt="20px"
+            mb="20px"
+          >
             <Text>
               PRs are automatically created for each of your exercises. Each PR
               will update every time you complete a session where you hit a new

@@ -16,13 +16,8 @@ const colors = {
   },
 };
 
-// const fonts = {
-//   body: `'Inter', sans-serif`,
-// };
-
 const customTheme = extendTheme({
   colors,
-  // fonts,
 });
 
 export default customTheme;

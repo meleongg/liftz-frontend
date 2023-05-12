@@ -340,9 +340,10 @@ const EditWorkout = ({ dbWorkout, error }) => {
 
 export async function getServerSideProps(context) {
   const { workout } = context.params;
+  const BE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
   try {
-    const response = await fetch(`http://localhost:3001/workouts/${workout}`);
+    const response = await fetch(`${BE_URL}/workouts/${workout}`);
     const data = await response.json();
 
     const dbWorkout = {

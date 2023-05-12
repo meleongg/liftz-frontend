@@ -163,12 +163,11 @@ const SessionEnd = ({ dbSession, error }) => {
 };
 
 export async function getServerSideProps(context) {
+  const BE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
   const { session } = context.params;
 
   try {
-    const response = await fetch(
-      `http://localhost:3001/workouts/sessions/${session}`
-    );
+    const response = await fetch(`${BE_URL}/workouts/sessions/${session}`);
     const data = await response.json();
 
     const dbSession = {

@@ -1,3 +1,5 @@
+const BE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+
 export default async function handler(req, res) {
   const { email } = req.body;
 
@@ -6,16 +8,13 @@ export default async function handler(req, res) {
   };
 
   try {
-    const checkEmailResponse = await fetch(
-      "http://localhost:3001/check-email",
-      {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    const checkEmailResponse = await fetch(`${BE_URL}/check-email`, {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
     if (!checkEmailResponse.ok) {
       if (checkEmailResponse.status === 400) {

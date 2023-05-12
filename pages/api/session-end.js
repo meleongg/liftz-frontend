@@ -1,3 +1,5 @@
+const BE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+
 export default async function (req, res) {
   const { userId, workoutId, time, sessionExercises } = req.body;
 
@@ -10,7 +12,7 @@ export default async function (req, res) {
   try {
     // Save the session data to the server
     const rawResponse = await fetch(
-      `http://localhost:3001/workouts/${workoutId}/session-end`,
+      `${BE_URL}/workouts/${workoutId}/session-end`,
       {
         method: "POST",
         headers: {

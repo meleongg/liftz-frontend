@@ -1,3 +1,5 @@
+const BE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+
 export default async function handler(req, res) {
   const { userId, email, password } = req.body;
 
@@ -7,16 +9,13 @@ export default async function handler(req, res) {
   };
 
   try {
-    const response = await fetch(
-      `http://localhost:3001/${userId}/update-user`,
-      {
-        method: "POST",
-        body: JSON.stringify(userData),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    const response = await fetch(`${BE_URL}/${userId}/update-user`, {
+      method: "POST",
+      body: JSON.stringify(userData),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
     if (!response.ok) {
       if (response.status === 401) {

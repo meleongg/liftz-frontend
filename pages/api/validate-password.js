@@ -1,3 +1,5 @@
+const BE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+
 export default async function handler(req, res) {
   const { userId, password } = req.body;
 
@@ -7,7 +9,7 @@ export default async function handler(req, res) {
 
   try {
     const validatePasswordResponse = await fetch(
-      `http://localhost:3001/${userId}/validate-password`,
+      `${BE_URL}/${userId}/validate-password`,
       {
         method: "POST",
         body: JSON.stringify(data),

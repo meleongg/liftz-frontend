@@ -1,10 +1,12 @@
+const BE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+
 export default async function (req, res) {
   const { userId } = req.query;
   const { values } = req.body;
 
   try {
     const rawResponse = await fetch(
-      `http://localhost:3001/workouts/${userId}/create-workout`,
+      `${BE_URL}/workouts/${userId}/create-workout`,
       {
         method: "POST",
         headers: {

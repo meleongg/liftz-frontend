@@ -392,10 +392,11 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
 };
 
 export async function getServerSideProps(context) {
+  const BE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
   const { workout } = context.params;
 
   try {
-    const response = await fetch(`http://localhost:3001/workouts/${workout}`);
+    const response = await fetch(`${BE_URL}/workouts/${workout}`);
     const data = await response.json();
 
     const dbWorkout = {

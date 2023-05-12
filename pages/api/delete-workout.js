@@ -1,3 +1,5 @@
+const BE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+
 export default async function (req, res) {
   const { userId, workoutId } = req.body;
 
@@ -7,17 +9,14 @@ export default async function (req, res) {
   };
 
   try {
-    const rawResponse = await fetch(
-      `http://localhost:3001/workouts/${workoutId}/delete`,
-      {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      }
-    );
+    const rawResponse = await fetch(`${BE_URL}/workouts/${workoutId}/delete`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
     const deleteMsg = await rawResponse.json();
 
     res.status(200).json(deleteMsg);

@@ -1,6 +1,8 @@
+const BE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+
 export default async function (req, res) {
   try {
-    await fetch("http://localhost:3001/log-out");
+    await fetch(`${BE_URL}/log-out`);
 
     res.status(200).json({ message: "Logged out successfully" });
   } catch (err) {

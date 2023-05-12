@@ -1,3 +1,5 @@
+const BE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+
 export default async function handler(req, res) {
   const { email, password } = req.body;
 
@@ -7,7 +9,7 @@ export default async function handler(req, res) {
   };
 
   try {
-    const response = await fetch("http://localhost:3001/login", {
+    const response = await fetch(`${BE_URL}/login`, {
       method: "POST",
       body: JSON.stringify(userData),
       headers: {

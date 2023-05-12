@@ -206,10 +206,11 @@ const CustomCalendar = ({ dbSessions, dbSessionDates, error }) => {
 };
 
 export async function getServerSideProps(context) {
+  const BE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
   const { user } = context.params;
 
   try {
-    const response = await fetch(`http://localhost:3001/calendar/${user}`);
+    const response = await fetch(`${BE_URL}/calendar/${user}`);
     const data = await response.json();
 
     const dates = data.map((session) => session.date);

@@ -140,10 +140,11 @@ const Settings = ({ user: dbUser, error }) => {
 };
 
 export async function getServerSideProps(context) {
+  const BE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
   const { user } = context.params;
 
   try {
-    const response = await fetch(`http://localhost:3001/user/${user}`);
+    const response = await fetch(`${BE_URL}/user/${user}`);
     const data = await response.json();
 
     return {

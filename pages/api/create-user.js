@@ -1,3 +1,5 @@
+const BE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     res.status(405).json({ message: "Method not allowed" });
@@ -14,7 +16,7 @@ export default async function handler(req, res) {
   };
 
   try {
-    const response = await fetch("http://localhost:3001/create-user", {
+    const response = await fetch(`${BE_URL}/create-user`, {
       method: "POST",
       body: JSON.stringify(userData),
       headers: {

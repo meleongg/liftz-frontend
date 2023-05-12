@@ -1,19 +1,18 @@
+const BE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+
 export default async function (req, res) {
   const { userId } = req.query;
   const { goalId } = req.body;
 
   try {
-    const rawResponse = await fetch(
-      `http://localhost:3001/${userId}/delete-goal`,
-      {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ goalId }),
-      }
-    );
+    const rawResponse = await fetch(`${BE_URL}/${userId}/delete-goal`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ goalId }),
+    });
 
     if (!rawResponse.ok) {
       if (rawResponse.status === 400) {

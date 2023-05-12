@@ -22,6 +22,8 @@ import Navbar from "../../../../../components/Navbar";
 import Title from "../../../../../components/Title";
 import Head from "next/head";
 
+const BE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+
 const metadata = {
   description: "Login page",
   image: "https://liftz-workout-tracker.vercel.app/meta-image.png",
@@ -29,7 +31,7 @@ const metadata = {
 
 const EditableCell = ({ value, onChange }) => {
   return (
-    <Editable defaultValue={value}>
+    <Editable defaultValue={value} w="150px">
       <EditablePreview>{value}</EditablePreview>
       <EditableInput onChange={(e) => onChange(e.target.value)} />
     </Editable>
@@ -114,17 +116,14 @@ const EditWorkout = ({ dbWorkout, error }) => {
       workout: workout,
     };
 
-    const rawResponse = await fetch(
-      `http://localhost:3001/workouts/${workoutId}/update`,
-      {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      }
-    );
+    const rawResponse = await fetch(`${BE_URL}/workouts/${workoutId}/update`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
     const resWorkoutId = await rawResponse.json();
 
     router.push(`/authenticated/${userId}/workouts/${resWorkoutId}`);
@@ -371,6 +370,10 @@ export async function getServerSideProps(context) {
   try {
     const response = await fetch(`${BE_URL}/workouts/${workout}`);
     const data = await response.json();
+
+    if (data.notes === "") {
+      data.notes = "Temp Notes";
+    }
 
     const dbWorkout = {
       id: data._id,

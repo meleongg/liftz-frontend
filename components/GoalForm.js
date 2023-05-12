@@ -13,6 +13,8 @@ import {
 } from "@chakra-ui/react";
 import * as Yup from "yup";
 
+const BE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+
 const GoalForm = ({ userId, setShowGoalForm, goals, setGoals }) => {
   const handleCancel = (props) => {
     props.resetForm();
@@ -31,17 +33,14 @@ const GoalForm = ({ userId, setShowGoalForm, goals, setGoals }) => {
       })}
       onSubmit={(values, { setSubmitting }) => {
         (async () => {
-          const rawResponse = await fetch(
-            `http://localhost:3001/${userId}/create-goal`,
-            {
-              method: "POST",
-              headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify(values, null, 2),
-            }
-          );
+          const rawResponse = await fetch(`${BE_URL}/${userId}/create-goal`, {
+            method: "POST",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(values, null, 2),
+          });
 
           // return the id of the goal
           const goalId = await rawResponse.json();

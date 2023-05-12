@@ -43,7 +43,7 @@ const Custom404 = () => {
       <Text fontWeight="700" mb="20px">
         404: Page Not Found
       </Text>
-      <Text>Sorry! This page doesn't exist!</Text>
+      <Text>Sorry! This page does not exist!</Text>
     </Box>
   );
 };

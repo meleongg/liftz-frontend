@@ -94,8 +94,6 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
   };
 
   const handleEndButton = async () => {
-    handleStop();
-
     const data = {
       userId: userId,
       workoutId: workoutId,

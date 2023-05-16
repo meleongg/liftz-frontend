@@ -41,15 +41,16 @@ const CustomCalendar = ({ dbSessions, dbSessionDates, error }) => {
     const year = date.getFullYear();
 
     const formattedDate = `${month}/${day}/${year}`;
+    const fetchFormattedDate = `${month}-${day}-${year}`;
 
     setSelectedDate(formattedDate);
 
-    const isoDate = format(value, "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+    // const isoDate = format(value, "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 
     try {
       setLoading(true);
       const response = await fetch(
-        `/api/handle-date-click?userId=${userId}&isoDate=${isoDate}`
+        `/api/handle-date-click?userId=${userId}&date=${fetchFormattedDate}`
       );
 
       const sessionsData = await response.json();

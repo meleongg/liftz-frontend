@@ -68,15 +68,6 @@ const SessionEnd = ({ dbSession, error }) => {
     );
   }
 
-  const formatTime = (totalSeconds) => {
-    const hours = Math.floor(totalSeconds / 3600);
-    const minutes = Math.floor((totalSeconds % 3600) / 60);
-    const seconds = totalSeconds % 60;
-    return `${hours.toString().padStart(2, "0")}:${minutes
-      .toString()
-      .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
-  };
-
   const formatDate = (dateStr) => {
     const date = new Date(dateStr);
     return date.toLocaleDateString();
@@ -118,10 +109,6 @@ const SessionEnd = ({ dbSession, error }) => {
       >
         <Title userId={userId} content={`${session?.workout?.name} Session`} />
 
-        <Text fontSize="30px" fontWeight="700" mt="20px">
-          Time Elapsed
-        </Text>
-        <Text>{formatTime(session?.time)}</Text>
         <Text fontSize="30px" fontWeight="700" mt="20px">
           Date
         </Text>
@@ -199,7 +186,6 @@ export async function getServerSideProps(context) {
     const dbSession = {
       id: data._id,
       date: data.date,
-      time: data.time,
       exercises: data.exercises,
       workout: data.workout,
     };

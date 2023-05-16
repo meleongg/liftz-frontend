@@ -64,15 +64,6 @@ const Home = ({ dbUser, dbGoals, error }) => {
     "The only limit is the one you set for yourself - so set the bar high and lift it higher.",
   ];
 
-  const formatTime = (timeInSeconds) => {
-    const minutes = Math.floor(timeInSeconds / 60);
-    const seconds = timeInSeconds % 60;
-    const formattedTime = `${minutes.toString().padStart(2, "0")}:${seconds
-      .toString()
-      .padStart(2, "0")}`;
-    return formattedTime;
-  };
-
   useEffect(() => {
     let index = getRandomNumber(quotesArr.length - 1);
     setQuoteIndex(index);

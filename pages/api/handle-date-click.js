@@ -1,10 +1,10 @@
 const BE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export default async function handler(req, res) {
-  const { userId, isoDate } = req.query;
+  const { userId, date } = req.query;
 
   try {
-    const response = await fetch(`${BE_URL}/calendar/${userId}/${isoDate}`);
+    const response = await fetch(`${BE_URL}/calendar/${userId}/${date}`);
 
     const sessionsData = await response.json();
     res.status(200).json(sessionsData);

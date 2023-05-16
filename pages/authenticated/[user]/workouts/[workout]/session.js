@@ -23,7 +23,6 @@ import {
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 
-import Navbar from "../../../../../components/Navbar";
 import Title from "../../../../../components/Title";
 import Head from "next/head";
 
@@ -332,6 +331,7 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
             onClick={handleCancelButton}
             mt="10px"
             mb="10px"
+            w="100px"
           >
             Cancel
           </Button>
@@ -343,12 +343,12 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
             onClick={handleEndButton}
             mt="10px"
             mb="10px"
+            w="100px"
           >
             End
           </Button>
         </Box>
       </Box>
-      <Navbar userId={userId} currPage="workouts" />
     </Box>
   );
 };

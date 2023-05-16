@@ -348,6 +348,7 @@ const EditWorkout = ({ dbWorkout, error }) => {
             onClick={handleDeleteButton}
             mt="10px"
             mb="10px"
+            w="100px"
           >
             Delete
           </Button>
@@ -359,6 +360,7 @@ const EditWorkout = ({ dbWorkout, error }) => {
             onClick={handleSubmitButton}
             mt="10px"
             mb="10px"
+            w="100px"
           >
             Submit
           </Button>

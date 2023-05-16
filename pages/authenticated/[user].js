@@ -23,8 +23,7 @@ const metadata = {
   image: "https://liftz-workout-tracker.vercel.app/meta-image.png",
 };
 
-const Home = ({ dbUser, dbGoals, dbStats, error }) => {
-  const [stats] = useState(dbStats);
+const Home = ({ dbUser, dbGoals, error }) => {
   const [user] = useState(dbUser);
   const [showGoalForm, setShowGoalForm] = useState(false);
   const [goals, setGoals] = useState(dbGoals);
@@ -197,21 +196,6 @@ const Home = ({ dbUser, dbGoals, dbStats, error }) => {
             })}
           </VStack>
         </Box>
-        <Box pb="20px">
-          <Text fontSize="30px" fontWeight="700">
-            Fun Stats
-          </Text>
-          <Box>
-            <Text>Total Number of Workouts: {stats.numberOfWorkouts}</Text>
-            <Text>
-              Total Workout Time: {formatTime(stats.totalWorkoutTime)}
-            </Text>
-            <Text>
-              Average Workout Time:{" "}
-              {formatTime(stats.averageWorkoutTime.toFixed(0))}
-            </Text>
-          </Box>
-        </Box>
       </Box>
       <Navbar userId={userId} currPage="home" />
     </Box>
@@ -236,7 +220,6 @@ export async function getServerSideProps(context) {
           email: data.email,
         },
         dbGoals: data.goals,
-        dbStats: data.stats,
       },
     };
   } catch (err) {

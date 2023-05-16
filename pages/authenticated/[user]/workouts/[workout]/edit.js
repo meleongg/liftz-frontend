@@ -10,6 +10,7 @@ import {
   Tr,
   Th,
   Td,
+  Textarea,
   Editable,
   EditablePreview,
   EditableInput,
@@ -234,10 +235,15 @@ const EditWorkout = ({ dbWorkout, error }) => {
           <Text fontSize="30px" fontWeight="700" mt="20px">
             Notes
           </Text>
-          <EditableCell
-            value={workout?.notes}
+          <Editable
+            defaultValue={workout?.notes || "Editable Notes"}
             onChange={(newValue) => handleWorkoutChange("notes", newValue)}
-          />
+          >
+            <EditablePreview>
+              <Textarea readOnly minHeight="200px" />
+            </EditablePreview>
+            <EditableInput as={Textarea} />
+          </Editable>
         </Box>
 
         <Box overflowX="auto">
@@ -370,10 +376,6 @@ export async function getServerSideProps(context) {
   try {
     const response = await fetch(`${BE_URL}/workouts/${workout}`);
     const data = await response.json();
-
-    if (data.notes === "") {
-      data.notes = "Temp Notes";
-    }
 
     const dbWorkout = {
       id: data._id,

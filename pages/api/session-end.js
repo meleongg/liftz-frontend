@@ -1,11 +1,10 @@
 const BE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export default async function (req, res) {
-  const { userId, workoutId, time, sessionExercises } = req.body;
+  const { userId, workoutId, sessionExercises } = req.body;
 
   const data = {
     userId: userId,
-    time: time,
     sessionExercises: sessionExercises,
   };
 

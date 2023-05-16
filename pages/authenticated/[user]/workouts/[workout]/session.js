@@ -42,8 +42,6 @@ const EditableCell = ({ value, onChange }) => {
 };
 
 const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
-  const [time, setTime] = useState(0);
-  const [timerOn, setTimerOn] = useState(false);
   const [sessionExercises, setSessionExercises] = useState(dbExercises);
   const [targetSets] = useState(dbTargetSets);
   const [workout] = useState(dbWorkout);
@@ -54,38 +52,6 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
   const router = useRouter();
   const userId = router.query.user;
   const workoutId = router.query.workout;
-
-  useEffect(() => {
-    let interval;
-    if (timerOn) {
-      interval = setInterval(() => {
-        setTime((prevTime) => prevTime + 1);
-      }, 1000);
-    }
-    return () => clearInterval(interval);
-  }, [timerOn]);
-
-  const handleStart = () => {
-    setTimerOn(true);
-  };
-
-  const handleStop = () => {
-    setTimerOn(false);
-  };
-
-  const handleReset = () => {
-    setTime(0);
-    setTimerOn(false);
-  };
-
-  const formatTime = (totalSeconds) => {
-    const hours = Math.floor(totalSeconds / 3600);
-    const minutes = Math.floor((totalSeconds % 3600) / 60);
-    const seconds = totalSeconds % 60;
-    return `${hours.toString().padStart(2, "0")}:${minutes
-      .toString()
-      .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
-  };
 
   useEffect(() => {
     setLoading(false);
@@ -133,7 +99,6 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
     const data = {
       userId: userId,
       workoutId: workoutId,
-      time: time,
       sessionExercises: sessionExercises,
     };
 
@@ -223,42 +188,7 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
         pr={isLargerThan768 ? "100px" : "10px"}
       >
         <Title userId={userId} content={`${workout?.name}`} />
-        <Box mt="20px">
-          <Text fontSize="30px" fontWeight="700">
-            Time Elapsed
-          </Text>
-          <Text mb="10px" fontSize="20px">
-            {formatTime(time)}
-          </Text>
-          {!timerOn ? (
-            <Button
-              bgColor="blue.50"
-              color="white"
-              _hover={{ bg: "lightBlue.50" }}
-              onClick={handleStart}
-            >
-              Start
-            </Button>
-          ) : (
-            <Button
-              bgColor="blue.50"
-              color="white"
-              _hover={{ bg: "lightBlue.50" }}
-              onClick={handleStop}
-            >
-              Stop
-            </Button>
-          )}
-          <Button
-            bgColor="blue.50"
-            color="white"
-            _hover={{ bg: "lightBlue.50" }}
-            onClick={handleReset}
-            ml="4"
-          >
-            Reset
-          </Button>
-        </Box>
+
         <Box display="flex" flexDirection="column" mt="20px" mb="20px">
           <Text fontSize="30px" fontWeight="700">
             Notes
@@ -266,9 +196,19 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
           <Text>{workout?.notes}</Text>
         </Box>
 
-        {/* make this an editable table with all text inputs for user to manually edit, fetched exercise data is only placeholder */}
+        <Box
+          mt="20px"
+          borderRadius="20px"
+          p="14px"
+          bgColor="blue.50"
+          color="white"
+        >
+          <Text fontSize="18px" fontWeight="700" textAlign="center">
+            Click/tap on most cells to edit its value!
+          </Text>
+        </Box>
 
-        <Box overflowX="auto">
+        <Box overflowX="auto" mt="20px">
           <Table>
             <Thead>
               <Tr>

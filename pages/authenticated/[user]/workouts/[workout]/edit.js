@@ -236,7 +236,10 @@ const EditWorkout = ({ dbWorkout, error }) => {
             Notes
           </Text>
           <Editable
-            defaultValue={workout?.notes || "Editable Notes"}
+            defaultValue={
+              workout?.notes ||
+              "Please delete this text if you would like empty notes."
+            }
             onChange={(newValue) => handleWorkoutChange("notes", newValue)}
           >
             <EditablePreview>

@@ -18,6 +18,7 @@ const GuestNavbar = () => {
       h="80px"
       fontSize="18px"
       fontWeight="700"
+      boxShadow="lg"
     >
       <Box
         display="flex"

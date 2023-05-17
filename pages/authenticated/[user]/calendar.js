@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Calendar from "react-calendar";
 import { format, isSameDay } from "date-fns";
+import { DateTime } from "luxon";
 
 import Navbar from "../../../components/Navbar";
 import Title from "../../../components/Title";
@@ -27,25 +28,22 @@ const CustomCalendar = ({ dbSessions, dbSessionDates, error }) => {
   const userId = router.query.user;
 
   useEffect(() => {
-    const dbSessionDateObjs = dbSessionDates.map(
-      (dateStr) => new Date(dateStr)
+    const dbSessionDateObjs = dbSessionDates.map((dateStr) =>
+      DateTime.fromISO(dateStr).setZone("America/Los_Angeles").toJSDate()
     );
+
     setDates(dbSessionDateObjs);
 
     setLoading(false);
   }, [dbSessionDates]);
 
   const handleDateClick = async (value) => {
-    const month = date.getMonth() + 1; // getMonth() returns a zero-based index, so we add 1 to get the actual month
-    const day = date.getDate();
-    const year = date.getFullYear();
-
-    const formattedDate = `${month}/${day}/${year}`;
-    const fetchFormattedDate = `${month}-${day}-${year}`;
+    const clickedDate = DateTime.fromJSDate(new Date(value));
+    const formattedDate = clickedDate.toFormat("MM/dd/yyyy");
 
     setSelectedDate(formattedDate);
 
-    // const isoDate = format(value, "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+    const fetchFormattedDate = clickedDate.toFormat("MM-dd-yyyy");
 
     try {
       setLoading(true);

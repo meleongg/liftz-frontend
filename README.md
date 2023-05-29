@@ -35,3 +35,8 @@ May 16
 -   remove workout stats
 -   add modal warning pop-up of session termination if users navigate out of the session
 -   fix session calendar dates (works only for PST)
+
+May 28
+
+-   add ability to change workout notes from within a session
+-   added transition to abrupt padding resizing for plate calculator

@@ -27,10 +27,13 @@ const CustomCalendar = ({ dbSessions, dbSessionDates, error }) => {
     const router = useRouter();
     const userId = router.query.user;
 
+    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
     useEffect(() => {
-        const dbSessionDateObjs = dbSessionDates.map((dateStr) =>
-            DateTime.fromISO(dateStr).setZone("America/Los_Angeles").toJSDate()
-        );
+        const dbSessionDateObjs = dbSessionDates.map((dateStr) => {
+            const date = DateTime.fromISO(dateStr).setZone(timezone).toJSDate();
+            return date;
+        });
 
         setDates(dbSessionDateObjs);
 
@@ -48,7 +51,7 @@ const CustomCalendar = ({ dbSessions, dbSessionDates, error }) => {
         try {
             setLoading(true);
             const response = await fetch(
-                `/api/handle-date-click?userId=${userId}&date=${fetchFormattedDate}`
+                `/api/handle-date-click?userId=${userId}&date=${fetchFormattedDate}&timezone=${timezone}`
             );
 
             const sessionsData = await response.json();

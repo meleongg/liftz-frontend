@@ -70,7 +70,7 @@ const SessionEnd = ({ dbSession, error }) => {
 
     const formatDate = (dateStr) => {
         const date = new Date(dateStr);
-        return date.toLocaleDateString();
+        return date.toLocaleString();
     };
 
     const handleDoneButton = async () => {

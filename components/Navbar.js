@@ -19,6 +19,9 @@ const Navbar = ({ userId, currPage }) => {
             display="flex"
             justifyContent="space-evenly"
             alignItems="center"
+            position={["fixed", "fixed", "static", "static", "static"]}
+            bottom={["0", "0", "auto", "auto", "auto"]}
+            zIndex="999"
         >
             <Link href={`/authenticated/${userId}/workouts`}>
                 <Box color={currPage == "workouts" ? "black.50" : "white"}>

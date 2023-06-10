@@ -46,7 +46,7 @@ const Settings = () => {
     }
 
     return (
-        <Box minHeight="100vh">
+        <Box minHeight="100vh" mb={["80px", "80px", "0px", "0px", "0px"]}>
             <Head>
                 <title>{metadata.title}</title>
                 <meta name="description" content={metadata.description} />

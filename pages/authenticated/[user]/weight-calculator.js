@@ -88,9 +88,8 @@ const WeightCalculator = () => {
                 minHeight="calc(100vh - 80px)"
                 h="calc(100% - 80px)"
                 pt="30px"
-                pl={isLargerThan768 ? "100px" : "10px"}
-                pr={isLargerThan768 ? "100px" : "10px"}
-                transition="padding 0.5s" // Adjust the transition duration as needed
+                pl={["10px", "50px", "100px", "100px", "100px"]}
+                pr={["10px", "50px", "100px", "100px", "100px"]}
             >
                 <Title userId={userId} content={"Plate Calculator"} />
                 <Box mt="20px" mb="20px">

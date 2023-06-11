@@ -21,6 +21,7 @@ Additionally, the weight calculator feature makes it simple for users to determi
 -   Exhaustive user input validation and cleansing on both the front-end and back-end
 -   Server Side Rendering to decrease load times on database queries
 -   Optimized web pages for SEO using Next.js meta tags
+-   Date conversion to client's timezone
 
 ## Changelog
 
@@ -40,3 +41,9 @@ May 28
 
 -   add ability to change workout notes from within a session
 -   added transition to abrupt padding resizing for plate calculator
+
+June 10
+
+-   made a sticky navbar, fixed plate calculator UI resizing flickering
+-   FINALLY fixed dates to be dynamic (based off of user's timezone)
+-   fixed editing session exercise names (errored out previously)

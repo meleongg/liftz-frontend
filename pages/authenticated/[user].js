@@ -114,7 +114,7 @@ const Home = ({ dbUser, dbGoals, error }) => {
     };
 
     return (
-        <Box minHeight="100vh" mb={["80px", "80px", "0px", "0px", "0px"]}>
+        <Box minHeight="100vh">
             <Head>
                 <title>{metadata.title}</title>
                 <meta name="description" content={metadata.description} />
@@ -148,6 +148,7 @@ const Home = ({ dbUser, dbGoals, error }) => {
                 pt="30px"
                 pl={isLargerThan768 ? "100px" : "10px"}
                 pr={isLargerThan768 ? "100px" : "10px"}
+                pb="80px"
             >
                 <Title userId={userId} content={`Hi ${user.firstName}!`} />
                 <Text fontSize="18px" mt="20px" pb="30px">

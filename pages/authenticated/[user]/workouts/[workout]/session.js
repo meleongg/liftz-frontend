@@ -163,7 +163,7 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
     };
 
     return (
-        <Box minHeight="100vh" mb={["80px", "80px", "0px", "0px", "0px"]}>
+        <Box minHeight="100vh">
             <Head>
                 <title>{`${workout?.name} Session | liftz`}</title>
                 <meta name="description" content={metadata.description} />
@@ -197,6 +197,7 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
                 pt="30px"
                 pl={isLargerThan768 ? "100px" : "10px"}
                 pr={isLargerThan768 ? "100px" : "10px"}
+                pb="80px"
             >
                 <Title userId={userId} content={`${workout?.name}`} />
 

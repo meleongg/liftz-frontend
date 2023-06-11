@@ -78,7 +78,7 @@ const SessionEnd = ({ dbSession, error }) => {
     };
 
     return (
-        <Box minHeight="100vh" mb={["80px", "80px", "0px", "0px", "0px"]}>
+        <Box minHeight="100vh">
             <Head>
                 <title>{`${session?.workout?.name} Session | liftz`}</title>
                 <meta name="description" content={metadata.description} />
@@ -112,6 +112,7 @@ const SessionEnd = ({ dbSession, error }) => {
                 pt="30px"
                 pl={isLargerThan768 ? "100px" : "10px"}
                 pr={isLargerThan768 ? "100px" : "10px"}
+                pb="80px"
             >
                 <Title
                     userId={userId}

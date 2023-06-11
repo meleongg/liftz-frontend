@@ -19,8 +19,10 @@ const Navbar = ({ userId, currPage }) => {
             display="flex"
             justifyContent="space-evenly"
             alignItems="center"
-            position={["fixed", "fixed", "static", "static", "static"]}
-            bottom={["0", "0", "auto", "auto", "auto"]}
+            position="fixed"
+            // position={["fixed", "fixed", "static", "static", "static"]}
+            // bottom={["0", "0", "auto", "auto", "auto"]}
+            bottom="0"
             zIndex="999"
         >
             <Link href={`/authenticated/${userId}/workouts`}>

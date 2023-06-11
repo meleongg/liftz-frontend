@@ -92,6 +92,7 @@ const Stats = ({ dbPrs, error }) => {
                 pt="30px"
                 pl={isLargerThan768 ? "100px" : "10px"}
                 pr={isLargerThan768 ? "100px" : "10px"}
+                pb="80px"
             >
                 <Title userId={userId} content={"PR Progress"} />
                 <Box mt="20px" display="flex" flexDirection="column" mb="20px">

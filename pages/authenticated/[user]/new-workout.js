@@ -23,7 +23,7 @@ const NewWorkout = () => {
     };
 
     return (
-        <Box minHeight="100vh" mb={["80px", "80px", "0px", "0px", "0px"]}>
+        <Box minHeight="100vh">
             <Head>
                 <title>{metadata.title}</title>
                 <meta name="description" content={metadata.description} />
@@ -57,7 +57,7 @@ const NewWorkout = () => {
                 pt="30px"
                 pl={isLargerThan768 ? "100px" : "10px"}
                 pr={isLargerThan768 ? "100px" : "10px"}
-                mb="30px"
+                pb="80px"
             >
                 <Heading fontSize="50px">New Workout</Heading>
                 <Button

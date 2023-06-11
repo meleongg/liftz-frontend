@@ -90,6 +90,7 @@ const WeightCalculator = () => {
                 pt="30px"
                 pl={["10px", "50px", "100px", "100px", "100px"]}
                 pr={["10px", "50px", "100px", "100px", "100px"]}
+                pb="80px"
             >
                 <Title userId={userId} content={"Plate Calculator"} />
                 <Box mt="20px" mb="20px">

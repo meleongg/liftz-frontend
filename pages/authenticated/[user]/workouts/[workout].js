@@ -105,7 +105,7 @@ const Workout = ({ dbWorkout, error }) => {
     };
 
     return (
-        <Box minHeight="100vh" mb={["80px", "80px", "0px", "0px", "0px"]}>
+        <Box minHeight="100vh">
             <Head>
                 <title>{`${workout?.name} | liftz`}</title>
                 <meta name="description" content={metadata.description} />
@@ -139,6 +139,7 @@ const Workout = ({ dbWorkout, error }) => {
                 pt="30px"
                 pl={isLargerThan768 ? "80px" : "10px"}
                 pr={isLargerThan768 ? "80px" : "10px"}
+                pb="80px"
             >
                 <Title user={userId} content={`${workout?.name}`} />
                 <Box>

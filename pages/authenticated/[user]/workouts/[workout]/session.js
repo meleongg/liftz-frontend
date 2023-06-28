@@ -140,8 +140,8 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
     const handleAddSessionExercise = () => {
         const newSessionExercise = {
             name: "Exercise",
-            sets: 1,
-            reps: 1,
+            sets: 0,
+            reps: 0,
             weight: 45,
         };
         setSessionExercises([...sessionExercises, newSessionExercise]);
@@ -238,6 +238,8 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
                         <Tbody>
                             {sessionExercises &&
                                 sessionExercises.map((exercise, index) => {
+                                    console.log(exercise);
+
                                     return (
                                         <Tr key={index}>
                                             <Td>
@@ -252,13 +254,17 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
                                                     }
                                                 />
                                             </Td>
-                                            <Td>{targetSets[index]}</Td>
+                                            <Td>
+                                                {targetSets[index]
+                                                    ? targetSets[index]
+                                                    : ""}
+                                            </Td>
                                             <Td>
                                                 <NumberInput
                                                     defaultValue={exercise.sets}
                                                     min={0}
                                                 >
-                                                    <NumberInputField w="100px" />
+                                                    <NumberInputField w="150px" />
                                                     <NumberInputStepper>
                                                         <NumberIncrementStepper
                                                             onClick={() =>
@@ -284,28 +290,66 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
                                                 </NumberInput>
                                             </Td>
                                             <Td>
-                                                <EditableCell
-                                                    value={exercise.reps}
-                                                    onChange={(newValue) =>
-                                                        handleSessionExerciseChange(
-                                                            index,
-                                                            "reps",
-                                                            newValue
-                                                        )
-                                                    }
-                                                />
+                                                <NumberInput
+                                                    defaultValue={exercise.reps}
+                                                    min={0}
+                                                >
+                                                    <NumberInputField w="150px" />
+                                                    <NumberInputStepper>
+                                                        <NumberIncrementStepper
+                                                            onClick={() =>
+                                                                handleSessionExerciseClick(
+                                                                    index,
+                                                                    "reps",
+                                                                    exercise.reps +
+                                                                        1
+                                                                )
+                                                            }
+                                                        />
+                                                        <NumberDecrementStepper
+                                                            onClick={() =>
+                                                                handleSessionExerciseClick(
+                                                                    index,
+                                                                    "reps",
+                                                                    exercise.reps -
+                                                                        1
+                                                                )
+                                                            }
+                                                        />
+                                                    </NumberInputStepper>
+                                                </NumberInput>
                                             </Td>
                                             <Td>
-                                                <EditableCell
-                                                    value={exercise.weight}
-                                                    onChange={(newValue) =>
-                                                        handleSessionExerciseChange(
-                                                            index,
-                                                            "weight",
-                                                            newValue
-                                                        )
+                                                <NumberInput
+                                                    defaultValue={
+                                                        exercise.weight
                                                     }
-                                                />
+                                                    min={0}
+                                                >
+                                                    <NumberInputField w="150px" />
+                                                    <NumberInputStepper>
+                                                        <NumberIncrementStepper
+                                                            onClick={() =>
+                                                                handleSessionExerciseClick(
+                                                                    index,
+                                                                    "weight",
+                                                                    exercise.weight +
+                                                                        1
+                                                                )
+                                                            }
+                                                        />
+                                                        <NumberDecrementStepper
+                                                            onClick={() =>
+                                                                handleSessionExerciseClick(
+                                                                    index,
+                                                                    "weight",
+                                                                    exercise.weight -
+                                                                        1
+                                                                )
+                                                            }
+                                                        />
+                                                    </NumberInputStepper>
+                                                </NumberInput>
                                             </Td>
                                             <Td>
                                                 <Button

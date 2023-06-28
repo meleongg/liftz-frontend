@@ -76,14 +76,16 @@ const LandingPage = () => {
                     mt="10px"
                     mb="10px"
                     p="20px"
+                    h="600px"
+                    w="350px"
                     borderRadius="20px"
                     bgColor="white"
                     boxShadow="2xl"
                 >
                     <Image
                         src="/landing/liftz-workouts.png"
-                        width={300}
-                        height={200}
+                        width={350}
+                        height={600}
                         alt="temp"
                     />
                 </Box>

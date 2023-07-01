@@ -34,12 +34,42 @@ const GuestNavbar = () => {
                 />
             </Box>
             <Box display="flex" justifyContent="center" alignItems="center">
-                <Link as={NextLink} href="/sign-up">
-                    sign up
-                </Link>
-                <Box ml="20px">
-                    <Link as={NextLink} href="/login">
-                        login
+                <Box
+                    p="8px 20px"
+                    borderRadius="10px"
+                    _hover={{
+                        cursor: "pointer",
+                        backgroundColor: "lightBlue.0",
+                    }}
+                >
+                    <Link
+                        as={NextLink}
+                        href="/sign-up"
+                        _hover={{
+                            textDecoration: "none",
+                        }}
+                    >
+                        Sign Up
+                    </Link>
+                </Box>
+                <Box
+                    ml="6px"
+                    p="8px 20px"
+                    borderRadius="10px"
+                    backgroundColor="blue.50"
+                    color="white"
+                    _hover={{
+                        cursor: "pointer",
+                    }}
+                >
+                    <Link
+                        as={NextLink}
+                        href="/login"
+                        _hover={{
+                            textDecoration: "none",
+                        }}
+                    >
+                        Login
                     </Link>
                 </Box>
             </Box>

@@ -1,6 +1,7 @@
 import Head from "next/head";
 import Image from "next/image";
-import { Box, Text, useMediaQuery } from "@chakra-ui/react";
+import NextLink from "next/link";
+import { Box, Text, useMediaQuery, Link } from "@chakra-ui/react";
 import GuestNavbar from "../components/GuestNavbar";
 import Footer from "../components/Footer";
 
@@ -10,7 +11,13 @@ const metadata = {
     image: "https://liftz-workout-tracker.vercel.app/meta-image.png",
 };
 
-import { FaListAlt, FaCalendar, FaDumbbell, FaSignal } from "react-icons/fa";
+import {
+    FaListAlt,
+    FaCalendar,
+    FaDumbbell,
+    FaSignal,
+    FaStar,
+} from "react-icons/fa";
 
 const LandingPage = () => {
     const [isLargerThan768] = useMediaQuery("(min-width: 768px)");
@@ -58,8 +65,8 @@ const LandingPage = () => {
                 color="#333"
                 mt="30px"
                 borderRadius="20px"
-                pl={isLargerThan768 ? "80px" : "20px"}
-                pr={isLargerThan768 ? "80px" : "20px"}
+                pl={["10px", "50px", "200px", "200px", "200px"]}
+                pr={["10px", "50px", "200px", "200px", "200px"]}
             >
                 <Text
                     fontSize={isLargerThan768 ? "50px" : "30px"}
@@ -70,6 +77,54 @@ const LandingPage = () => {
                 >
                     Level up your gainz.
                 </Text>
+                <Box
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                    fontSize="24px"
+                    fontWeight="700"
+                    mb="30px"
+                >
+                    <Box
+                        p="8px 20px"
+                        borderRadius="10px"
+                        backgroundColor="blue.50"
+                        color="white"
+                        _hover={{
+                            cursor: "pointer",
+                        }}
+                    >
+                        <Link
+                            as={NextLink}
+                            href="/sign-up"
+                            _hover={{
+                                textDecoration: "none",
+                            }}
+                        >
+                            Sign Up
+                        </Link>
+                    </Box>
+                    <Box
+                        ml="20px"
+                        p="8px 20px"
+                        borderRadius="10px"
+                        backgroundColor="blue.50"
+                        color="white"
+                        _hover={{
+                            cursor: "pointer",
+                        }}
+                    >
+                        <Link
+                            as={NextLink}
+                            href="/login"
+                            _hover={{
+                                textDecoration: "none",
+                            }}
+                        >
+                            Login
+                        </Link>
+                    </Box>
+                </Box>
                 <Box
                     display="flex"
                     justifyContent="center"
@@ -89,17 +144,58 @@ const LandingPage = () => {
                         alt="temp"
                     />
                 </Box>
-                <Text
-                    fontSize={isLargerThan768 ? "26px" : "18px"}
-                    fontWeight="700"
+                <Box
+                    backgroundColor="white"
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
                     mt="30px"
-                    w="75%"
-                    color="white"
+                    p={[
+                        "20px",
+                        "20px 50px",
+                        "20px 50px",
+                        "20px 50px",
+                        "20px 50px",
+                    ]}
+                    borderRadius="20px"
+                    flexDirection={["column", "row"]}
                 >
-                    Transform your body and crush your fitness goals with liftz.
-                    Say goodbye to workout amnesia and hello to unstoppable
-                    progress!
-                </Text>
+                    <Box fontSize="70px">
+                        <FaStar />
+                    </Box>
+                    <Box
+                        display="flex"
+                        justifyContent="flex-start"
+                        alignItems="flex-start"
+                        textAlign={["center", "left"]}
+                        ml={["0px", "50px"]}
+                        flexDirection="column"
+                    >
+                        <Text
+                            fontSize={["22px", "30px"]}
+                            fontWeight="700"
+                            color="black.50"
+                            mt="10px"
+                            mb="10px"
+                        >
+                            Change the way you workout
+                        </Text>
+                        <Text
+                            fontSize={["18px", "26px"]}
+                            color="black.50"
+                            mt="10px"
+                            mb="10px"
+                        >
+                            Have you ever forgotten how many sets you've
+                            completed and how many more you have to complete?
+                        </Text>
+                        <Text fontSize={["18px", "26px"]} color="black.50">
+                            Transform your body and crush your fitness goals
+                            with liftz. Say goodbye to workout amnesia and hello
+                            to unstoppable progress!
+                        </Text>
+                    </Box>
+                </Box>
             </Box>
 
             <Box
@@ -108,11 +204,11 @@ const LandingPage = () => {
                 justifyContent="space-between"
                 mt="50px"
                 mb="50px"
-                pl={isLargerThan768 ? "100px" : "50px"}
-                pr={isLargerThan768 ? "100px" : "50px"}
+                pl={["10px", "50px", "200px"]}
+                pr={["10px", "50px", "200px"]}
             >
                 <Box
-                    maxWidth={{ base: "100%", md: "40%", lg: "40%" }}
+                    maxWidth={{ base: "100%", md: "48%", lg: "48%" }}
                     height="300px"
                     display="flex"
                     flexDirection="column"
@@ -122,13 +218,12 @@ const LandingPage = () => {
                     borderRadius="20px"
                     bgColor="white"
                     boxShadow="md"
-                    _hover={{ transform: "scale(1.1)" }}
                 >
-                    <Box fontSize={isLargerThan768 ? "80px" : "60px"}>
+                    <Box fontSize="70px">
                         <FaListAlt />
                     </Box>
                     <Text
-                        fontSize={isLargerThan768 ? "26px" : "20px"}
+                        fontSize={["18px", "22px", "26px"]}
                         textAlign="center"
                         mt="30px"
                         pl="20px"
@@ -138,7 +233,7 @@ const LandingPage = () => {
                     </Text>
                 </Box>
                 <Box
-                    maxWidth={{ base: "100%", md: "40%", lg: "40%" }}
+                    maxWidth={{ base: "100%", md: "48%", lg: "48%" }}
                     height="300px"
                     display="flex"
                     flexDirection="column"
@@ -148,14 +243,13 @@ const LandingPage = () => {
                     borderRadius="20px"
                     bgColor="white"
                     boxShadow="md"
-                    _hover={{ transform: "scale(1.1)" }}
-                    mt={isLargerThan768 ? "0px" : "30px"}
+                    mt={["30px", "0px"]}
                 >
-                    <Box fontSize={isLargerThan768 ? "80px" : "60px"}>
+                    <Box fontSize="70px">
                         <FaCalendar />
                     </Box>
                     <Text
-                        fontSize={isLargerThan768 ? "26px" : "20px"}
+                        fontSize={["18px", "22px", "26px"]}
                         textAlign="center"
                         mt="30px"
                         pl="20px"
@@ -165,7 +259,7 @@ const LandingPage = () => {
                     </Text>
                 </Box>
                 <Box
-                    maxWidth={{ base: "100%", md: "40%", lg: "40%" }}
+                    maxWidth={{ base: "100%", md: "48%", lg: "48%" }}
                     height="300px"
                     display="flex"
                     flexDirection="column"
@@ -175,14 +269,13 @@ const LandingPage = () => {
                     borderRadius="20px"
                     bgColor="white"
                     boxShadow="md"
-                    _hover={{ transform: "scale(1.1)" }}
-                    mt={isLargerThan768 ? "60px" : "30px"}
+                    mt="30px"
                 >
-                    <Box fontSize={isLargerThan768 ? "80px" : "60px"}>
+                    <Box fontSize="70px">
                         <FaDumbbell />
                     </Box>
                     <Text
-                        fontSize={isLargerThan768 ? "26px" : "20px"}
+                        fontSize={["18px", "22px", "26px"]}
                         textAlign="center"
                         mt="30px"
                         pl="20px"
@@ -192,7 +285,7 @@ const LandingPage = () => {
                     </Text>
                 </Box>
                 <Box
-                    maxWidth={{ base: "100%", md: "40%", lg: "40%" }}
+                    maxWidth={{ base: "100%", md: "48%", lg: "48%" }}
                     height="300px"
                     display="flex"
                     flexDirection="column"
@@ -202,14 +295,13 @@ const LandingPage = () => {
                     borderRadius="20px"
                     bgColor="white"
                     boxShadow="md"
-                    _hover={{ transform: "scale(1.1)" }}
-                    mt={isLargerThan768 ? "60px" : "30px"}
+                    mt="30px"
                 >
-                    <Box fontSize={isLargerThan768 ? "80px" : "60px"}>
+                    <Box fontSize="70px">
                         <FaSignal />
                     </Box>
                     <Text
-                        fontSize={isLargerThan768 ? "26px" : "20px"}
+                        fontSize={["18px", "22px", "26px"]}
                         textAlign="center"
                         mt="30px"
                         pl="20px"

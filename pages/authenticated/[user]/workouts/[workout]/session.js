@@ -275,7 +275,7 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
                                                         )
                                                     }
                                                 >
-                                                    <NumberInputField w="150px" />
+                                                    <NumberInputField />
                                                     <NumberInputStepper>
                                                         <NumberIncrementStepper
                                                             onClick={() =>
@@ -312,7 +312,7 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
                                                         )
                                                     }
                                                 >
-                                                    <NumberInputField w="150px" />
+                                                    <NumberInputField />
                                                     <NumberInputStepper>
                                                         <NumberIncrementStepper
                                                             onClick={() =>
@@ -351,7 +351,7 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
                                                         )
                                                     }
                                                 >
-                                                    <NumberInputField w="150px" />
+                                                    <NumberInputField />
                                                     <NumberInputStepper>
                                                         <NumberIncrementStepper
                                                             onClick={() =>

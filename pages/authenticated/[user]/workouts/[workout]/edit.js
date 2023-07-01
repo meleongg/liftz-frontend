@@ -15,6 +15,11 @@ import {
     EditablePreview,
     EditableInput,
     useMediaQuery,
+    NumberInput,
+    NumberInputField,
+    NumberInputStepper,
+    NumberIncrementStepper,
+    NumberDecrementStepper,
 } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
@@ -140,6 +145,17 @@ const EditWorkout = ({ dbWorkout, error }) => {
 
         updatedWorkout[field] = newValue;
         setWorkout(updatedWorkout);
+    };
+
+    const handleExerciseClick = (index, field, newValue) => {
+        const updatedExercises = [...workout.exercises];
+
+        if (field !== "name") {
+            newValue = parseInt(newValue);
+        }
+
+        updatedExercises[index][field] = newValue;
+        setWorkout({ ...workout, exercises: updatedExercises });
     };
 
     const handleExerciseChange = (index, field, newValue) => {
@@ -294,8 +310,9 @@ const EditWorkout = ({ dbWorkout, error }) => {
                                                 />
                                             </Td>
                                             <Td>
-                                                <EditableCell
-                                                    value={exercise.sets}
+                                                <NumberInput
+                                                    defaultValue={exercise.sets}
+                                                    min={0}
                                                     onChange={(newValue) =>
                                                         handleExerciseChange(
                                                             index,
@@ -303,11 +320,36 @@ const EditWorkout = ({ dbWorkout, error }) => {
                                                             newValue
                                                         )
                                                     }
-                                                />
+                                                >
+                                                    <NumberInputField />
+                                                    <NumberInputStepper>
+                                                        <NumberIncrementStepper
+                                                            onClick={() =>
+                                                                handleExerciseClick(
+                                                                    index,
+                                                                    "sets",
+                                                                    exercise.sets +
+                                                                        1
+                                                                )
+                                                            }
+                                                        />
+                                                        <NumberDecrementStepper
+                                                            onClick={() =>
+                                                                handleExerciseClick(
+                                                                    index,
+                                                                    "sets",
+                                                                    exercise.sets -
+                                                                        1
+                                                                )
+                                                            }
+                                                        />
+                                                    </NumberInputStepper>
+                                                </NumberInput>
                                             </Td>
                                             <Td>
-                                                <EditableCell
-                                                    value={exercise.reps}
+                                                <NumberInput
+                                                    defaultValue={exercise.reps}
+                                                    min={0}
                                                     onChange={(newValue) =>
                                                         handleExerciseChange(
                                                             index,
@@ -315,11 +357,38 @@ const EditWorkout = ({ dbWorkout, error }) => {
                                                             newValue
                                                         )
                                                     }
-                                                />
+                                                >
+                                                    <NumberInputField />
+                                                    <NumberInputStepper>
+                                                        <NumberIncrementStepper
+                                                            onClick={() =>
+                                                                handleExerciseClick(
+                                                                    index,
+                                                                    "reps",
+                                                                    exercise.reps +
+                                                                        1
+                                                                )
+                                                            }
+                                                        />
+                                                        <NumberDecrementStepper
+                                                            onClick={() =>
+                                                                handleExerciseClick(
+                                                                    index,
+                                                                    "reps",
+                                                                    exercise.reps -
+                                                                        1
+                                                                )
+                                                            }
+                                                        />
+                                                    </NumberInputStepper>
+                                                </NumberInput>
                                             </Td>
                                             <Td>
-                                                <EditableCell
-                                                    value={exercise.weight}
+                                                <NumberInput
+                                                    defaultValue={
+                                                        exercise.weight
+                                                    }
+                                                    min={0}
                                                     onChange={(newValue) =>
                                                         handleExerciseChange(
                                                             index,
@@ -327,7 +396,31 @@ const EditWorkout = ({ dbWorkout, error }) => {
                                                             newValue
                                                         )
                                                     }
-                                                />
+                                                >
+                                                    <NumberInputField />
+                                                    <NumberInputStepper>
+                                                        <NumberIncrementStepper
+                                                            onClick={() =>
+                                                                handleExerciseClick(
+                                                                    index,
+                                                                    "weight",
+                                                                    exercise.weight +
+                                                                        1
+                                                                )
+                                                            }
+                                                        />
+                                                        <NumberDecrementStepper
+                                                            onClick={() =>
+                                                                handleExerciseClick(
+                                                                    index,
+                                                                    "weight",
+                                                                    exercise.weight -
+                                                                        1
+                                                                )
+                                                            }
+                                                        />
+                                                    </NumberInputStepper>
+                                                </NumberInput>
                                             </Td>
                                             <Td>
                                                 <Button

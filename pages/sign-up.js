@@ -1,8 +1,9 @@
-import { Box, Text } from "@chakra-ui/react";
+import { Box, Text, Link } from "@chakra-ui/react";
 import GuestNavbar from "../components/GuestNavbar";
 import SignUpForm from "../components/SignUpForm";
 import Footer from "../components/Footer";
 import Head from "next/head";
+import NextLink from "next/link";
 
 const metadata = {
     title: "Sign Up | liftz",
@@ -41,7 +42,7 @@ const SignUpPage = () => {
             </Head>
             <GuestNavbar />
             <Box
-                color="white"
+                color="black.50"
                 p="30px 20px 30px 20px"
                 display="flex"
                 flexDir="column"
@@ -49,10 +50,34 @@ const SignUpPage = () => {
                 alignItems="center"
                 minHeight={`calc(100vh - 80px - 50px)`}
             >
-                <Text fontSize="48px" fontWeight="700" mb="10px">
-                    Sign Up
-                </Text>
-                <SignUpForm />
+                <Box
+                    backgroundColor="white"
+                    p="20px"
+                    borderRadius="20px"
+                    textAlign="center"
+                >
+                    <Text fontSize="48px" fontWeight="700" mb="10px">
+                        Sign Up
+                    </Text>
+                    <Box
+                        mb="20px"
+                        _hover={{
+                            cursor: "pointer",
+                        }}
+                    >
+                        Or
+                        <Link
+                            ml="5px"
+                            fontWeight="700"
+                            as={NextLink}
+                            color="blue.50"
+                            href="/login"
+                        >
+                            Login to your account
+                        </Link>
+                    </Box>
+                    <SignUpForm />
+                </Box>
             </Box>
             <Footer />
         </Box>

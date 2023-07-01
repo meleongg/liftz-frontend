@@ -64,14 +64,10 @@ const LoginForm = () => {
             {(formik) => (
                 <Form>
                     <Box
-                        backgroundColor="white"
-                        color="#333"
-                        p="20px"
                         display="flex"
                         flexDirection="column"
                         justifyContent="center"
                         alignItems="center"
-                        borderRadius="20px"
                         minWidth="350px"
                     >
                         {formik.errors.form && (

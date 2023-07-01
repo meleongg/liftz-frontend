@@ -120,6 +120,10 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
     };
 
     const handleSessionExerciseChange = (index, field, newValue) => {
+        if (newValue == "NaN") {
+            return;
+        }
+
         const updatedSessionExercises = [...sessionExercises];
 
         if (field !== "name" && typeof newValue === "string") {
@@ -133,7 +137,9 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
     const handleSessionExerciseClick = (index, field, newValue) => {
         const updatedSessionExercises = [...sessionExercises];
 
-        updatedSessionExercises[index][field] = newValue;
+        console.log(parseInt(newValue));
+
+        updatedSessionExercises[index][field] = parseInt(newValue);
         setSessionExercises(updatedSessionExercises);
     };
 
@@ -228,7 +234,7 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
                         <Thead>
                             <Tr>
                                 <Th>Exercise</Th>
-                                <Th>Sets</Th>
+                                <Th>Target Sets</Th>
                                 <Th>Sets Done</Th>
                                 <Th>Reps</Th>
                                 <Th>Weight</Th>
@@ -238,8 +244,6 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
                         <Tbody>
                             {sessionExercises &&
                                 sessionExercises.map((exercise, index) => {
-                                    console.log(exercise);
-
                                     return (
                                         <Tr key={index}>
                                             <Td>
@@ -263,6 +267,13 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
                                                 <NumberInput
                                                     defaultValue={exercise.sets}
                                                     min={0}
+                                                    onChange={(newValue) =>
+                                                        handleSessionExerciseClick(
+                                                            index,
+                                                            "sets",
+                                                            newValue
+                                                        )
+                                                    }
                                                 >
                                                     <NumberInputField w="150px" />
                                                     <NumberInputStepper>
@@ -293,6 +304,13 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
                                                 <NumberInput
                                                     defaultValue={exercise.reps}
                                                     min={0}
+                                                    onChange={(newValue) =>
+                                                        handleSessionExerciseClick(
+                                                            index,
+                                                            "reps",
+                                                            newValue
+                                                        )
+                                                    }
                                                 >
                                                     <NumberInputField w="150px" />
                                                     <NumberInputStepper>
@@ -325,6 +343,13 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
                                                         exercise.weight
                                                     }
                                                     min={0}
+                                                    onChange={(newValue) =>
+                                                        handleSessionExerciseClick(
+                                                            index,
+                                                            "weight",
+                                                            newValue
+                                                        )
+                                                    }
                                                 >
                                                     <NumberInputField w="150px" />
                                                     <NumberInputStepper>

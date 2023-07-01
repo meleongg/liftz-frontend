@@ -186,7 +186,7 @@ const LandingPage = () => {
                             mt="10px"
                             mb="10px"
                         >
-                            Have you ever forgotten how many sets you've
+                            Have you ever forgotten how many sets you{"'"}ve
                             completed and how many more you have to complete?
                         </Text>
                         <Text fontSize={["18px", "26px"]} color="black.50">

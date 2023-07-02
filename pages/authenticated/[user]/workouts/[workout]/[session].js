@@ -30,6 +30,7 @@ const SessionEnd = ({ dbSession, error }) => {
     const [isLargerThan768] = useMediaQuery("(min-width: 768px)");
 
     const router = useRouter();
+    const isFromCalendar = router.query.isFromCalendar;
     const userId = router.query.user;
 
     useEffect(() => {
@@ -74,7 +75,11 @@ const SessionEnd = ({ dbSession, error }) => {
     };
 
     const handleDoneButton = async () => {
-        router.push(`/authenticated/${userId}/workouts`);
+        if (isFromCalendar) {
+            router.push(`/authenticated/${userId}/calendar`);
+        } else {
+            router.push(`/authenticated/${userId}/workouts`);
+        }
     };
 
     return (

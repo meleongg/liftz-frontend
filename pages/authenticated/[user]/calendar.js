@@ -71,7 +71,14 @@ const CustomCalendar = ({ dbSessions, dbSessionDates, error }) => {
         const sessionId = splitIds[1];
 
         router.push(
-            `/authenticated/${userId}/workouts/${workoutId}/${sessionId}`
+            `/authenticated/${userId}/workouts/${workoutId}/${sessionId}?isFromCalendar=true`,
+            undefined,
+            {
+                shallow: true,
+                state: {
+                    isFromCalendar: true,
+                },
+            }
         );
     };
 

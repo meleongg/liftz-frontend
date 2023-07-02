@@ -215,6 +215,7 @@ const CustomCalendar = ({ dbSessions, dbSessionDates, error }) => {
                             ? "session-date"
                             : null;
                     }}
+                    showNavigation={false}
                 />
                 <Box mt="30px" mb="20px">
                     <Text

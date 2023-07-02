@@ -179,6 +179,8 @@ const CustomCalendar = ({ dbSessions, dbSessionDates, error }) => {
                         justifyContent="center"
                         alignItems="center"
                         w="40%"
+                        fontWeight="700"
+                        fontSize={["18px", "24px"]}
                     >
                         <Text textAlign="center">
                             {format(date, "MMMM yyyy")}
@@ -208,9 +210,18 @@ const CustomCalendar = ({ dbSessions, dbSessionDates, error }) => {
                     }}
                 />
                 <Box mt="30px" mb="20px">
-                    <Text fontWeight="700" fontSize="20px">
-                        {selectedDate ||
-                            "Click on blue dates to check your sessions that day for your existing workouts!"}
+                    <Text
+                        fontWeight="700"
+                        fontSize="20px"
+                        textAlign={selectedDate ? "left" : "center"}
+                        backgroundColor={selectedDate ? "none" : "blue.50"}
+                        color={selectedDate ? "black.50" : "white"}
+                        p={selectedDate ? "0px" : "14px"}
+                        borderRadius="20px"
+                    >
+                        {selectedDate
+                            ? selectedDate
+                            : "Click on the blue dates to view your workouts on that day!"}
                     </Text>
                     {selectedDate &&
                         sessions.map((session, index) => {

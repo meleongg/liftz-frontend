@@ -106,9 +106,7 @@ const ChangePasswordForm = ({ userId, setMessage }) => {
             {(formik) => (
                 <Form>
                     <Box
-                        backgroundColor="blue.50"
-                        color="#333"
-                        p="20px"
+                        p="0 20px 20px 20px"
                         display="flex"
                         flexDirection="column"
                         justifyContent="center"
@@ -216,9 +214,9 @@ const ChangePasswordForm = ({ userId, setMessage }) => {
 
                         <Button
                             mt="20px"
-                            bgColor="white"
-                            color="#333"
-                            _hover={{ bg: "lightBlue.50" }}
+                            bgColor="lightBlue.50"
+                            color="white"
+                            _hover={{ bg: "lightBlue.25" }}
                             isLoading={formik.isSubmitting}
                             type="submit"
                         >

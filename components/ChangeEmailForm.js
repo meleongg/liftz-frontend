@@ -171,9 +171,9 @@ const ChangeEmailForm = ({ userId, setMessage }) => {
 
                         <Button
                             mt="20px"
-                            bgColor="white"
-                            color="#333"
-                            _hover={{ bg: "lightBlue.50" }}
+                            bgColor="lightBlue.50"
+                            color="white"
+                            _hover={{ bg: "lightBlue.25" }}
                             isLoading={formik.isSubmitting}
                             type="submit"
                         >

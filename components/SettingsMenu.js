@@ -7,7 +7,7 @@ const SettingsMenu = ({ showLeftIcons, currPage }) => {
     const userId = router.query.user;
 
     return (
-        <Box w="300px" fontSize="18px">
+        <Box w="350px" fontSize="18px">
             <Box
                 onClick={() =>
                     router.push(

@@ -107,17 +107,17 @@ const ChangeEmailPage = () => {
                 <Title userId={userId} content={"Settings"} />
                 <Box
                     display="flex"
-                    flexDir={["column", "row"]}
+                    flexDir={["column", "column", "column", "row"]}
                     pl={["10px", "150px"]}
                     pr={["10px", "150px"]}
                     justifyContent="center"
-                    alignItems={["center", "start"]}
+                    alignItems={["center", "center", "center", "start"]}
                     mt="50px"
                 >
                     <SettingsMenu currPage={"change-email"} />
                     <Box
-                        ml={["0", "50px"]}
-                        mb={["30px", "0px"]}
+                        ml={["0", "0", "0", "50px"]}
+                        mb={["30px", "30px", "30px", "0px"]}
                         display="flex"
                         flexDirection="column"
                         justifyContent="center"
@@ -126,7 +126,7 @@ const ChangeEmailPage = () => {
                         <Box
                             bgColor="blue.50"
                             borderRadius="10px"
-                            mt={["30px", "0px"]}
+                            mt={["30px", "30px", "30px", "0px"]}
                         >
                             <Text
                                 fontSize="24px"

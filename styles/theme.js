@@ -3,6 +3,7 @@ import { extendTheme } from "@chakra-ui/theme-utils";
 const colors = {
     lightBlue: {
         0: "#ced8f0",
+        25: "#9dc1f2",
         50: "#5ca1e6",
     },
     blue: {
@@ -17,6 +18,7 @@ const colors = {
     },
     red: {
         50: "#FF4747",
+        100: "#c92a0a",
     },
 };
 

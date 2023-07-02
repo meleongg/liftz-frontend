@@ -105,28 +105,44 @@ const ChangePasswordPage = () => {
                 pb="80px"
             >
                 <Title userId={userId} content={"Settings"} />
-                <SettingsMenu currPage={"change-password"} />
                 <Box
-                    mt="20px"
-                    mb="30px"
                     display="flex"
-                    flexDirection="column"
+                    flexDir={["column", "column", "column", "row"]}
+                    pl={["10px", "150px"]}
+                    pr={["10px", "150px"]}
                     justifyContent="center"
-                    alignItems="center"
+                    alignItems={["center", "center", "center", "start"]}
+                    mt="50px"
                 >
-                    <Box mt="40px" mb="40px">
-                        <Text
-                            fontSize="24px"
-                            fontWeight="700"
-                            mb="10px"
-                            textAlign="center"
+                    <SettingsMenu currPage={"change-password"} />
+                    <Box
+                        ml={["0", "0", "0", "50px"]}
+                        mb={["30px", "30px", "30px", "0px"]}
+                        display="flex"
+                        flexDirection="column"
+                        justifyContent="center"
+                        alignItems="center"
+                    >
+                        <Box
+                            bgColor="blue.50"
+                            borderRadius="10px"
+                            mt={["30px", "30px", "30px", "0px"]}
                         >
-                            Change Password
-                        </Text>
-                        <ChangePasswordForm
-                            userId={userId}
-                            setMessage={setMessage}
-                        />
+                            <Text
+                                fontSize="24px"
+                                fontWeight="700"
+                                mt="10px"
+                                mb="10px"
+                                textAlign="center"
+                                color="white"
+                            >
+                                Change Password
+                            </Text>
+                            <ChangePasswordForm
+                                userId={userId}
+                                setMessage={setMessage}
+                            />
+                        </Box>
                     </Box>
                 </Box>
             </Box>

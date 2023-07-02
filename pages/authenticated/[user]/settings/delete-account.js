@@ -105,44 +105,65 @@ const DeleteAccountPage = () => {
                 pb="80px"
             >
                 <Title userId={userId} content={"Settings"} />
-                <SettingsMenu currPage={"delete-account"} />
                 <Box
-                    mt="20px"
-                    mb="30px"
                     display="flex"
-                    flexDirection="column"
+                    flexDir={["column", "column", "column", "row"]}
+                    pl={["10px", "150px"]}
+                    pr={["10px", "150px"]}
                     justifyContent="center"
-                    alignItems="center"
+                    alignItems={["center", "center", "center", "start"]}
+                    mt="50px"
                 >
+                    <SettingsMenu currPage={"delete-account"} />
                     <Box
-                        mb="20px"
+                        ml={["0", "0", "0", "50px"]}
+                        mb={["30px", "30px", "30px", "0px"]}
                         display="flex"
                         flexDirection="column"
                         justifyContent="center"
                         alignItems="center"
                     >
-                        <Text
-                            fontSize="24px"
-                            fontWeight="700"
-                            mb="10px"
-                            textAlign="center"
+                        <Box
+                            bgColor="blue.50"
+                            borderRadius="10px"
+                            mt={["30px", "30px", "30px", "0px"]}
+                            display="flex"
+                            flexDir="column"
+                            justifyContent="center"
+                            alignItems="center"
                         >
-                            Delete Account
-                        </Text>
-                        <Text
-                            color="red"
-                            fontSize="14px"
-                            fontWeight="700"
-                            mb="10px"
-                            textAlign="center"
-                        >
-                            WARNING: All information associated with this
-                            account will be deleted.
-                        </Text>
-                        <DeleteAccount
-                            userId={userId}
-                            setMessage={setMessage}
-                        />
+                            <Text
+                                fontSize="24px"
+                                fontWeight="700"
+                                mt="10px"
+                                mb="10px"
+                                textAlign="center"
+                                color="white"
+                            >
+                                Delete Account
+                            </Text>
+                            <Box
+                                bgColor="white"
+                                borderRadius="10px"
+                                p="5px"
+                                mb="10px"
+                                w="90%"
+                            >
+                                <Text
+                                    color="red"
+                                    fontSize="14px"
+                                    fontWeight="700"
+                                    textAlign="center"
+                                >
+                                    WARNING: All information associated with
+                                    this account will be deleted.
+                                </Text>
+                            </Box>
+                            <DeleteAccount
+                                userId={userId}
+                                setMessage={setMessage}
+                            />
+                        </Box>
                     </Box>
                 </Box>
             </Box>

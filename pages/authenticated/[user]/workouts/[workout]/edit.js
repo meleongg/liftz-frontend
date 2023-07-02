@@ -315,6 +315,7 @@ const EditWorkout = ({ dbWorkout, error }) => {
                                             </Td>
                                             <Td>
                                                 <NumberInput
+                                                    minWidth="150px"
                                                     defaultValue={exercise.sets}
                                                     min={0}
                                                     onChange={(newValue) =>
@@ -352,6 +353,7 @@ const EditWorkout = ({ dbWorkout, error }) => {
                                             </Td>
                                             <Td>
                                                 <NumberInput
+                                                    minWidth="150px"
                                                     defaultValue={exercise.reps}
                                                     min={0}
                                                     onChange={(newValue) =>
@@ -389,6 +391,7 @@ const EditWorkout = ({ dbWorkout, error }) => {
                                             </Td>
                                             <Td>
                                                 <NumberInput
+                                                    minWidth="150px"
                                                     defaultValue={
                                                         exercise.weight
                                                     }

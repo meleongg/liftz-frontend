@@ -269,6 +269,7 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
                                             </Td>
                                             <Td>
                                                 <NumberInput
+                                                    minWidth="150px"
                                                     defaultValue={exercise.sets}
                                                     min={0}
                                                     onChange={(newValue) =>
@@ -306,6 +307,7 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
                                             </Td>
                                             <Td>
                                                 <NumberInput
+                                                    minWidth="150px"
                                                     defaultValue={exercise.reps}
                                                     min={0}
                                                     onChange={(newValue) =>
@@ -343,6 +345,7 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
                                             </Td>
                                             <Td>
                                                 <NumberInput
+                                                    minWidth="150px"
                                                     defaultValue={
                                                         exercise.weight
                                                     }

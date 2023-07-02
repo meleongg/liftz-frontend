@@ -148,6 +148,10 @@ const EditWorkout = ({ dbWorkout, error }) => {
     };
 
     const handleExerciseClick = (index, field, newValue) => {
+        if (newValue < 0) {
+            return;
+        }
+
         const updatedExercises = [...workout.exercises];
 
         if (field !== "name") {

@@ -135,6 +135,10 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
     };
 
     const handleSessionExerciseClick = (index, field, newValue) => {
+        if (newValue < 0) {
+            return;
+        }
+
         const updatedSessionExercises = [...sessionExercises];
 
         console.log(parseInt(newValue));

@@ -12,6 +12,9 @@ const colors = {
     black: {
         50: "#333333",
     },
+    gray: {
+        50: "#d5d9de",
+    },
     red: {
         50: "#FF4747",
     },

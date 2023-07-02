@@ -93,9 +93,7 @@ const ChangeEmailForm = ({ userId, setMessage }) => {
             {(formik) => (
                 <Form>
                     <Box
-                        backgroundColor="blue.50"
-                        color="#333"
-                        p="20px"
+                        p="0 20px 20px 20px"
                         display="flex"
                         flexDirection="column"
                         justifyContent="center"

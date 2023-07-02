@@ -1,19 +1,21 @@
-import { Box, Spinner, Text, Button } from "@chakra-ui/react";
+import { Box, Spinner, Text } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import Navbar from "../../../components/Navbar";
-import Title from "../../../components/Title";
-import SettingsMenu from "../../../components/SettingsMenu";
+
+import Navbar from "../../../../components/Navbar";
+import Title from "../../../../components/Title";
+import ChangePasswordForm from "../../../../components/ChangePasswordForm";
+import SettingsMenu from "../../../../components/SettingsMenu";
 import { FaCheckCircle } from "react-icons/fa";
 import Head from "next/head";
 
 const metadata = {
-    title: "Settings | liftz",
-    description: "Settings page",
+    title: "Settings - Change Password | liftz",
+    description: "Change Password page",
     image: "https://liftz-workout-tracker.vercel.app/meta-image.png",
 };
 
-const Settings = () => {
+const ChangePasswordPage = () => {
     const [loading, setLoading] = useState(true);
     const [message, setMessage] = useState(null);
 
@@ -103,14 +105,29 @@ const Settings = () => {
                 pb="80px"
             >
                 <Title userId={userId} content={"Settings"} />
+                <SettingsMenu currPage={"change-password"} />
                 <Box
-                    mt="50px"
+                    mt="20px"
+                    mb="30px"
                     display="flex"
                     flexDirection="column"
                     justifyContent="center"
                     alignItems="center"
                 >
-                    <SettingsMenu showLeftIcons={true} />
+                    <Box mt="40px" mb="40px">
+                        <Text
+                            fontSize="24px"
+                            fontWeight="700"
+                            mb="10px"
+                            textAlign="center"
+                        >
+                            Change Password
+                        </Text>
+                        <ChangePasswordForm
+                            userId={userId}
+                            setMessage={setMessage}
+                        />
+                    </Box>
                 </Box>
             </Box>
             <Navbar userId={userId} currPage="home" />
@@ -118,4 +135,4 @@ const Settings = () => {
     );
 };
 
-export default Settings;
+export default ChangePasswordPage;

@@ -1,19 +1,21 @@
-import { Box, Spinner, Text, Button } from "@chakra-ui/react";
+import { Box, Spinner, Text } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import Navbar from "../../../components/Navbar";
-import Title from "../../../components/Title";
-import SettingsMenu from "../../../components/SettingsMenu";
+
+import Navbar from "../../../../components/Navbar";
+import Title from "../../../../components/Title";
+import ChangeEmailForm from "../../../../components/ChangeEmailForm";
+import SettingsMenu from "../../../../components/SettingsMenu";
 import { FaCheckCircle } from "react-icons/fa";
 import Head from "next/head";
 
 const metadata = {
-    title: "Settings | liftz",
-    description: "Settings page",
+    title: "Settings - Change Email | liftz",
+    description: "Change Email page",
     image: "https://liftz-workout-tracker.vercel.app/meta-image.png",
 };
 
-const Settings = () => {
+const ChangeEmailPage = () => {
     const [loading, setLoading] = useState(true);
     const [message, setMessage] = useState(null);
 
@@ -104,13 +106,44 @@ const Settings = () => {
             >
                 <Title userId={userId} content={"Settings"} />
                 <Box
-                    mt="50px"
                     display="flex"
-                    flexDirection="column"
+                    flexDir={["column", "row"]}
+                    pl={["10px", "150px"]}
+                    pr={["10px", "150px"]}
                     justifyContent="center"
-                    alignItems="center"
+                    alignItems={["center", "start"]}
+                    mt="50px"
                 >
-                    <SettingsMenu showLeftIcons={true} />
+                    <SettingsMenu currPage={"change-email"} />
+                    <Box
+                        ml={["0", "50px"]}
+                        mb={["30px", "0px"]}
+                        display="flex"
+                        flexDirection="column"
+                        justifyContent="center"
+                        alignItems="center"
+                    >
+                        <Box
+                            bgColor="blue.50"
+                            borderRadius="10px"
+                            mt={["30px", "0px"]}
+                        >
+                            <Text
+                                fontSize="24px"
+                                fontWeight="700"
+                                mt="10px"
+                                mb="10px"
+                                textAlign="center"
+                                color="white"
+                            >
+                                Change Email
+                            </Text>
+                            <ChangeEmailForm
+                                userId={userId}
+                                setMessage={setMessage}
+                            />
+                        </Box>
+                    </Box>
                 </Box>
             </Box>
             <Navbar userId={userId} currPage="home" />
@@ -118,4 +151,4 @@ const Settings = () => {
     );
 };
 
-export default Settings;
+export default ChangeEmailPage;

@@ -23,9 +23,12 @@ import {
 } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import { v4 as uuidv4 } from "uuid";
 
 import Title from "../../../../../components/Title";
 import Head from "next/head";
+
+import { FaAngleUp, FaAngleDown } from "react-icons/fa";
 
 const metadata = {
     description: "Workout Session page",
@@ -43,7 +46,7 @@ const EditableCell = ({ value, onChange }) => {
 
 const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
     const [sessionExercises, setSessionExercises] = useState(dbExercises);
-    const [targetSets] = useState(dbTargetSets);
+    const [targetSets, setTargetSets] = useState(dbTargetSets);
     const [workout, setWorkout] = useState(dbWorkout);
     const [loading, setLoading] = useState(true);
 
@@ -154,7 +157,10 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
             reps: 0,
             weight: 45,
         };
+        const newTargetSets = null;
+
         setSessionExercises([...sessionExercises, newSessionExercise]);
+        setTargetSets([...targetSets, newTargetSets]);
     };
 
     const handleDeleteSessionExercise = (index) => {
@@ -170,6 +176,79 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
             ...prevWorkout,
             notes: inputValue,
         }));
+    };
+
+    const switchExercisesWithBelow = (index) => {
+        // Get a copy of the exercises array from state
+        const updatedSessionExercises = [...sessionExercises];
+        const updatedTargetSets = [...targetSets];
+
+        // Check if the index is within valid bounds and there is a next exercise
+        if (index < updatedSessionExercises.length - 1) {
+            // Swap the exercises
+            [
+                updatedSessionExercises[index],
+                updatedSessionExercises[index + 1],
+            ] = [
+                updatedSessionExercises[index + 1],
+                updatedSessionExercises[index],
+            ];
+            [updatedTargetSets[index], updatedTargetSets[index + 1]] = [
+                updatedTargetSets[index + 1],
+                updatedTargetSets[index],
+            ];
+        } else if (index === updatedSessionExercises.length - 1) {
+            // Wrap-around case
+            [updatedSessionExercises[index], updatedSessionExercises[0]] = [
+                updatedSessionExercises[0],
+                updatedSessionExercises[index],
+            ];
+            [updatedTargetSets[index], updatedTargetSets[0]] = [
+                updatedTargetSets[0],
+                updatedTargetSets[index],
+            ];
+        }
+
+        setSessionExercises(updatedSessionExercises);
+        setTargetSets(updatedTargetSets);
+    };
+
+    const switchExercisesWithAbove = (index) => {
+        // Get a copy of the exercises array from state
+        const updatedSessionExercises = [...sessionExercises];
+        const updatedTargetSets = [...targetSets];
+
+        // Wrap-around case
+        if (index === 0) {
+            const lastIndex = updatedSessionExercises.length - 1;
+            [
+                updatedSessionExercises[lastIndex],
+                updatedSessionExercises[index],
+            ] = [
+                updatedSessionExercises[index],
+                updatedSessionExercises[lastIndex],
+            ];
+            [updatedTargetSets[lastIndex], updatedTargetSets[index]] = [
+                updatedTargetSets[index],
+                updatedTargetSets[lastIndex],
+            ];
+        } else if (index > 0) {
+            // Swap the exercises
+            [
+                updatedSessionExercises[index - 1],
+                updatedSessionExercises[index],
+            ] = [
+                updatedSessionExercises[index],
+                updatedSessionExercises[index - 1],
+            ];
+            [updatedTargetSets[index - 1], updatedTargetSets[index]] = [
+                updatedTargetSets[index],
+                updatedTargetSets[index - 1],
+            ];
+        }
+
+        setSessionExercises(updatedSessionExercises);
+        setTargetSets(updatedTargetSets);
     };
 
     return (
@@ -237,8 +316,9 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
                     <Table>
                         <Thead>
                             <Tr>
-                                <Th>Exercise</Th>
-                                <Th>Target Sets</Th>
+                                <Th>Reorder</Th>
+                                <Th minWidth="200px">Exercise</Th>
+                                <Th minWidth="150px">Target Sets</Th>
                                 <Th>Sets Done</Th>
                                 <Th>Reps</Th>
                                 <Th>Weight</Th>
@@ -249,7 +329,43 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
                             {sessionExercises &&
                                 sessionExercises.map((exercise, index) => {
                                     return (
-                                        <Tr key={index}>
+                                        <Tr key={uuidv4()}>
+                                            <Td>
+                                                <Box
+                                                    display="flex"
+                                                    justifyContent="start"
+                                                    alignItems="center"
+                                                    fontSize="24px"
+                                                    fontWeight="700"
+                                                    // w="100px"
+                                                >
+                                                    <Box
+                                                        onClick={() =>
+                                                            switchExercisesWithAbove(
+                                                                index
+                                                            )
+                                                        }
+                                                        _hover={{
+                                                            cursor: "pointer",
+                                                        }}
+                                                    >
+                                                        <FaAngleUp />
+                                                    </Box>
+                                                    <Box
+                                                        onClick={() =>
+                                                            switchExercisesWithBelow(
+                                                                index
+                                                            )
+                                                        }
+                                                        _hover={{
+                                                            cursor: "pointer",
+                                                        }}
+                                                        ml="10px"
+                                                    >
+                                                        <FaAngleDown />
+                                                    </Box>
+                                                </Box>
+                                            </Td>
                                             <Td>
                                                 <EditableCell
                                                     value={exercise.name}

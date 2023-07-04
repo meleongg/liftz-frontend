@@ -82,7 +82,6 @@ const LoginForm = () => {
                         <Field name="email" type="email">
                             {({ field, form }) => (
                                 <FormControl
-                                    mt="20px"
                                     isInvalid={
                                         form.errors.email && form.touched.email
                                     }

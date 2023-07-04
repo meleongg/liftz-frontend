@@ -92,6 +92,7 @@ const LandingPage = () => {
                         color="white"
                         _hover={{
                             cursor: "pointer",
+                            bg: "lightBlue.50",
                         }}
                     >
                         <Link
@@ -112,6 +113,7 @@ const LandingPage = () => {
                         color="white"
                         _hover={{
                             cursor: "pointer",
+                            bg: "lightBlue.50",
                         }}
                     >
                         <Link

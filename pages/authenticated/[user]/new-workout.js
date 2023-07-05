@@ -1,6 +1,5 @@
 import { useRouter } from "next/router";
-
-import { Box, Heading, Button, useMediaQuery } from "@chakra-ui/react";
+import { Box, Heading, Button } from "@chakra-ui/react";
 
 import Navbar from "../../../components/Navbar";
 import NewWorkoutForm from "../../../components/NewWorkoutForm";
@@ -15,8 +14,6 @@ const metadata = {
 const NewWorkout = () => {
     const router = useRouter();
     const userId = router.query.user;
-
-    const [isLargerThan768] = useMediaQuery("(min-width: 768px)");
 
     const handleBackButton = () => {
         router.push(`/authenticated/${userId}/workouts`);
@@ -55,8 +52,8 @@ const NewWorkout = () => {
                 minHeight="calc(100vh - 80px)"
                 h="calc(100% - 80px)"
                 pt="30px"
-                pl={isLargerThan768 ? "100px" : "10px"}
-                pr={isLargerThan768 ? "100px" : "10px"}
+                pl={["10px", "50px", "100px", "100px", "100px"]}
+                pr={["10px", "50px", "100px", "100px", "100px"]}
                 pb="80px"
             >
                 <Heading fontSize="50px">New Workout</Heading>

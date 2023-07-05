@@ -9,7 +9,6 @@ import {
     Tr,
     Th,
     Td,
-    useMediaQuery,
 } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
@@ -26,8 +25,6 @@ const metadata = {
 const Workout = ({ dbWorkout, error }) => {
     const [workout] = useState(dbWorkout);
     const [loading, setLoading] = useState(true);
-
-    const [isLargerThan768] = useMediaQuery("(min-width: 768px)");
 
     const router = useRouter();
     const userId = router.query.user;
@@ -137,8 +134,8 @@ const Workout = ({ dbWorkout, error }) => {
                 minHeight="calc(100vh - 80px)"
                 h="calc(100% - 80px)"
                 pt="30px"
-                pl={isLargerThan768 ? "80px" : "10px"}
-                pr={isLargerThan768 ? "80px" : "10px"}
+                pl={["10px", "50px", "100px", "100px", "100px"]}
+                pr={["10px", "50px", "100px", "100px", "100px"]}
                 pb="80px"
             >
                 <Title user={userId} content={`${workout?.name}`} />

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { Box, Button, Spinner, Text, useMediaQuery } from "@chakra-ui/react";
+import { Box, Button, Spinner, Text } from "@chakra-ui/react";
 
 import Navbar from "../../../components/Navbar";
 import Title from "../../../components/Title";
@@ -19,8 +19,6 @@ const WorkoutLibrary = ({ dbUser, dbWorkouts, error }) => {
     const [loading, setLoading] = useState(true);
     const [user] = useState(dbUser);
     const [workouts] = useState(dbWorkouts);
-
-    const [isLargerThan768] = useMediaQuery("(min-width: 768px)");
 
     const router = useRouter();
     const userId = router.query.user;
@@ -98,8 +96,8 @@ const WorkoutLibrary = ({ dbUser, dbWorkouts, error }) => {
                 minHeight="calc(100vh - 80px)"
                 h="calc(100% - 80px)"
                 pt="30px"
-                pl={isLargerThan768 ? "100px" : "10px"}
-                pr={isLargerThan768 ? "100px" : "10px"}
+                pl={["10px", "50px", "100px", "100px", "100px"]}
+                pr={["10px", "50px", "100px", "100px", "100px"]}
                 pb="80px"
             >
                 <Title userId={userId} content={"Workout Library"} />

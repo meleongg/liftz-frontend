@@ -98,8 +98,8 @@ const Settings = () => {
             <Box
                 minHeight="calc(100vh - 80px)"
                 pt="30px"
-                pl={["10px", "100px"]}
-                pr={["10px", "100px"]}
+                pl={["10px", "50px", "100px", "100px", "100px"]}
+                pr={["10px", "50px", "100px", "100px", "100px"]}
                 pb="80px"
             >
                 <Title userId={userId} content={"Settings"} />

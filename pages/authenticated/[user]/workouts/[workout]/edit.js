@@ -14,7 +14,6 @@ import {
     Editable,
     EditablePreview,
     EditableInput,
-    useMediaQuery,
     NumberInput,
     NumberInputField,
     NumberInputStepper,
@@ -50,8 +49,6 @@ const EditableCell = ({ value, onChange }) => {
 const EditWorkout = ({ dbWorkout, error }) => {
     const [workout, setWorkout] = useState(dbWorkout);
     const [loading, setLoading] = useState(true);
-
-    const [isLargerThan768] = useMediaQuery("(min-width: 768px)");
 
     const router = useRouter();
     const userId = router.query.user;
@@ -286,8 +283,8 @@ const EditWorkout = ({ dbWorkout, error }) => {
                 minHeight="calc(100vh - 80px)"
                 h="calc(100% - 80px)"
                 pt="30px"
-                pl={isLargerThan768 ? "100px" : "10px"}
-                pr={isLargerThan768 ? "100px" : "10px"}
+                pl={["10px", "50px", "100px", "100px", "100px"]}
+                pr={["10px", "50px", "100px", "100px", "100px"]}
                 pb="80px"
             >
                 <Title userId={userId} content={`${workout?.name}`} />

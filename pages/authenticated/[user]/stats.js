@@ -1,4 +1,4 @@
-import { Box, Spinner, Text, useMediaQuery } from "@chakra-ui/react";
+import { Box, Spinner, Text, Button } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 
@@ -6,6 +6,7 @@ import Navbar from "../../../components/Navbar";
 import Title from "../../../components/Title";
 import PRChart from "../../../components/PRChart";
 import Head from "next/head";
+import { v4 as uuidv4 } from "uuid";
 
 const metadata = {
     title: "PR Tracker | liftz",
@@ -15,8 +16,7 @@ const metadata = {
 
 const Stats = ({ dbPrs, error }) => {
     const [loading, setLoading] = useState(true);
-
-    const [isLargerThan768] = useMediaQuery("(min-width: 768px)");
+    const [prs, setPrs] = useState(dbPrs);
 
     const router = useRouter();
     const userId = router.query.user;
@@ -57,6 +57,30 @@ const Stats = ({ dbPrs, error }) => {
         );
     }
 
+    const handleDeletePRClick = async (index) => {
+        const updatedPrs = [...prs];
+        updatedPrs.splice(index, 1);
+        setPrs(updatedPrs);
+
+        const data = {
+            prId: prs[index]._id,
+        };
+
+        try {
+            const rawResponse = await fetch("/api/delete-pr", {
+                method: "POST",
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+            });
+            await rawResponse.json();
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
     return (
         <Box minHeight="100vh" mb={["80px", "80px", "0px", "0px", "0px"]}>
             <Head>
@@ -90,8 +114,8 @@ const Stats = ({ dbPrs, error }) => {
                 minHeight="calc(100vh - 80px)"
                 h="calc(100% - 80px)"
                 pt="30px"
-                pl={isLargerThan768 ? "100px" : "10px"}
-                pr={isLargerThan768 ? "100px" : "10px"}
+                pl={["10px", "50px", "100px", "100px", "100px"]}
+                pr={["10px", "50px", "100px", "100px", "100px"]}
                 pb="80px"
             >
                 <Title userId={userId} content={"PR Progress"} />
@@ -104,20 +128,28 @@ const Stats = ({ dbPrs, error }) => {
                         mt="20px"
                         mb="20px"
                     >
-                        <Text>
+                        <Text fontSize="20px" fontWeight="700">
                             PRs are automatically created for each of your
                             exercises. Each PR will update every time you
                             complete a session where you hit a new PR!
                         </Text>
                     </Box>
-                    {dbPrs &&
-                        dbPrs.map((pr, index) => {
-                            return (
-                                <Box key={index} mt="20px">
-                                    <PRChart pr={pr} />
-                                </Box>
-                            );
-                        })}
+                    {prs?.map((pr, index) => {
+                        return (
+                            <Box key={uuidv4()} mt="20px" mb="20px">
+                                <PRChart pr={pr} />
+                                <Button
+                                    backgroundColor="blue.50"
+                                    color="white"
+                                    _hover={{
+                                        cursor: "pointer",
+                                        bg: "lightBlue.50",
+                                    }}
+                                    onClick={() => handleDeletePRClick(index)}
+                                >{`Delete ${pr.exercise} PR`}</Button>
+                            </Box>
+                        );
+                    })}
                 </Box>
             </Box>
             <Navbar userId={userId} currPage="stats" />

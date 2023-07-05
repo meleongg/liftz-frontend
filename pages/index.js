@@ -1,7 +1,7 @@
 import Head from "next/head";
 import Image from "next/image";
 import NextLink from "next/link";
-import { Box, Text, useMediaQuery, Link } from "@chakra-ui/react";
+import { Box, Text, Link } from "@chakra-ui/react";
 import GuestNavbar from "../components/GuestNavbar";
 import Footer from "../components/Footer";
 
@@ -20,8 +20,6 @@ import {
 } from "react-icons/fa";
 
 const LandingPage = () => {
-    const [isLargerThan768] = useMediaQuery("(min-width: 768px)");
-
     return (
         <Box
             backgroundColor="blue.50"
@@ -69,7 +67,7 @@ const LandingPage = () => {
                 pr={["10px", "50px", "200px", "200px", "200px"]}
             >
                 <Text
-                    fontSize={isLargerThan768 ? "50px" : "30px"}
+                    fontSize={["30px", "50px"]}
                     fontWeight="700"
                     pt="50px"
                     pb="30px"

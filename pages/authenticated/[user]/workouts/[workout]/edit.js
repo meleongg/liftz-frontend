@@ -176,6 +176,7 @@ const EditWorkout = ({ dbWorkout, error }) => {
 
     const handleAddExercise = () => {
         const newExercise = {
+            temp_id: uuidv4(),
             name: "Exercise",
             sets: 1,
             reps: 1,
@@ -352,7 +353,7 @@ const EditWorkout = ({ dbWorkout, error }) => {
                         <Tbody>
                             {workout.exercises.map((exercise, index) => {
                                 return (
-                                    <Tr key={uuidv4()}>
+                                    <Tr key={exercise._id || exercise.temp_id}>
                                         <Td>
                                             <Box
                                                 display="flex"
@@ -403,7 +404,9 @@ const EditWorkout = ({ dbWorkout, error }) => {
                                         <Td>
                                             <NumberInput
                                                 minWidth="150px"
-                                                defaultValue={exercise.sets}
+                                                defaultValue={
+                                                    exercise.sets || 0
+                                                }
                                                 min={0}
                                                 onChange={(newValue) =>
                                                     handleExerciseChange(
@@ -441,7 +444,9 @@ const EditWorkout = ({ dbWorkout, error }) => {
                                         <Td>
                                             <NumberInput
                                                 minWidth="150px"
-                                                defaultValue={exercise.reps}
+                                                defaultValue={
+                                                    exercise.reps || 0
+                                                }
                                                 min={0}
                                                 onChange={(newValue) =>
                                                     handleExerciseChange(
@@ -479,7 +484,9 @@ const EditWorkout = ({ dbWorkout, error }) => {
                                         <Td>
                                             <NumberInput
                                                 minWidth="150px"
-                                                defaultValue={exercise.weight}
+                                                defaultValue={
+                                                    exercise.weight || 0
+                                                }
                                                 min={0}
                                                 onChange={(newValue) =>
                                                     handleExerciseChange(

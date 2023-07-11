@@ -141,14 +141,13 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
 
         const updatedSessionExercises = [...sessionExercises];
 
-        console.log(parseInt(newValue));
-
         updatedSessionExercises[index][field] = parseInt(newValue);
         setSessionExercises(updatedSessionExercises);
     };
 
     const handleAddSessionExercise = () => {
         const newSessionExercise = {
+            temp_id: uuidv4(),
             name: "Exercise",
             sets: 0,
             reps: 0,
@@ -326,7 +325,11 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
                             {sessionExercises &&
                                 sessionExercises.map((exercise, index) => {
                                     return (
-                                        <Tr key={uuidv4()}>
+                                        <Tr
+                                            key={
+                                                exercise._id || exercise.temp_id
+                                            }
+                                        >
                                             <Td>
                                                 <Box
                                                     display="flex"
@@ -334,7 +337,6 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
                                                     alignItems="center"
                                                     fontSize="24px"
                                                     fontWeight="700"
-                                                    // w="100px"
                                                 >
                                                     <Box
                                                         onClick={() =>
@@ -383,7 +385,9 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
                                             <Td>
                                                 <NumberInput
                                                     minWidth="150px"
-                                                    defaultValue={exercise.sets}
+                                                    defaultValue={
+                                                        exercise.sets || 0
+                                                    }
                                                     min={0}
                                                     onChange={(newValue) =>
                                                         handleSessionExerciseClick(
@@ -421,7 +425,9 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
                                             <Td>
                                                 <NumberInput
                                                     minWidth="150px"
-                                                    defaultValue={exercise.reps}
+                                                    defaultValue={
+                                                        exercise.reps || 0
+                                                    }
                                                     min={0}
                                                     onChange={(newValue) =>
                                                         handleSessionExerciseClick(
@@ -460,7 +466,7 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
                                                 <NumberInput
                                                     minWidth="150px"
                                                     defaultValue={
-                                                        exercise.weight
+                                                        exercise.weight || 0
                                                     }
                                                     min={0}
                                                     onChange={(newValue) =>

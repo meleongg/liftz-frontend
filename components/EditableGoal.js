@@ -133,12 +133,7 @@ const EditableGoal = ({ userId, id, content, goals, setGoals }) => {
             )}
             {!isEditing && <Checkbox onChange={handleCheck}>{goal}</Checkbox>}
             {isEditing && (
-                <Editable
-                    textAlign="center"
-                    defaultValue={goal}
-                    pr="8px"
-                    w="70%"
-                >
+                <Editable textAlign="left" defaultValue={goal} pr="8px" w="70%">
                     <EditablePreview />
                     <EditableInput onChange={(e) => setGoal(e.target.value)} />
                 </Editable>

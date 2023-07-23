@@ -367,6 +367,7 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
                                             </Td>
                                             <Td>
                                                 <EditableCell
+                                                    w="150px"
                                                     value={exercise.name}
                                                     onChange={(newValue) =>
                                                         handleSessionExerciseChange(

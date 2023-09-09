@@ -38,9 +38,12 @@ const NewWorkoutForm = ({ userId }) => {
             }}
             validationSchema={Yup.object({
                 name: Yup.string()
-                    .max(100, "Must be 100 characters or less")
+                    .max(100, "Workout name must be 100 characters or less")
                     .required("Required"),
-                notes: Yup.string().max(200, "Must be 200 characters or less"),
+                notes: Yup.string().max(
+                    1000,
+                    "Workout notes must be 1000 characters or less"
+                ),
             })}
             onSubmit={(values, { setSubmitting, setErrors }) => {
                 const handleSubmit = async () => {

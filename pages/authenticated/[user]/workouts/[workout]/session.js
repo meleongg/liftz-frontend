@@ -151,7 +151,7 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
             name: "Exercise",
             sets: 0,
             reps: 0,
-            weight: 45,
+            weight: 0,
         };
         const newTargetSets = null;
 
@@ -605,6 +605,7 @@ export async function getServerSideProps(context) {
         const dbTargetSets = data.exercises.map((exercise) => exercise.sets);
 
         // set all sessionExercise sets completed to 0
+        // exercise.position isn't relevant here
         data.exercises.map((exercise) => (exercise.sets = 0));
 
         return {

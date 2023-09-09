@@ -122,6 +122,8 @@ const EditWorkout = ({ dbWorkout, error }) => {
             workout: workout,
         };
 
+        console.log(workout.exercises);
+
         const rawResponse = await fetch(
             `${BE_URL}/workouts/${workoutId}/update`,
             {
@@ -177,10 +179,11 @@ const EditWorkout = ({ dbWorkout, error }) => {
     const handleAddExercise = () => {
         const newExercise = {
             temp_id: uuidv4(),
+            position: workout.exercises.length + 1,
             name: "Exercise",
-            sets: 1,
-            reps: 1,
-            weight: 45,
+            sets: 0,
+            reps: 0,
+            weight: 0,
             workout: workoutId,
         };
 
@@ -211,12 +214,23 @@ const EditWorkout = ({ dbWorkout, error }) => {
 
         // Check if the index is within valid bounds and there is a next exercise
         if (index < updatedExercises.length - 1) {
+            // Swap their positions
+            let temp = updatedExercises[index].position;
+            updatedExercises[index].position =
+                updatedExercises[index + 1].position;
+            updatedExercises[index + 1].position = temp;
+
             // Swap the exercises
             [updatedExercises[index], updatedExercises[index + 1]] = [
                 updatedExercises[index + 1],
                 updatedExercises[index],
             ];
         } else if (index === updatedExercises.length - 1) {
+            // Swap their positions
+            let temp = updatedExercises[index].position;
+            updatedExercises[index].position = updatedExercises[0].position;
+            updatedExercises[0].position = temp;
+
             // Wrap-around case
             [updatedExercises[index], updatedExercises[0]] = [
                 updatedExercises[0],
@@ -235,11 +249,24 @@ const EditWorkout = ({ dbWorkout, error }) => {
         // Wrap-around case
         if (index === 0) {
             const lastIndex = updatedExercises.length - 1;
+
+            // Swap their positions
+            let temp = updatedExercises[index].position;
+            updatedExercises[index].position =
+                updatedExercises[lastIndex].position;
+            updatedExercises[lastIndex].position = temp;
+
             [updatedExercises[lastIndex], updatedExercises[index]] = [
                 updatedExercises[index],
                 updatedExercises[lastIndex],
             ];
         } else if (index > 0) {
+            // Swap their positions
+            let temp = updatedExercises[index - 1].position;
+            updatedExercises[index - 1].position =
+                updatedExercises[index].position;
+            updatedExercises[index].position = temp;
+
             // Swap the exercises
             [updatedExercises[index - 1], updatedExercises[index]] = [
                 updatedExercises[index],

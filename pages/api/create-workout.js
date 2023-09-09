@@ -4,6 +4,8 @@ export default async function (req, res) {
     const { userId } = req.query;
     const { values } = req.body;
 
+    console.log(values);
+
     try {
         const rawResponse = await fetch(
             `${BE_URL}/workouts/${userId}/create-workout`,

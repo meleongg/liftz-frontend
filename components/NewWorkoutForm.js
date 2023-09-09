@@ -34,7 +34,15 @@ const NewWorkoutForm = ({ userId }) => {
             initialValues={{
                 name: "",
                 notes: "",
-                exercises: [{ name: "Exercise", sets: 1, reps: 1, weight: 45 }],
+                exercises: [
+                    {
+                        position: 1,
+                        name: "Exercise",
+                        sets: 0,
+                        reps: 0,
+                        weight: 0,
+                    },
+                ],
             }}
             validationSchema={Yup.object({
                 name: Yup.string()
@@ -181,8 +189,8 @@ const NewWorkoutForm = ({ userId }) => {
                                                         Exercise Sets
                                                     </Text>
                                                     <NumberInput
-                                                        defaultValue={1}
-                                                        min={1}
+                                                        defaultValue={0}
+                                                        min={0}
                                                         id={`exercises.${index}.sets`}
                                                         name={`exercises.${index}.sets`}
                                                         mt="10px"
@@ -236,8 +244,8 @@ const NewWorkoutForm = ({ userId }) => {
                                                         Exercise Reps
                                                     </Text>
                                                     <NumberInput
-                                                        defaultValue={1}
-                                                        min={1}
+                                                        defaultValue={0}
+                                                        min={0}
                                                         id={`exercises.${index}.reps`}
                                                         name={`exercises.${index}.reps`}
                                                         mt="10px"
@@ -291,8 +299,8 @@ const NewWorkoutForm = ({ userId }) => {
                                                         Exercise Weight
                                                     </Text>
                                                     <NumberInput
-                                                        defaultValue={45}
-                                                        min={1}
+                                                        defaultValue={0}
+                                                        min={0}
                                                         id={`exercises.${index}.weight`}
                                                         name={`exercises.${index}.weight`}
                                                         mt="10px"
@@ -370,10 +378,13 @@ const NewWorkoutForm = ({ userId }) => {
                                     _hover={{ bg: "lightBlue.50" }}
                                     onClick={() =>
                                         push({
+                                            position:
+                                                formik.values.exercises.length +
+                                                1,
                                             name: "Exercise",
-                                            sets: 1,
-                                            reps: 1,
-                                            weight: 45,
+                                            sets: 0,
+                                            reps: 0,
+                                            weight: 0,
                                         })
                                     }
                                     mt="30px"

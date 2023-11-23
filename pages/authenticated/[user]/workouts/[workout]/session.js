@@ -124,6 +124,10 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
       return;
     }
 
+    if (field === "weight" && newValue === "") {
+      newValue = 0;
+    }
+
     const updatedSessionExercises = [...sessionExercises];
 
     if (field !== "name" && typeof newValue === "string") {
@@ -316,6 +320,7 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
                 sessionExercises.map((exercise, index) => {
                   return (
                     <Tr key={exercise._id || exercise.temp_id}>
+                      {/* Reorder */}
                       <Td>
                         <Box
                           display="flex"
@@ -343,6 +348,7 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
                           </Box>
                         </Box>
                       </Td>
+                      {/* Exercise */}
                       <Td>
                         <EditableCell
                           w="150px"
@@ -352,47 +358,48 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
                           }
                         />
                       </Td>
+                      {/* Target Sets */}
                       <Td>{targetSets[index] ? targetSets[index] : ""}</Td>
+                      {/* Sets Done */}
                       <Td>
                         <NumberInput
                           minWidth="150px"
                           defaultValue={exercise.sets || 0}
                           min={0}
-                          onChange={(newValue) =>
-                            handleSessionExerciseClick(index, "sets", newValue)
-                          }
                         >
                           <NumberInputField />
                           <NumberInputStepper>
                             <NumberIncrementStepper
-                              onClick={() =>
+                              onClick={(event) => {
+                                event.stopPropagation();
+                                event.preventDefault();
                                 handleSessionExerciseClick(
                                   index,
                                   "sets",
                                   exercise.sets + 1
-                                )
-                              }
+                                );
+                              }}
                             />
                             <NumberDecrementStepper
-                              onClick={() =>
+                              onClick={(event) => {
+                                event.stopPropagation();
+                                event.preventDefault();
                                 handleSessionExerciseClick(
                                   index,
                                   "sets",
                                   exercise.sets - 1
-                                )
-                              }
+                                );
+                              }}
                             />
                           </NumberInputStepper>
                         </NumberInput>
                       </Td>
+                      {/* Reps */}
                       <Td>
                         <NumberInput
                           minWidth="150px"
                           defaultValue={exercise.reps || 0}
                           min={0}
-                          onChange={(newValue) =>
-                            handleSessionExerciseClick(index, "reps", newValue)
-                          }
                         >
                           <NumberInputField />
                           <NumberInputStepper>
@@ -417,13 +424,14 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
                           </NumberInputStepper>
                         </NumberInput>
                       </Td>
+                      {/* Weight */}
                       <Td>
                         <NumberInput
                           minWidth="150px"
                           defaultValue={exercise.weight || 0}
                           min={0}
                           onChange={(newValue) =>
-                            handleSessionExerciseClick(
+                            handleSessionExerciseChange(
                               index,
                               "weight",
                               newValue
@@ -431,26 +439,6 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
                           }
                         >
                           <NumberInputField />
-                          <NumberInputStepper>
-                            <NumberIncrementStepper
-                              onClick={() =>
-                                handleSessionExerciseClick(
-                                  index,
-                                  "weight",
-                                  exercise.weight + 1
-                                )
-                              }
-                            />
-                            <NumberDecrementStepper
-                              onClick={() =>
-                                handleSessionExerciseClick(
-                                  index,
-                                  "weight",
-                                  exercise.weight - 1
-                                )
-                              }
-                            />
-                          </NumberInputStepper>
                         </NumberInput>
                       </Td>
                       <Td>
@@ -550,9 +538,10 @@ export async function getServerSideProps(context) {
 
     const dbTargetSets = data.exercises.map((exercise) => exercise.sets);
 
-    // set all sessionExercise sets completed to 0
-    // exercise.position isn't relevant here
-    data.exercises.map((exercise) => (exercise.sets = 0));
+    // set each exercise's sets to 0 (SETS DONE)
+    data.exercises = data.exercises.map((exercise) => {
+      return { ...exercise, sets: 0 };
+    });
 
     return {
       props: {

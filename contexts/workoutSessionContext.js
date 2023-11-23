@@ -11,10 +11,15 @@ export const useWorkoutSession = () => {
 
 // provider component to wrap the app and provide the workout session context
 export const WorkoutSessionProvider = ({ children }) => {
+  // workoutSession is an object of the form: { workout, exercises, targetSets}
   const [workoutSession, setWorkoutSession] = useState(null);
 
-  const startWorkoutSession = (sessionData) => {
+  const updateWorkoutSession = (sessionData) => {
     setWorkoutSession(sessionData);
+  };
+
+  const checkActiveWorkoutSession = () => {
+    return workoutSession !== null;
   };
 
   const endWorkoutSession = () => {
@@ -24,7 +29,12 @@ export const WorkoutSessionProvider = ({ children }) => {
 
   return (
     <WorkoutSessionContext.Provider
-      value={{ workoutSession, startWorkoutSession, endWorkoutSession }}
+      value={{
+        workoutSession,
+        updateWorkoutSession,
+        endWorkoutSession,
+        checkActiveWorkoutSession,
+      }}
     >
       {children}
     </WorkoutSessionContext.Provider>

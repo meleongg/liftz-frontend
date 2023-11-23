@@ -162,7 +162,12 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
   const handleDeleteSessionExercise = (index) => {
     const updatedSessionExercises = [...sessionExercises];
     updatedSessionExercises.splice(index, 1);
+
+    const updatedTargetSets = [...targetSets];
+    updatedTargetSets.splice(index, 1);
+
     setSessionExercises(updatedSessionExercises);
+    setTargetSets(updatedTargetSets);
   };
 
   const handleTextareaChange = (e) => {

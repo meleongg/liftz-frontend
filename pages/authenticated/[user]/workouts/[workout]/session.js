@@ -25,6 +25,7 @@ import React, { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 import Head from "next/head";
+import Navbar from "../../../../../components/Navbar";
 import Title from "../../../../../components/Title";
 import { useWorkoutSession } from "../../../../../contexts/workoutSessionContext";
 
@@ -57,8 +58,17 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
     endWorkoutSession();
   };
 
-  const handleUpdateSession = (sessionData) => {
-    updateWorkoutSession(sessionData);
+  const handleUpdateSession = () => {
+    const workoutSessionData = {};
+    workoutSessionData.workout = workout;
+    workoutSessionData.sessionExercises = sessionExercises;
+    workoutSessionData.targetSets = targetSets;
+
+    console.log(
+      "🚀 ~ file: session.js:77 ~ handleUpdateSession ~ workoutSessionData",
+      workoutSessionData
+    );
+    updateWorkoutSession(workoutSessionData);
   };
 
   const router = useRouter();
@@ -74,6 +84,14 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
     setLoading(false);
 
     if (workoutSession) {
+      // TODO: add this context check in the "Start" button in the workout page, a modal should popup informing the user that there is an existing workout session in progress and a link to go to that session
+      // redirect user to correct workout session id
+      if (workoutSession.workout.id !== workoutId) {
+        router.push(
+          `/authenticated/${userId}/workouts/${workoutSession.workout.id}/session`
+        );
+      }
+
       // an existing workout session is in progress
       console.log(
         "🚀 ~ file: session.js:76 ~ useEffect ~ workoutSession:",
@@ -103,6 +121,9 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
     dbWorkout,
     workoutSession,
     updateWorkoutSession,
+    router,
+    userId,
+    workoutId,
   ]);
 
   if (loading) {
@@ -186,6 +207,7 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
 
     updatedSessionExercises[index][field] = newValue;
     setSessionExercises(updatedSessionExercises);
+    handleUpdateSession();
   };
 
   const handleSessionExerciseClick = (index, field, newValue) => {
@@ -197,6 +219,7 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
 
     updatedSessionExercises[index][field] = parseInt(newValue);
     setSessionExercises(updatedSessionExercises);
+    handleUpdateSession();
   };
 
   const handleAddSessionExercise = () => {
@@ -211,6 +234,7 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
 
     setSessionExercises([...sessionExercises, newSessionExercise]);
     setTargetSets([...targetSets, newTargetSets]);
+    handleUpdateSession();
   };
 
   const handleDeleteSessionExercise = (index) => {
@@ -222,6 +246,7 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
 
     setSessionExercises(updatedSessionExercises);
     setTargetSets(updatedTargetSets);
+    handleUpdateSession();
   };
 
   const handleTextareaChange = (e) => {
@@ -231,6 +256,7 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
       ...prevWorkout,
       notes: inputValue,
     }));
+    handleUpdateSession();
   };
 
   const switchExercisesWithBelow = (index) => {
@@ -263,6 +289,7 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
 
     setSessionExercises(updatedSessionExercises);
     setTargetSets(updatedTargetSets);
+    handleUpdateSession();
   };
 
   const switchExercisesWithAbove = (index) => {
@@ -295,6 +322,7 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
 
     setSessionExercises(updatedSessionExercises);
     setTargetSets(updatedTargetSets);
+    handleUpdateSession();
   };
 
   return (
@@ -566,6 +594,7 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
           </Button>
         </Box>
       </Box>
+      <Navbar userId={userId} currPage="workouts" />
     </Box>
   );
 };

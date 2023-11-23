@@ -26,6 +26,7 @@ import { v4 as uuidv4 } from "uuid";
 
 import Head from "next/head";
 import Title from "../../../../../components/Title";
+import { useWorkoutSession } from "../../../../../contexts/workoutSessionContext";
 
 import { FaAngleDown, FaAngleUp } from "react-icons/fa";
 
@@ -44,18 +45,65 @@ const EditableCell = ({ value, onChange }) => {
 };
 
 const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
+  const { workoutSession, updateWorkoutSession, endWorkoutSession } =
+    useWorkoutSession();
   const [sessionExercises, setSessionExercises] = useState(dbExercises);
   const [targetSets, setTargetSets] = useState(dbTargetSets);
   const [workout, setWorkout] = useState(dbWorkout);
   const [loading, setLoading] = useState(true);
+
+  const handleEndSession = () => {
+    // Logic to end the workout session
+    endWorkoutSession();
+  };
+
+  const handleUpdateSession = (sessionData) => {
+    updateWorkoutSession(sessionData);
+  };
 
   const router = useRouter();
   const userId = router.query.user;
   const workoutId = router.query.workout;
 
   useEffect(() => {
+    const handleStartSession = (sessionData) => {
+      // Logic to start the workout session
+      updateWorkoutSession(sessionData);
+    };
+
     setLoading(false);
-  }, []);
+
+    if (workoutSession) {
+      // an existing workout session is in progress
+      console.log(
+        "🚀 ~ file: session.js:76 ~ useEffect ~ workoutSession:",
+        workoutSession
+      );
+      setSessionExercises(workoutSession.sessionExercises);
+      setTargetSets(workoutSession.targetSets);
+      setWorkout(workoutSession.workout);
+      // set the workout session data to be workoutSession
+    } else {
+      setSessionExercises(dbExercises);
+      setTargetSets(dbTargetSets);
+      setWorkout(dbWorkout);
+
+      console.log("created new workout session data");
+
+      const workoutSessionData = {};
+      workoutSessionData.workout = dbWorkout;
+      workoutSessionData.sessionExercises = dbExercises;
+      workoutSessionData.targetSets = dbTargetSets;
+
+      handleStartSession(workoutSessionData);
+    }
+  }, [
+    dbExercises,
+    dbTargetSets,
+    dbWorkout,
+    workoutSession,
+    updateWorkoutSession,
+  ]);
 
   if (loading) {
     return (
@@ -110,6 +158,8 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
         body: JSON.stringify(data),
       });
       const { sessionId } = await rawResponse.json();
+
+      handleEndSession();
 
       router.push(
         `/authenticated/${userId}/workouts/${workoutId}/${sessionId}`

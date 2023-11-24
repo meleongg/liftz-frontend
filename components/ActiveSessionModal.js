@@ -18,7 +18,13 @@ export const ActiveSessionModal = ({
   workoutId,
 }) => {
   return (
-    <Modal isOpen={isOpen} onClose={onClose} size="sm">
+    <Modal
+      blockScrollOnMount={true}
+      isOpen={isOpen}
+      onClose={onClose}
+      size="sm"
+      isCentered
+    >
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>You have an active {workoutName} session!</ModalHeader>

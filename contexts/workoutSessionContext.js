@@ -24,7 +24,6 @@ export const WorkoutSessionProvider = ({ children }) => {
 
   const endWorkoutSession = () => {
     setWorkoutSession(null);
-    // TODO: api call to save workout session
   };
 
   return (

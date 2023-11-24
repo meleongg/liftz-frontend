@@ -148,6 +148,7 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
   }
 
   const handleCancelButton = async () => {
+    handleEndSession();
     router.push(`/authenticated/${userId}/workouts/${workoutId}`);
   };
 

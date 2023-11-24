@@ -80,18 +80,9 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
     setLoading(false);
 
     if (workoutSession) {
-      // TODO: add this context check in the "Start" button in the workout page, a modal should popup informing the user that there is an existing workout session in progress and a link to go to that session
-      // redirect user to correct workout session id
-      if (workoutSession.workout.id !== workoutId) {
-        router.push(
-          `/authenticated/${userId}/workouts/${workoutSession.workout.id}/session`
-        );
-      }
-
       setSessionExercises(workoutSession.sessionExercises);
       setTargetSets(workoutSession.targetSets);
       setWorkout(workoutSession.workout);
-      // set the workout session data to be workoutSession
     } else {
       setSessionExercises(dbExercises);
       setTargetSets(dbTargetSets);
@@ -104,16 +95,8 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
 
       handleStartSession(workoutSessionData);
     }
-  }, [
-    dbExercises,
-    dbTargetSets,
-    dbWorkout,
-    workoutSession,
-    updateWorkoutSession,
-    router,
-    userId,
-    workoutId,
-  ]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (loading) {
     return (

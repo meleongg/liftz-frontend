@@ -39,8 +39,8 @@ export const ActiveSessionModal = ({
             href={`/authenticated/${userId}/workouts/${workoutId}/session`}
           >
             session
-          </Link>{" "}
-          before starting a new one.
+          </Link>
+          .
         </ModalBody>
 
         <ModalFooter></ModalFooter>

@@ -82,6 +82,14 @@ const Workout = ({ dbWorkout, error }) => {
   };
 
   const handleDeleteButton = async () => {
+    if (
+      checkActiveWorkoutSession() &&
+      workoutSession.workout.id === workoutId
+    ) {
+      onOpen();
+      return;
+    }
+
     const data = {
       userId: userId,
       workoutId: workoutId,

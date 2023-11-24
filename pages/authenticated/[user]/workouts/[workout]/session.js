@@ -25,7 +25,9 @@ import React, { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 import Head from "next/head";
+import Navbar from "../../../../../components/Navbar";
 import Title from "../../../../../components/Title";
+import { useWorkoutSession } from "../../../../../contexts/workoutSessionContext";
 
 import { FaAngleDown, FaAngleUp } from "react-icons/fa";
 
@@ -44,17 +46,56 @@ const EditableCell = ({ value, onChange }) => {
 };
 
 const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
+  const { workoutSession, updateWorkoutSession, endWorkoutSession } =
+    useWorkoutSession();
   const [sessionExercises, setSessionExercises] = useState(dbExercises);
   const [targetSets, setTargetSets] = useState(dbTargetSets);
   const [workout, setWorkout] = useState(dbWorkout);
   const [loading, setLoading] = useState(true);
+
+  const handleEndSession = () => {
+    // Logic to end the workout session
+    endWorkoutSession();
+  };
+
+  const handleUpdateSession = () => {
+    const workoutSessionData = {};
+    workoutSessionData.workout = workout;
+    workoutSessionData.sessionExercises = sessionExercises;
+    workoutSessionData.targetSets = targetSets;
+
+    updateWorkoutSession(workoutSessionData);
+  };
 
   const router = useRouter();
   const userId = router.query.user;
   const workoutId = router.query.workout;
 
   useEffect(() => {
+    const handleStartSession = (sessionData) => {
+      // Logic to start the workout session
+      updateWorkoutSession(sessionData);
+    };
+
     setLoading(false);
+
+    if (workoutSession) {
+      setSessionExercises(workoutSession.sessionExercises);
+      setTargetSets(workoutSession.targetSets);
+      setWorkout(workoutSession.workout);
+    } else {
+      setSessionExercises(dbExercises);
+      setTargetSets(dbTargetSets);
+      setWorkout(dbWorkout);
+
+      const workoutSessionData = {};
+      workoutSessionData.workout = dbWorkout;
+      workoutSessionData.sessionExercises = dbExercises;
+      workoutSessionData.targetSets = dbTargetSets;
+
+      handleStartSession(workoutSessionData);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (loading) {
@@ -90,6 +131,7 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
   }
 
   const handleCancelButton = async () => {
+    handleEndSession();
     router.push(`/authenticated/${userId}/workouts/${workoutId}`);
   };
 
@@ -110,6 +152,8 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
         body: JSON.stringify(data),
       });
       const { sessionId } = await rawResponse.json();
+
+      handleEndSession();
 
       router.push(
         `/authenticated/${userId}/workouts/${workoutId}/${sessionId}`
@@ -136,6 +180,7 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
 
     updatedSessionExercises[index][field] = newValue;
     setSessionExercises(updatedSessionExercises);
+    handleUpdateSession();
   };
 
   const handleSessionExerciseClick = (index, field, newValue) => {
@@ -147,6 +192,7 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
 
     updatedSessionExercises[index][field] = parseInt(newValue);
     setSessionExercises(updatedSessionExercises);
+    handleUpdateSession();
   };
 
   const handleAddSessionExercise = () => {
@@ -161,6 +207,7 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
 
     setSessionExercises([...sessionExercises, newSessionExercise]);
     setTargetSets([...targetSets, newTargetSets]);
+    handleUpdateSession();
   };
 
   const handleDeleteSessionExercise = (index) => {
@@ -172,6 +219,7 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
 
     setSessionExercises(updatedSessionExercises);
     setTargetSets(updatedTargetSets);
+    handleUpdateSession();
   };
 
   const handleTextareaChange = (e) => {
@@ -181,6 +229,7 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
       ...prevWorkout,
       notes: inputValue,
     }));
+    handleUpdateSession();
   };
 
   const switchExercisesWithBelow = (index) => {
@@ -213,6 +262,7 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
 
     setSessionExercises(updatedSessionExercises);
     setTargetSets(updatedTargetSets);
+    handleUpdateSession();
   };
 
   const switchExercisesWithAbove = (index) => {
@@ -245,6 +295,7 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
 
     setSessionExercises(updatedSessionExercises);
     setTargetSets(updatedTargetSets);
+    handleUpdateSession();
   };
 
   return (
@@ -516,6 +567,7 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
           </Button>
         </Box>
       </Box>
+      <Navbar userId={userId} currPage="workouts" />
     </Box>
   );
 };

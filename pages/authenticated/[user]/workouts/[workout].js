@@ -9,12 +9,14 @@ import {
   Th,
   Thead,
   Tr,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 
 import Head from "next/head";
 import { ActiveSessionAlert } from "../../../../components/ActiveSessionAlert";
+import { ActiveSessionModal } from "../../../../components/ActiveSessionModal";
 import Navbar from "../../../../components/Navbar";
 import Title from "../../../../components/Title";
 import { useWorkoutSession } from "../../../../contexts/workoutSessionContext";
@@ -26,6 +28,7 @@ const metadata = {
 
 const Workout = ({ dbWorkout, error }) => {
   const { workoutSession, checkActiveWorkoutSession } = useWorkoutSession();
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const [workout] = useState(dbWorkout);
   const [loading, setLoading] = useState(true);
   const [isActiveWorkoutSession] = useState(checkActiveWorkoutSession());
@@ -102,6 +105,11 @@ const Workout = ({ dbWorkout, error }) => {
   };
 
   const handleStartButton = () => {
+    if (checkActiveWorkoutSession()) {
+      onOpen();
+      return;
+    }
+
     router.push(`/authenticated/${userId}/workouts/${workoutId}/session`);
   };
 
@@ -137,6 +145,13 @@ const Workout = ({ dbWorkout, error }) => {
         pb="80px"
       >
         <Title user={userId} content={`${workout?.name}`} />
+        <ActiveSessionModal
+          isOpen={isOpen}
+          onClose={onClose}
+          userId={userId}
+          workoutName={workoutSession?.workout?.name}
+          workoutId={workoutId}
+        />
         <Box>
           <Button
             bgColor="blue.50"

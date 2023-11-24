@@ -64,10 +64,6 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
     workoutSessionData.sessionExercises = sessionExercises;
     workoutSessionData.targetSets = targetSets;
 
-    console.log(
-      "🚀 ~ file: session.js:77 ~ handleUpdateSession ~ workoutSessionData",
-      workoutSessionData
-    );
     updateWorkoutSession(workoutSessionData);
   };
 
@@ -92,11 +88,6 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
         );
       }
 
-      // an existing workout session is in progress
-      console.log(
-        "🚀 ~ file: session.js:76 ~ useEffect ~ workoutSession:",
-        workoutSession
-      );
       setSessionExercises(workoutSession.sessionExercises);
       setTargetSets(workoutSession.targetSets);
       setWorkout(workoutSession.workout);
@@ -105,8 +96,6 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
       setSessionExercises(dbExercises);
       setTargetSets(dbTargetSets);
       setWorkout(dbWorkout);
-
-      console.log("created new workout session data");
 
       const workoutSessionData = {};
       workoutSessionData.workout = dbWorkout;

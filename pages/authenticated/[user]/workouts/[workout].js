@@ -14,6 +14,7 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 
 import Head from "next/head";
+import { ActiveSessionAlert } from "../../../../components/ActiveSessionAlert";
 import Navbar from "../../../../components/Navbar";
 import Title from "../../../../components/Title";
 import { useWorkoutSession } from "../../../../contexts/workoutSessionContext";
@@ -27,6 +28,7 @@ const Workout = ({ dbWorkout, error }) => {
   const { workoutSession, checkActiveWorkoutSession } = useWorkoutSession();
   const [workout] = useState(dbWorkout);
   const [loading, setLoading] = useState(true);
+  const [isActiveWorkoutSession] = useState(checkActiveWorkoutSession());
 
   const router = useRouter();
   const userId = router.query.user;
@@ -159,6 +161,15 @@ const Workout = ({ dbWorkout, error }) => {
             Edit
           </Button>
         </Box>
+        {isActiveWorkoutSession && (
+          <Box mt="30px">
+            <ActiveSessionAlert
+              userId={userId}
+              workoutName={workoutSession.workout.name}
+              workoutId={workoutSession.workout.id}
+            />
+          </Box>
+        )}
         <Box display="flex" flexDirection="column" mt="20px" mb="20px">
           <Text fontSize="30px" fontWeight="700">
             Notes

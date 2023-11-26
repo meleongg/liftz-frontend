@@ -119,8 +119,6 @@ const EditWorkout = ({ dbWorkout, error }) => {
       workout: workout,
     };
 
-    console.log(workout.exercises);
-
     const rawResponse = await fetch(`${BE_URL}/workouts/${workoutId}/update`, {
       method: "POST",
       headers: {
@@ -137,25 +135,8 @@ const EditWorkout = ({ dbWorkout, error }) => {
   const handleWorkoutChange = (field, newValue) => {
     const updatedWorkout = { ...workout };
 
-    console.log(newValue);
-
     updatedWorkout[field] = newValue;
     setWorkout(updatedWorkout);
-  };
-
-  const handleExerciseClick = (index, field, newValue) => {
-    if (newValue < 0) {
-      return;
-    }
-
-    const updatedExercises = [...workout.exercises];
-
-    if (field !== "name") {
-      newValue = parseInt(newValue);
-    }
-
-    updatedExercises[index][field] = newValue;
-    setWorkout({ ...workout, exercises: updatedExercises });
   };
 
   const handleExerciseChange = (index, field, newValue) => {

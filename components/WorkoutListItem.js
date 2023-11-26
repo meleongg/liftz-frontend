@@ -31,7 +31,9 @@ const WorkoutListItem = ({ user, workout }) => {
       justifyContent="space-between"
       alignItems="center"
     >
-      <Text fontWeight="700">{workout.name}</Text>
+      <Text fontWeight="700" w="40%">
+        {workout.name}
+      </Text>
       <ActiveSessionModal
         isOpen={isOpen}
         onClose={onClose}

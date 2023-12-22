@@ -175,7 +175,7 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
     const updatedSessionExercises = [...sessionExercises];
 
     if (field !== "name" && typeof newValue === "string") {
-      newValue = newValue.trim() === "" ? 0 : parseInt(newValue);
+      newValue = newValue.trim() === "" ? 0 : parseFloat(newValue);
     }
 
     updatedSessionExercises[index][field] = newValue;
@@ -190,7 +190,7 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
 
     const updatedSessionExercises = [...sessionExercises];
 
-    updatedSessionExercises[index][field] = parseInt(newValue);
+    updatedSessionExercises[index][field] = parseFloat(newValue);
     setSessionExercises(updatedSessionExercises);
     handleUpdateSession();
   };

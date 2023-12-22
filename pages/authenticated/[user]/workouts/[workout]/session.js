@@ -172,9 +172,6 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
       newValue = 0;
     }
 
-    console.log(field);
-    console.log(newValue);
-
     const updatedSessionExercises = [...sessionExercises];
 
     if (field !== "name" && typeof newValue === "string") {
@@ -190,9 +187,6 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
     if (newValue < 0) {
       return;
     }
-
-    console.log(field);
-    console.log(newValue);
 
     const updatedSessionExercises = [...sessionExercises];
 

@@ -175,7 +175,7 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
     const updatedSessionExercises = [...sessionExercises];
 
     if (field !== "name" && typeof newValue === "string") {
-      newValue = newValue.trim() === "" ? 0 : parseInt(newValue);
+      newValue = newValue.trim() === "" ? 0 : parseFloat(newValue);
     }
 
     updatedSessionExercises[index][field] = newValue;
@@ -190,7 +190,7 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
 
     const updatedSessionExercises = [...sessionExercises];
 
-    updatedSessionExercises[index][field] = parseInt(newValue);
+    updatedSessionExercises[index][field] = parseFloat(newValue);
     setSessionExercises(updatedSessionExercises);
     handleUpdateSession();
   };
@@ -416,7 +416,9 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
                         <NumberInput
                           minWidth="150px"
                           defaultValue={exercise.sets || 0}
+                          value={exercise.sets || 0}
                           min={0}
+                          isReadOnly
                         >
                           <NumberInputField />
                           <NumberInputStepper>
@@ -451,28 +453,11 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
                           minWidth="150px"
                           defaultValue={exercise.reps || 0}
                           min={0}
+                          onChange={(newValue) =>
+                            handleSessionExerciseChange(index, "reps", newValue)
+                          }
                         >
                           <NumberInputField />
-                          <NumberInputStepper>
-                            <NumberIncrementStepper
-                              onClick={() =>
-                                handleSessionExerciseClick(
-                                  index,
-                                  "reps",
-                                  exercise.reps + 1
-                                )
-                              }
-                            />
-                            <NumberDecrementStepper
-                              onClick={() =>
-                                handleSessionExerciseClick(
-                                  index,
-                                  "reps",
-                                  exercise.reps - 1
-                                )
-                              }
-                            />
-                          </NumberInputStepper>
                         </NumberInput>
                       </Td>
                       {/* Weight */}

@@ -143,7 +143,7 @@ const EditWorkout = ({ dbWorkout, error }) => {
     const updatedExercises = [...workout.exercises];
 
     if (field !== "name") {
-      newValue = parseInt(newValue);
+      newValue = parseFloat(newValue);
     }
 
     updatedExercises[index][field] = newValue;

@@ -26,7 +26,7 @@ const Stats = ({ dbPrs, error }) => {
       const existingWorkout = acc.find((item) => item.name === name);
 
       if (!existingWorkout) {
-        acc.push({ name, _id: _id, prs: [pr] });
+        acc.push({ name, _id, prs: [pr] });
       } else {
         existingWorkout.prs.push(pr);
         existingWorkout.prs.sort((a, b) =>

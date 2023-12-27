@@ -19,6 +19,7 @@ import {
   Th,
   Thead,
   Tr,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
@@ -30,6 +31,7 @@ import Title from "../../../../../components/Title";
 import { useWorkoutSession } from "../../../../../contexts/workoutSessionContext";
 
 import { FaAngleDown, FaAngleUp } from "react-icons/fa";
+import { UpdateWorkoutModal } from "../../../../../components/UpdateWorkoutModal";
 
 const metadata = {
   description: "Workout Session page",
@@ -52,6 +54,7 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
   const [targetSets, setTargetSets] = useState(dbTargetSets);
   const [workout, setWorkout] = useState(dbWorkout);
   const [loading, setLoading] = useState(true);
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handleEndSession = () => {
     // Logic to end the workout session
@@ -130,6 +133,43 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
     );
   }
 
+  const calculateSessionExerciseChanges = (original, changes) => {
+    const exerciseChanges = [];
+
+    for (let i = 0; i < changes.length; i++) {
+      const changedExercise = changes[i];
+
+      for (let j = 0; j < original.length; j++) {
+        const originalExercise = original[j];
+        if (
+          changedExercise._id &&
+          changedExercise._id === originalExercise._id
+        ) {
+          // Exercise exists in original and changes
+          // Check if the fields are different (except _id)
+          const fieldChanges = {};
+
+          for (const field in changedExercise) {
+            if (changedExercise[field] !== originalExercise[field]) {
+              fieldChanges[field] = [
+                originalExercise[field],
+                changedExercise[field],
+              ];
+            }
+          }
+
+          if (Object.keys(fieldChanges).length > 0) {
+            fieldChanges["_id"] = changedExercise._id;
+
+            exerciseChanges.push(fieldChanges);
+          }
+        }
+      }
+    }
+
+    console.log(exerciseChanges);
+  };
+
   const handleCancelButton = async () => {
     handleEndSession();
     router.push(`/authenticated/${userId}/workouts/${workoutId}`);
@@ -142,25 +182,31 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
       sessionExercises: sessionExercises,
     };
 
-    try {
-      const rawResponse = await fetch("/api/session-end", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-      const { sessionId } = await rawResponse.json();
+    onOpen();
+    const changes = calculateSessionExerciseChanges(
+      dbWorkout.exercises,
+      sessionExercises
+    );
 
-      handleEndSession();
+    // try {
+    //   const rawResponse = await fetch("/api/session-end", {
+    //     method: "POST",
+    //     headers: {
+    //       Accept: "application/json",
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify(data),
+    //   });
+    //   const { sessionId } = await rawResponse.json();
 
-      router.push(
-        `/authenticated/${userId}/workouts/${workoutId}/${sessionId}`
-      );
-    } catch (err) {
-      console.log(err);
-    }
+    //   handleEndSession();
+
+    //   router.push(
+    //     `/authenticated/${userId}/workouts/${workoutId}/${sessionId}`
+    //   );
+    // } catch (err) {
+    //   console.log(err);
+    // }
   };
 
   const handleSessionExerciseChange = (index, field, newValue) => {
@@ -330,6 +376,14 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
         pb="80px"
       >
         <Title userId={userId} content={`${workout?.name}`} />
+
+        <UpdateWorkoutModal
+          isOpen={isOpen}
+          onClose={onClose}
+          userId={userId}
+          workoutName={workoutSession?.workout?.name}
+          workoutId={workoutId}
+        />
 
         <Box
           mt="20px"

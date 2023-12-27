@@ -55,7 +55,6 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
   const [workout, setWorkout] = useState(dbWorkout);
   const [loading, setLoading] = useState(true);
   const { isOpen, onOpen, onClose } = useDisclosure();
-  // const [exerciseChanges, setExerciseChanges] = useState([]);
   const [updatedData, setUpdatedData] = useState({});
 
   const handleEndSession = () => {
@@ -148,34 +147,7 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
     };
 
     setUpdatedData(data);
-
-    // const changes = calculateSessionExerciseChanges(
-    //   dbWorkout.exercises,
-    //   sessionExercises
-    // );
-    // setExerciseChanges(changes);
-
     onOpen();
-
-    // try {
-    //   const rawResponse = await fetch("/api/session-end", {
-    //     method: "POST",
-    //     headers: {
-    //       Accept: "application/json",
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify(data),
-    //   });
-    //   const { sessionId } = await rawResponse.json();
-
-    //   handleEndSession();
-
-    //   router.push(
-    //     `/authenticated/${userId}/workouts/${workoutId}/${sessionId}`
-    //   );
-    // } catch (err) {
-    //   console.log(err);
-    // }
   };
 
   const handleSessionExerciseChange = (index, field, newValue) => {
@@ -355,7 +327,6 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
           workout={dbWorkout}
           originalExercises={dbWorkout.exercises}
           changedExercises={sessionExercises}
-          // exerciseChanges={exerciseChanges}
           updatedData={updatedData}
         />
 

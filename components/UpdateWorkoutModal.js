@@ -2,6 +2,8 @@ import {
   Box,
   Button,
   Checkbox,
+  Grid,
+  GridItem,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -169,6 +171,50 @@ export const UpdateWorkoutModal = ({
     }
   };
 
+  const renderExerciseField = (exercise, field, index) => {
+    if (Object.keys(exercise).includes(field)) {
+      return (
+        <Grid
+          templateColumns={"repeat(3, 1fr)"}
+          gap={"5px"}
+          justifyContent={"center"}
+          alignItems={"center"}
+        >
+          <GridItem
+            display={"flex"}
+            justifyContent={"center"}
+            alignItems={"center"}
+          >
+            {field.charAt(0).toUpperCase() + field.slice(1)}:
+          </GridItem>
+          <GridItem>
+            <Grid
+              templateColumns={"repeat(3, 1fr)"}
+              gap={"4px"}
+              justifyContent={"center"}
+              alignItems={"center"}
+            >
+              <GridItem textAlign={"center"}>{exercise[field][0]}</GridItem>
+              <GridItem textAlign={"center"}>{"->"}</GridItem>
+              <GridItem textAlign={"center"}>{exercise[field][1]}</GridItem>
+            </Grid>
+          </GridItem>
+          <GridItem
+            display={"flex"}
+            justifyContent={"center"}
+            alignItems={"center"}
+          >
+            <Checkbox
+              id={`session-exercise-${field}`}
+              onChange={(e) => handleCheck(e, index)}
+            ></Checkbox>
+          </GridItem>
+        </Grid>
+      );
+    }
+    return null;
+  };
+
   return (
     <Modal
       blockScrollOnMount={false}
@@ -186,56 +232,25 @@ export const UpdateWorkoutModal = ({
             Please check off any workout exercise changes you would like to
             keep!
           </Text>
-          <Text mt={"5px"}>This will update your workout data.</Text>
+          <Text mt={"5px"}>
+            This will overwrite your existing workout data.
+          </Text>
           {exerciseChanges.length > 0 &&
             exerciseChanges?.map((exercise, index) => {
               return (
                 <Box key={exercise?._id} mt={"10px"}>
-                  <Text>{exercise?.name}</Text>
+                  <Text fontWeight={700}>{exercise?.name}</Text>
                   <Box>
-                    {Object.keys(exercise).includes("sets") && (
-                      <Box display="flex" justifyContent={"space-around"}>
-                        <Text>Sets:</Text>
-                        <Text>
-                          {exercise?.sets[0]} {"->"} {exercise?.sets[1]}
-                        </Text>
-                        <Checkbox
-                          id={"session-exercise-sets"}
-                          onChange={(e) => handleCheck(e, index)}
-                        ></Checkbox>
-                      </Box>
-                    )}
-                    {Object.keys(exercise).includes("reps") && (
-                      <Box display="flex" justifyContent={"space-around"}>
-                        <Text>Reps:</Text>
-                        <Text>
-                          {exercise?.reps[0]} {"->"} {exercise?.reps[1]}
-                        </Text>
-                        <Checkbox
-                          id={"session-exercise-reps"}
-                          onChange={(e) => handleCheck(e, index)}
-                        ></Checkbox>
-                      </Box>
-                    )}
-                    {Object.keys(exercise).includes("weight") && (
-                      <Box display="flex" justifyContent={"space-around"}>
-                        <Text>Weight:</Text>
-                        <Text>
-                          {exercise?.weight[0]} {"->"} {exercise?.weight[1]}
-                        </Text>
-                        <Checkbox
-                          id={"session-exercise-weight"}
-                          onChange={(e) => handleCheck(e, index)}
-                        ></Checkbox>
-                      </Box>
-                    )}
+                    {renderExerciseField(exercise, "sets", index)}
+                    {renderExerciseField(exercise, "reps", index)}
+                    {renderExerciseField(exercise, "weight", index)}
                   </Box>
                 </Box>
               );
             })}
         </ModalBody>
 
-        <ModalFooter>
+        <ModalFooter display={"flex"} justifyContent={"center"}>
           <Button
             bgColor="blue.50"
             color="white"

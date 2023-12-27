@@ -12,6 +12,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
+import { useWorkoutSession } from "../contexts/workoutSessionContext";
 
 export const UpdateWorkoutModal = ({
   isOpen,
@@ -19,9 +20,12 @@ export const UpdateWorkoutModal = ({
   userId,
   workoutName,
   workoutId,
+  workout,
   exerciseChanges,
+  updatedData,
 }) => {
   const [checked, setChecked] = useState([]);
+  const { endWorkoutSession } = useWorkoutSession();
 
   useEffect(() => {
     setChecked(
@@ -36,33 +40,76 @@ export const UpdateWorkoutModal = ({
     );
   }, [exerciseChanges]);
 
+  const handleEndSession = () => {
+    // Logic to end the workout session
+    endWorkoutSession();
+  };
+
   const handleCheck = (e, index) => {
-    if (e.target.className.includes("session-exercise-sets")) {
+    if (e.target.id === "session-exercise-sets") {
       let newChecked = [...checked];
       newChecked[index].sets = e.target.checked;
       setChecked(newChecked);
-    } else if (e.target.className.includes("session-exercise-reps")) {
+    } else if (e.target.id === "session-exercise-reps") {
       let newChecked = [...checked];
       newChecked[index].reps = e.target.checked;
       setChecked(newChecked);
-    } else if (e.target.className.includes("session-exercise-weight")) {
+    } else if (e.target.id === "session-exercise-weight") {
       let newChecked = [...checked];
       newChecked[index].weight = e.target.checked;
       setChecked(newChecked);
     }
   };
 
+  const updateWorkout = () => {
+    let updatedWorkout = { ...workout };
+
+    for (let i = 0; i < checked.length; i++) {
+      for (let j = 0; j < workout.exercises.length; j++) {
+        if (checked[i].exerciseId === workout.exercises[j]._id) {
+          if (checked[i].sets) {
+            updatedWorkout.exercises[j].sets = exerciseChanges[i].sets[1];
+          }
+          if (checked[i].reps) {
+            updatedWorkout.exercises[j].reps = exerciseChanges[i].reps[1];
+          }
+          if (checked[i].weight) {
+            updatedWorkout.exercises[j].weight = exerciseChanges[i].weight[1];
+          }
+        }
+      }
+    }
+
+    return updatedWorkout;
+  };
+
   const handleContinueButton = async () => {
+    // console.log(updatedData);
+    console.log(workout);
+    const workoutData = updateWorkout();
+    console.log(workoutData);
+
     // try {
-    //   const rawResponse = await fetch("/api/session-end", {
+    //   const sessionData = updatedData
+    //   const rawSessionEndResponse = await fetch("/api/session-end", {
     //     method: "POST",
     //     headers: {
     //       Accept: "application/json",
     //       "Content-Type": "application/json",
     //     },
-    //     body: JSON.stringify(data),
+    //     body: JSON.stringify(updatedData),
     //   });
-    //   const { sessionId } = await rawResponse.json();
+
+    //   await fetch(`${BE_URL}/workouts/${workoutId}/update`, {
+    //     method: "POST",
+    //     headers: {
+    //       Accept: "application/json",
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify(workoutData),
+    //   });
+
+    //   const { sessionId } = await rawSessionEnd.json();
     //   handleEndSession();
     //   router.push(
     //     `/authenticated/${userId}/workouts/${workoutId}/${sessionId}`
@@ -101,7 +148,7 @@ export const UpdateWorkoutModal = ({
                       {exercise.sets[0]} {"->"} {exercise.sets[1]}
                     </Text>
                     <Checkbox
-                      className={"session-exercise-sets"}
+                      id={"session-exercise-sets"}
                       onChange={(e) => handleCheck(e, index)}
                     ></Checkbox>
                   </Box>
@@ -111,7 +158,7 @@ export const UpdateWorkoutModal = ({
                       {exercise.reps[0]} {"->"} {exercise.reps[1]}
                     </Text>
                     <Checkbox
-                      className={"session-exercise-reps"}
+                      id={"session-exercise-reps"}
                       onChange={(e) => handleCheck(e, index)}
                     ></Checkbox>
                   </Box>
@@ -121,7 +168,7 @@ export const UpdateWorkoutModal = ({
                       {exercise.weight[0]} {"->"} {exercise.weight[1]}
                     </Text>
                     <Checkbox
-                      className={"session-exercise-weight"}
+                      id={"session-exercise-weight"}
                       onChange={(e) => handleCheck(e, index)}
                     ></Checkbox>
                   </Box>

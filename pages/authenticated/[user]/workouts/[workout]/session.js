@@ -56,6 +56,7 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
   const [loading, setLoading] = useState(true);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [exerciseChanges, setExerciseChanges] = useState([]);
+  const [updatedData, setUpdatedData] = useState({});
 
   const handleEndSession = () => {
     // Logic to end the workout session
@@ -183,6 +184,8 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
       workout: workout,
       sessionExercises: sessionExercises,
     };
+
+    setUpdatedData(data);
 
     const changes = calculateSessionExerciseChanges(
       dbWorkout.exercises,
@@ -387,7 +390,9 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
           userId={userId}
           workoutName={workoutSession?.workout?.name}
           workoutId={workoutId}
+          workout={dbWorkout}
           exerciseChanges={exerciseChanges}
+          updatedData={updatedData}
         />
 
         <Box

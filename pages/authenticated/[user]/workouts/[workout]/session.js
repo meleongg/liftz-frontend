@@ -55,6 +55,7 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
   const [workout, setWorkout] = useState(dbWorkout);
   const [loading, setLoading] = useState(true);
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [exerciseChanges, setExerciseChanges] = useState([]);
 
   const handleEndSession = () => {
     // Logic to end the workout session
@@ -159,6 +160,7 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
           }
 
           if (Object.keys(fieldChanges).length > 0) {
+            fieldChanges["name"] = originalExercise["name"];
             fieldChanges["_id"] = changedExercise._id;
 
             exerciseChanges.push(fieldChanges);
@@ -167,7 +169,7 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
       }
     }
 
-    console.log(exerciseChanges);
+    return exerciseChanges;
   };
 
   const handleCancelButton = async () => {
@@ -182,11 +184,13 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
       sessionExercises: sessionExercises,
     };
 
-    onOpen();
     const changes = calculateSessionExerciseChanges(
       dbWorkout.exercises,
       sessionExercises
     );
+    setExerciseChanges(changes);
+
+    onOpen();
 
     // try {
     //   const rawResponse = await fetch("/api/session-end", {
@@ -383,6 +387,7 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
           userId={userId}
           workoutName={workoutSession?.workout?.name}
           workoutId={workoutId}
+          exerciseChanges={exerciseChanges}
         />
 
         <Box

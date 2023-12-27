@@ -11,8 +11,11 @@ import {
   ModalOverlay,
   Text,
 } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useWorkoutSession } from "../contexts/workoutSessionContext";
+
+const BE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export const UpdateWorkoutModal = ({
   isOpen,
@@ -21,13 +24,23 @@ export const UpdateWorkoutModal = ({
   workoutName,
   workoutId,
   workout,
-  exerciseChanges,
+  originalExercises,
+  changedExercises,
   updatedData,
 }) => {
   const [checked, setChecked] = useState([]);
   const { endWorkoutSession } = useWorkoutSession();
+  const [exerciseChanges, setExerciseChanges] = useState([]);
+
+  const router = useRouter();
 
   useEffect(() => {
+    const exerciseChanges = calculateSessionExerciseChanges(
+      originalExercises,
+      changedExercises
+    );
+    setExerciseChanges(exerciseChanges);
+
     setChecked(
       exerciseChanges.map((exercise) => {
         return {
@@ -38,7 +51,45 @@ export const UpdateWorkoutModal = ({
         };
       })
     );
-  }, [exerciseChanges]);
+  }, [changedExercises, originalExercises]);
+
+  const calculateSessionExerciseChanges = (original, changes) => {
+    const exerciseChanges = [];
+
+    for (let i = 0; i < changes.length; i++) {
+      const changedExercise = changes[i];
+
+      for (let j = 0; j < original.length; j++) {
+        const originalExercise = original[j];
+        if (
+          changedExercise._id &&
+          changedExercise._id === originalExercise._id
+        ) {
+          // Exercise exists in original and changes
+          // Check if the fields are different (except _id)
+          const fieldChanges = {};
+
+          for (const field in changedExercise) {
+            if (changedExercise[field] !== originalExercise[field]) {
+              fieldChanges[field] = [
+                originalExercise[field],
+                changedExercise[field],
+              ];
+            }
+          }
+
+          if (Object.keys(fieldChanges).length > 0) {
+            fieldChanges["name"] = originalExercise["name"];
+            fieldChanges["_id"] = changedExercise._id;
+
+            exerciseChanges.push(fieldChanges);
+          }
+        }
+      }
+    }
+
+    return exerciseChanges;
+  };
 
   const handleEndSession = () => {
     // Logic to end the workout session
@@ -84,44 +135,43 @@ export const UpdateWorkoutModal = ({
   };
 
   const handleContinueButton = async () => {
-    // console.log(updatedData);
-    console.log(workout);
-    const workoutData = updateWorkout();
-    console.log(workoutData);
+    let workoutData = updateWorkout();
+    workoutData = {
+      workout: workoutData,
+    };
 
-    // try {
-    //   const sessionData = updatedData
-    //   const rawSessionEndResponse = await fetch("/api/session-end", {
-    //     method: "POST",
-    //     headers: {
-    //       Accept: "application/json",
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify(updatedData),
-    //   });
+    try {
+      const rawSessionEndResponse = await fetch("/api/session-end", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedData),
+      });
 
-    //   await fetch(`${BE_URL}/workouts/${workoutId}/update`, {
-    //     method: "POST",
-    //     headers: {
-    //       Accept: "application/json",
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify(workoutData),
-    //   });
+      await fetch(`${BE_URL}/workouts/${workoutId}/update`, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(workoutData),
+      });
 
-    //   const { sessionId } = await rawSessionEnd.json();
-    //   handleEndSession();
-    //   router.push(
-    //     `/authenticated/${userId}/workouts/${workoutId}/${sessionId}`
-    //   );
-    // } catch (err) {
-    //   console.log(err);
-    // }
+      const { sessionId } = await rawSessionEndResponse.json();
+      handleEndSession();
+      router.push(
+        `/authenticated/${userId}/workouts/${workoutId}/${sessionId}`
+      );
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
     <Modal
-      blockScrollOnMount={true}
+      blockScrollOnMount={false}
       isOpen={isOpen}
       onClose={onClose}
       size="sm"
@@ -137,45 +187,52 @@ export const UpdateWorkoutModal = ({
             keep!
           </Text>
           <Text mt={"5px"}>This will update your workout data.</Text>
-          {exerciseChanges.map((exercise, index) => {
-            return (
-              <Box key={exercise._id} mt={"10px"}>
-                <Text>{exercise.name}</Text>
-                <Box>
-                  <Box display="flex" justifyContent={"space-around"}>
-                    <Text>Sets:</Text>
-                    <Text>
-                      {exercise.sets[0]} {"->"} {exercise.sets[1]}
-                    </Text>
-                    <Checkbox
-                      id={"session-exercise-sets"}
-                      onChange={(e) => handleCheck(e, index)}
-                    ></Checkbox>
-                  </Box>
-                  <Box display="flex" justifyContent={"space-around"}>
-                    <Text>Reps:</Text>
-                    <Text>
-                      {exercise.reps[0]} {"->"} {exercise.reps[1]}
-                    </Text>
-                    <Checkbox
-                      id={"session-exercise-reps"}
-                      onChange={(e) => handleCheck(e, index)}
-                    ></Checkbox>
-                  </Box>
-                  <Box display="flex" justifyContent={"space-around"}>
-                    <Text>Weight:</Text>
-                    <Text>
-                      {exercise.weight[0]} {"->"} {exercise.weight[1]}
-                    </Text>
-                    <Checkbox
-                      id={"session-exercise-weight"}
-                      onChange={(e) => handleCheck(e, index)}
-                    ></Checkbox>
+          {exerciseChanges.length > 0 &&
+            exerciseChanges?.map((exercise, index) => {
+              return (
+                <Box key={exercise?._id} mt={"10px"}>
+                  <Text>{exercise?.name}</Text>
+                  <Box>
+                    {Object.keys(exercise).includes("sets") && (
+                      <Box display="flex" justifyContent={"space-around"}>
+                        <Text>Sets:</Text>
+                        <Text>
+                          {exercise?.sets[0]} {"->"} {exercise?.sets[1]}
+                        </Text>
+                        <Checkbox
+                          id={"session-exercise-sets"}
+                          onChange={(e) => handleCheck(e, index)}
+                        ></Checkbox>
+                      </Box>
+                    )}
+                    {Object.keys(exercise).includes("reps") && (
+                      <Box display="flex" justifyContent={"space-around"}>
+                        <Text>Reps:</Text>
+                        <Text>
+                          {exercise?.reps[0]} {"->"} {exercise?.reps[1]}
+                        </Text>
+                        <Checkbox
+                          id={"session-exercise-reps"}
+                          onChange={(e) => handleCheck(e, index)}
+                        ></Checkbox>
+                      </Box>
+                    )}
+                    {Object.keys(exercise).includes("weight") && (
+                      <Box display="flex" justifyContent={"space-around"}>
+                        <Text>Weight:</Text>
+                        <Text>
+                          {exercise?.weight[0]} {"->"} {exercise?.weight[1]}
+                        </Text>
+                        <Checkbox
+                          id={"session-exercise-weight"}
+                          onChange={(e) => handleCheck(e, index)}
+                        ></Checkbox>
+                      </Box>
+                    )}
                   </Box>
                 </Box>
-              </Box>
-            );
-          })}
+              );
+            })}
         </ModalBody>
 
         <ModalFooter>

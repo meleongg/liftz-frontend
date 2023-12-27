@@ -55,7 +55,7 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
   const [workout, setWorkout] = useState(dbWorkout);
   const [loading, setLoading] = useState(true);
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [exerciseChanges, setExerciseChanges] = useState([]);
+  // const [exerciseChanges, setExerciseChanges] = useState([]);
   const [updatedData, setUpdatedData] = useState({});
 
   const handleEndSession = () => {
@@ -135,44 +135,6 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
     );
   }
 
-  const calculateSessionExerciseChanges = (original, changes) => {
-    const exerciseChanges = [];
-
-    for (let i = 0; i < changes.length; i++) {
-      const changedExercise = changes[i];
-
-      for (let j = 0; j < original.length; j++) {
-        const originalExercise = original[j];
-        if (
-          changedExercise._id &&
-          changedExercise._id === originalExercise._id
-        ) {
-          // Exercise exists in original and changes
-          // Check if the fields are different (except _id)
-          const fieldChanges = {};
-
-          for (const field in changedExercise) {
-            if (changedExercise[field] !== originalExercise[field]) {
-              fieldChanges[field] = [
-                originalExercise[field],
-                changedExercise[field],
-              ];
-            }
-          }
-
-          if (Object.keys(fieldChanges).length > 0) {
-            fieldChanges["name"] = originalExercise["name"];
-            fieldChanges["_id"] = changedExercise._id;
-
-            exerciseChanges.push(fieldChanges);
-          }
-        }
-      }
-    }
-
-    return exerciseChanges;
-  };
-
   const handleCancelButton = async () => {
     handleEndSession();
     router.push(`/authenticated/${userId}/workouts/${workoutId}`);
@@ -187,11 +149,11 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
 
     setUpdatedData(data);
 
-    const changes = calculateSessionExerciseChanges(
-      dbWorkout.exercises,
-      sessionExercises
-    );
-    setExerciseChanges(changes);
+    // const changes = calculateSessionExerciseChanges(
+    //   dbWorkout.exercises,
+    //   sessionExercises
+    // );
+    // setExerciseChanges(changes);
 
     onOpen();
 
@@ -391,7 +353,9 @@ const Session = ({ dbWorkout, dbExercises, dbTargetSets, error }) => {
           workoutName={workoutSession?.workout?.name}
           workoutId={workoutId}
           workout={dbWorkout}
-          exerciseChanges={exerciseChanges}
+          originalExercises={dbWorkout.exercises}
+          changedExercises={sessionExercises}
+          // exerciseChanges={exerciseChanges}
           updatedData={updatedData}
         />
 

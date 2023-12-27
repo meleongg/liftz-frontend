@@ -124,8 +124,6 @@ const SessionEnd = ({ dbSession, error }) => {
           <Text>{session?.workout?.notes}</Text>
         </Box>
 
-        {/* make this an editable table with all text inputs for user to manually edit, fetched exercise data is only placeholder */}
-
         <Box overflowX="auto">
           <Table>
             <Thead>

@@ -225,7 +225,7 @@ export const UpdateWorkoutModal = ({
     >
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>{workoutName} Session</ModalHeader>
+        <ModalHeader>Workout Session</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <Text>

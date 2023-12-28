@@ -1,4 +1,4 @@
-import { Box, Button, Checkbox, Spinner, Text } from "@chakra-ui/react";
+import { Box, Button, Checkbox, Input, Spinner, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import PRChart from "../../../components/PRChart";
@@ -18,9 +18,23 @@ const Stats = ({ dbPrs, error }) => {
   const [prs, setPrs] = useState([]);
   const [filteredPrs, setFilteredPrs] = useState([]);
   const [workoutsToDisplay, setWorkoutsToDisplay] = useState({}); // { workout_id: true/false, ...}
+  const [search, setSearch] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
 
   const router = useRouter();
   const userId = router.query.user;
+
+  // debounce search
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearch(search);
+    }, 20);
+
+    return () => {
+      // teardown
+      clearTimeout(handler);
+    };
+  }, [search]);
 
   useEffect(() => {
     const groupedPrs = dbPrs.reduce((acc, pr) => {
@@ -80,14 +94,33 @@ const Stats = ({ dbPrs, error }) => {
   }, [dbPrs]);
 
   useEffect(() => {
-    const filteredPrs = prs.filter((workout) => workoutsToDisplay[workout._id]);
+    const filterPrs = () => {
+      let filtered = prs;
 
-    if (!prs.some((workout) => workoutsToDisplay[workout._id])) {
-      setFilteredPrs(prs);
-    } else {
-      setFilteredPrs(filteredPrs);
-    }
-  }, [prs, workoutsToDisplay]);
+      if (debouncedSearch) {
+        filtered = filtered.map((workout) => ({
+          ...workout,
+          prs: workout.prs.filter((pr) =>
+            pr.exercise.toLowerCase().includes(debouncedSearch.toLowerCase())
+          ),
+        }));
+
+        filtered = filtered.filter((workout) => workout.prs.length > 0);
+      }
+
+      console.log(filtered);
+
+      if (prs.some((workout) => workoutsToDisplay[workout._id])) {
+        filtered = filtered.filter((workout) => workoutsToDisplay[workout._id]);
+      }
+
+      console.log(filtered);
+
+      setFilteredPrs(filtered);
+    };
+
+    filterPrs();
+  }, [prs, workoutsToDisplay, debouncedSearch]);
 
   if (loading) {
     return (
@@ -226,7 +259,18 @@ const Stats = ({ dbPrs, error }) => {
             </Text>
           </Box>
 
-          <Box mt="20px" mb="20px">
+          <Box mt="20px" mb="10px">
+            <Text fontWeight={"700"}>Search for a specific PR:</Text>
+            <Input
+              mt="5px"
+              placeholder="Search for PR"
+              size="md"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </Box>
+
+          <Box mt="10px" mb="20px">
             <Text fontWeight={"700"}>
               Select the workout PRs you would like to see:
             </Text>

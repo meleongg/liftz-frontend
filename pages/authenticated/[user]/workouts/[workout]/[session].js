@@ -79,6 +79,30 @@ const SessionEnd = ({ dbSession, error }) => {
     }
   };
 
+  const handleDeleteButton = async () => {
+    const BE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+
+    try {
+      const rawResponse = await fetch(
+        `${BE_URL}/workouts/sessions/${session.id}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (!rawResponse.ok) {
+        throw new Error("Failed to delete session");
+      }
+
+      router.push(`/authenticated/${userId}/workouts`);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <Box minHeight="100vh">
       <Head>
@@ -154,7 +178,7 @@ const SessionEnd = ({ dbSession, error }) => {
         <Box
           w="100%"
           display="flex"
-          justifyContent="center"
+          justifyContent="space-evenly"
           alignItems="center"
           mt="30px"
           mb="30px"
@@ -163,9 +187,21 @@ const SessionEnd = ({ dbSession, error }) => {
             bgColor="blue.50"
             color="white"
             _hover={{ bg: "lightBlue.50" }}
+            onClick={handleDeleteButton}
+            mt="10px"
+            mb="10px"
+            w="100px"
+          >
+            Delete
+          </Button>
+          <Button
+            bgColor="blue.50"
+            color="white"
+            _hover={{ bg: "lightBlue.50" }}
             onClick={handleDoneButton}
             mt="10px"
             mb="10px"
+            w="100px"
           >
             Done
           </Button>

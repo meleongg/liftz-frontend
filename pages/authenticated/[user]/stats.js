@@ -53,6 +53,8 @@ const Stats = ({ dbPrs, error }) => {
       return acc;
     }, []);
 
+    groupedPrs.sort((a, b) => a.name.localeCompare(b.name));
+
     let updatedWorkoutsToDisplay = { ...workoutsToDisplay };
 
     for (let i = 0; i < groupedPrs.length; i++) {
@@ -108,13 +110,9 @@ const Stats = ({ dbPrs, error }) => {
         filtered = filtered.filter((workout) => workout.prs.length > 0);
       }
 
-      console.log(filtered);
-
       if (prs.some((workout) => workoutsToDisplay[workout._id])) {
         filtered = filtered.filter((workout) => workoutsToDisplay[workout._id]);
       }
-
-      console.log(filtered);
 
       setFilteredPrs(filtered);
     };

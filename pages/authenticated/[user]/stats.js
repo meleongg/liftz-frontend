@@ -1,4 +1,4 @@
-import { Box, Button, Spinner, Text } from "@chakra-ui/react";
+import { Box, Button, Checkbox, Spinner, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import PRChart from "../../../components/PRChart";
@@ -16,6 +16,8 @@ const metadata = {
 const Stats = ({ dbPrs, error }) => {
   const [loading, setLoading] = useState(true);
   const [prs, setPrs] = useState([]);
+  const [filteredPrs, setFilteredPrs] = useState([]);
+  const [workoutsToDisplay, setWorkoutsToDisplay] = useState({}); // { workout_id: true/false, ...}
 
   const router = useRouter();
   const userId = router.query.user;
@@ -37,9 +39,55 @@ const Stats = ({ dbPrs, error }) => {
       return acc;
     }, []);
 
+    let updatedWorkoutsToDisplay = { ...workoutsToDisplay };
+
+    for (let i = 0; i < groupedPrs.length; i++) {
+      const workout = groupedPrs[i];
+
+      if (!updatedWorkoutsToDisplay[workout._id]) {
+        updatedWorkoutsToDisplay[workout._id] = false;
+      }
+    }
+
+    setWorkoutsToDisplay(updatedWorkoutsToDisplay);
+
+    // [
+    //   {
+    //     name: "Chest Day",
+    //     _id: "123",
+    //     prs: [
+    //       {
+    //         _id: "123",
+    //         exercise: "Bench Press",
+    //         weight: 100,
+    //         reps: 5,
+    //         date: "2021-05-01",
+    //       },
+    //       {
+    //         _id: "456",
+    //         exercise: "Incline Bench Press",
+    //         weight: 100,
+    //         reps: 5,
+    //         date: "2021-05-01",
+    //       },
+    //     ],
+    //   },
+    // ];
+
     setPrs(groupedPrs);
+    setFilteredPrs(groupedPrs);
     setLoading(false);
   }, [dbPrs]);
+
+  useEffect(() => {
+    const filteredPrs = prs.filter((workout) => workoutsToDisplay[workout._id]);
+
+    if (!prs.some((workout) => workoutsToDisplay[workout._id])) {
+      setFilteredPrs(prs);
+    } else {
+      setFilteredPrs(filteredPrs);
+    }
+  }, [prs, workoutsToDisplay]);
 
   if (loading) {
     return (
@@ -120,6 +168,13 @@ const Stats = ({ dbPrs, error }) => {
     }
   };
 
+  const handleCheck = (e, workoutId) => {
+    const updatedWorkoutsToDisplay = { ...workoutsToDisplay };
+    updatedWorkoutsToDisplay[workoutId] = e.target.checked;
+
+    setWorkoutsToDisplay(updatedWorkoutsToDisplay);
+  };
+
   return (
     <Box minHeight="100vh" mb={["80px", "80px", "0px", "0px", "0px"]}>
       <Head>
@@ -170,9 +225,32 @@ const Stats = ({ dbPrs, error }) => {
               workout session where you hit a new PR!
             </Text>
           </Box>
-          {prs.map((workout) => (
+
+          <Box mt="20px" mb="20px">
+            <Text fontWeight={"700"}>
+              Select the workout PRs you would like to see:
+            </Text>
+            <Box
+              display="flex"
+              flexDirection={"column"}
+              flexWrap={true}
+              mt="5px"
+            >
+              {prs.map((workout) => (
+                <Checkbox
+                  ml="10px"
+                  key={workout._id}
+                  onChange={(e) => handleCheck(e, workout._id)}
+                >
+                  {workout.name}
+                </Checkbox>
+              ))}
+            </Box>
+          </Box>
+
+          {filteredPrs.map((workout) => (
             <Box key={workout._id} mt="20px" mb="20px">
-              <Text fontWeight="700" textAlign="center">
+              <Text fontSize={"20px"} fontWeight="700" textAlign="center">
                 {workout.name}
               </Text>
               {workout.prs.map((pr) => (

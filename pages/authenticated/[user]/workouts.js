@@ -158,6 +158,8 @@ export async function getServerSideProps(context) {
     };
     const dbWorkouts = data.workouts;
 
+    dbWorkouts.sort((a, b) => a.name.localeCompare(b.name));
+
     return {
       props: {
         dbUser: dbUser,

@@ -55,3 +55,6 @@ November 2023
 December 2023
 
 - add modal to prompt user to optionally update workout exercise data to match session exercise data
+- add deleting session in the view session pages
+- implement filter and sort PRs by workout
+- implement search for PRs by exercise name

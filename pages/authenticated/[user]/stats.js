@@ -1,6 +1,6 @@
 import { Box, Button, Checkbox, Input, Spinner, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import PRChart from "../../../components/PRChart";
 
 import Head from "next/head";
@@ -93,7 +93,7 @@ const Stats = ({ dbPrs, error }) => {
     setPrs(groupedPrs);
     setFilteredPrs(groupedPrs);
     setLoading(false);
-  }, [dbPrs]);
+  }, [dbPrs, workoutsToDisplay]);
 
   useEffect(() => {
     const filterPrs = () => {
